@@ -1,0 +1,9 @@
+.panel-bar {
+    position: relative;
+    background: wheat;
+    width: 100%;
+    bottom: -180px;
+    text-align: right;
+    line-height: 30px;
+    padding: 5px;
+}

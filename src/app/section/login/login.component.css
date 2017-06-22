@@ -1,0 +1,84 @@
+.RowHeaderCSS {
+    font-weight: bold;
+    background-color: grey !important;
+}
+
+.quote-left {
+    width: 95%;
+    float: left;
+    height: 100%;
+    display: inline-flex;
+}
+
+.quote-right {
+    float: left;
+    display: inline-flex;
+}
+
+@-webkit-keyframes ticker {
+    0% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        visibility: visible;
+    }
+    100% {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+@keyframes ticker {
+    0% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        visibility: visible;
+    }
+    100% {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+.ticker-wrap {
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+    background-color: rgba(255, 0, 0, 0.9);
+    padding-left: 100%;
+}
+
+.ticker {
+    display: inline-block;
+    white-space: nowrap;
+    padding-right: 100%;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-name: ticker;
+    animation-name: ticker;
+    -webkit-animation-duration: 60s;
+    animation-duration: 60s;
+}
+
+.ticker__item {
+    display: inline-block;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.ticker__item li {
+    list-style-type: none;
+}
+
+.ticker__item .section {
+    background-color: white;
+    color: red;
+    padding: 0 1rem;
+    font-weight: bold;
+    margin: 0 1rem 0 4rem;
+}
+
+.hand_cursor {
+    cursor: pointer;
+}

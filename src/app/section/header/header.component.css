@@ -1,0 +1,41 @@
+.navbar {
+    height: 50px;
+}
+
+.navbar-brand {
+    font-size: 1em;
+}
+
+.nav-padding {
+    min-height: 50px;
+}
+
+.navbar-right {
+    margin-right: 8px;
+}
+
+.panel-heading-image {
+    margin-top: 50px;
+    height: 150px;
+    width: 100%;
+    background-size: cover;
+}
+
+.panel-bar {
+    padding: 5px;
+    background: navajowhite;
+    bottom: -125px;
+    position: relative;
+    font-weight: bold;
+    text-align: right;
+}
+
+.navbar-header {
+    height: 50px;
+    width: auto;
+}
+
+.showMenu {
+    display: block;
+    background-color: black;
+}

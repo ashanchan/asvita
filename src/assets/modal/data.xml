@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<section>
+		<title><![CDATA[As-Vi-Ta]]></title>
+		<tab>
+			<col1>/login</col1>
+			<col2>Login</col2>
+		</tab>
+		<tab>
+			<col1>/login</col1>
+			<col2>Login</col2>
+		</tab>	
+	</section>
+	<login>
+		<content>
+			<title><![CDATA[Dashboard : 25th Nov 2014 to 10th Dec 2014]]></title>
+		</content>	
+	</login>
+</module>	
