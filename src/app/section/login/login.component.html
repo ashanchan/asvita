@@ -1,1 +1,49 @@
-hello world
+<div class="col-xs-12 col-sm-6 col-md-7">
+
+</div>
+
+<div class="col-xs-12 col-sm-6 col-md-5">
+    <div class="panel-heading">
+        <img src=" ../../../assets/media/img/login/blank-user.jpg" alt="Avatar" class="img-thumbnail">
+    </div>
+    <div class="panel-body">
+        <form novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="form-holder" style="clear:both">
+                <div class="form-group" [ngClass]="{'has-danger': email.invalid && (email.dirty || email.touched), 'has-success': email.valid && (email.dirty || email.touched)}">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email="ngModel" placeholder="default@abc.com" />
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-control-feedback" *ngIf="email.errors && (email.dirty || email.touched)">
+                    <p *ngIf="email.errors.required">Email is required</p>
+                    <p *ngIf="email.errors.pattern">Need Valid Email format like default@abc.com</p>
+                </div>
+            </div>
+
+            <div class="form-holder" style="clear:both">
+                <div class="form-group" [ngClass]="{'has-danger': password.invalid && (password.dirty || password.touched),'has-success': password.valid && (password.dirty || password.touched)}">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="password" [(ngModel)]="model.password" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #password="ngModel" placeholder="must have Upper/Lower/Spl/Number and 8 char long"
+                    />
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-control-feedback" *ngIf="password.invalid && (password.dirty || password.touched) ">
+                    <p *ngIf="password.errors.required">Password is required</p>
+                    <p *ngIf="password.errors.pattern">Must have UpperCase, LowerCase, Number, SpecialChar and min 8 Chars</p>
+                </div>
+            </div>
+
+            <div class="form-holder" style="clear:both">
+                <div class="form-group">
+                    <button type="submit" [ngClass]="{'btn btn-primary': loginForm.invalid,'btn btn-success': loginForm.valid}" [disabled]="loginForm.invalid">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="panel-footer">
+        <span class="psw">Forgot <a href="#">password?</a></span>
+
+    </div>
+</div>
