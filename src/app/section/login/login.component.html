@@ -7,24 +7,25 @@
         <img src=" ../../../assets/media/img/login/blank-user.jpg" alt="Avatar" class="img-thumbnail">
     </div>
     <div class="panel-body">
-        <form novalidate (ngSubmit)="onSubmit()" #f="ngForm">
+        <form novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm">
             <div class="form-holder" style="clear:both">
                 <div class="form-group" [ngClass]="{'has-danger': email.invalid && (email.dirty || email.touched), 'has-success': email.valid && (email.dirty || email.touched)}">
                     <label>Email</label>
-                    <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email="ngModel" />
+                    <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email="ngModel" placeholder="default@abc.com" />
                 </div>
             </div>
             <div class="form-holder">
                 <div class="form-control-feedback" *ngIf="email.errors && (email.dirty || email.touched)">
                     <p *ngIf="email.errors.required">Email is required</p>
-                    <p *ngIf="email.errors.pattern">Email must contain at least the @ character</p>
+                    <p *ngIf="email.errors.pattern">Need Valid Email format like default@abc.com</p>
                 </div>
             </div>
 
             <div class="form-holder" style="clear:both">
                 <div class="form-group" [ngClass]="{'has-danger': password.invalid && (password.dirty || password.touched),'has-success': password.valid && (password.dirty || password.touched)}">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="password" [(ngModel)]="model.password" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #password="ngModel" />
+                    <input type="password" class="form-control" name="password" [(ngModel)]="model.password" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #password="ngModel" placeholder="must have Upper/Lower/Spl/Number and 8 char long"
+                    />
                 </div>
             </div>
             <div class="form-holder">
@@ -36,7 +37,7 @@
 
             <div class="form-holder" style="clear:both">
                 <div class="form-group">
-                    <button type="submit" [ngClass]="{'btn btn-primary': f.invalid,'btn btn-success': f.valid}" [disabled]="f.invalid">Submit</button>
+                    <button type="submit" [ngClass]="{'btn btn-primary': loginForm.invalid,'btn btn-success': loginForm.valid}" [disabled]="loginForm.invalid">Submit</button>
                 </div>
             </div>
         </form>

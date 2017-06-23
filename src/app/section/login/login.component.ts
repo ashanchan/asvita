@@ -3,12 +3,10 @@ import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { ParserService } from '../../service/parser.service';
 
 class Signup {
-  constructor(public firstName: string = '',
-    public lastName: string = '',
+  constructor(
     public email: string = '',
-    public password: string = '',
-    public language: string = '') {
-  }
+    public password: string = ''
+    ) {}
 }
 
 @Component({
@@ -21,7 +19,7 @@ class Signup {
 
 export class LoginComponent {
   model: Signup = new Signup();
-  @ViewChild('f') form: any;
+  @ViewChild('loginForm') form: any;
 
   langs: string[] = [
     'English',
