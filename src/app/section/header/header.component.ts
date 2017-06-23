@@ -24,7 +24,9 @@ export class HeaderComponent implements OnInit {
       this.isDataLoaded = this.dataService.hasDataLoaded();
       if (this.isDataLoaded) {
         clearInterval(interval);
-    this.sectionData = this.dataService.getSectionData('section');      }
+        this.sectionData = this.dataService.getSectionData('section');
+        this.onTabClicked(0,'/login');
+      }
     }, 250);
   }
 

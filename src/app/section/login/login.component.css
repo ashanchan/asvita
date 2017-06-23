@@ -1,84 +1,42 @@
-.RowHeaderCSS {
-    font-weight: bold;
-    background-color: grey !important;
+.form-control {
+    display: block;
+    width: 250px;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #55595c;
+    background-color: #fff;
+    background-image: none;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
 }
 
-.quote-left {
-    width: 95%;
-    float: left;
-    height: 100%;
-    display: inline-flex;
-}
-
-.quote-right {
-    float: left;
-    display: inline-flex;
-}
-
-@-webkit-keyframes ticker {
-    0% {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        visibility: visible;
-    }
-    100% {
-        -webkit-transform: translate3d(-100%, 0, 0);
-        transform: translate3d(-100%, 0, 0);
-    }
-}
-
-@keyframes ticker {
-    0% {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        visibility: visible;
-    }
-    100% {
-        -webkit-transform: translate3d(-100%, 0, 0);
-        transform: translate3d(-100%, 0, 0);
-    }
-}
-
-.ticker-wrap {
-    bottom: 0;
+.form-control-feedback {
+    position: relative;
+    top: 35px;
+    right: 0;
+    left: 5px;
+    z-index: 2;
+    display: block;
     width: 100%;
-    overflow: hidden;
-    background-color: rgba(255, 0, 0, 0.9);
-    padding-left: 100%;
-}
-
-.ticker {
-    display: inline-block;
-    white-space: nowrap;
-    padding-right: 100%;
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
-    animation-timing-function: linear;
-    -webkit-animation-name: ticker;
-    animation-name: ticker;
-    -webkit-animation-duration: 60s;
-    animation-duration: 60s;
-}
-
-.ticker__item {
-    display: inline-block;
-    font-size: 1.5rem;
-    color: white;
-}
-
-.ticker__item li {
-    list-style-type: none;
-}
-
-.ticker__item .section {
-    background-color: white;
+    line-height: 14px;
+    text-align: left;
+    pointer-events: none;
     color: red;
-    padding: 0 1rem;
-    font-weight: bold;
-    margin: 0 1rem 0 4rem;
 }
 
-.hand_cursor {
-    cursor: pointer;
+.form-group {
+    margin-top: 1rem;
+    margin-bottom: 0px;
+}
+
+img {
+    max-width: 33%;
+}
+
+.form-holder {
+    width: 50%;
+    float: left;
 }
