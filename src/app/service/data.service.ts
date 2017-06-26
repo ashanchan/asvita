@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DataService {
+  private isAuthenticated: boolean = false;
   private isDataLoaded: boolean = false;
   private sectionData: object = {};
   constructor() { }
@@ -11,11 +12,19 @@ export class DataService {
     this.isDataLoaded = true;
   }
 
-  getSectionData(Id:string)  {
-     return this.sectionData[Id][0]
+  getSectionData(Id: string) {
+    return this.sectionData[Id][0]
   }
 
-  hasDataLoaded(){
+  hasDataLoaded() {
     return this.isDataLoaded;
   }
+
+  setAuthentication(val:boolean) {
+    this.isAuthenticated = val;
+  }
+  hasAuthenticated() {
+    return this.isAuthenticated;
+  }
+
 }

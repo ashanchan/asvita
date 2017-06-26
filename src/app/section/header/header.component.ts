@@ -12,23 +12,14 @@ export class HeaderComponent implements OnInit {
   private sectionData: object = {};
   private sectionTitle: string = '';
   private bgImage: string = '';
-  private isDataLoaded: boolean = false;
+  private hasAuthenticated: boolean = false;
 
   private tabId: number = 0;
   private onSectionChangeEvent = new EventEmitter<string>();
 
   constructor(private dataService: DataService) { }
 
-  ngOnInit() {
-    var interval = setInterval(() => {
-      this.isDataLoaded = this.dataService.hasDataLoaded();
-      if (this.isDataLoaded) {
-        clearInterval(interval);
-        this.sectionData = this.dataService.getSectionData('section');
-        this.onTabClicked(0,'/login');
-      }
-    }, 250);
-  }
+  ngOnInit() {}
 
   onButtonClicked() {
     //this.collapseMenu = !this.collapseMenu;
