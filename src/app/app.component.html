@@ -1,14 +1,13 @@
-<div *ngIf="isDataLoaded">
-    <app-header (onSectionChangeEvent)="sectionId=$event"></app-header>
-    <div class="container-fluid">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="fluid-container">
-                    <div class="fluid-row">
-                        <router-outlet></router-outlet>
-                    </div>
-                </div>
-            </div>
+<div *ngIf="isDataLoaded" class="container-fluid">
+    <div class="panel">
+        <div class="panel-header">
+            <app-header (onSectionChangeEvent)="sectionId=$event"></app-header>
+        </div>
+        <div class="panel-body">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="panel-footer">
+            copy right
         </div>
     </div>
 </div>
