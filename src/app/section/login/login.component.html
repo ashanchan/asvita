@@ -1,81 +1,104 @@
-<div class="col-xs-12 col-sm-6 col-md-7">
-
-</div>
-
-<div class="col-xs-12 col-sm-6 col-md-5">
-    <div class="panel-heading">
-        <img src=" ../../../assets/media/img/login/blank-user.jpg" alt="Avatar" class="img-thumbnail">
-    </div>
-    <div class="panel-body">
-        <form novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm">
-            <div style="clear:both" *ngIf="mode === 'fpw'">
-                <div class="form-holder">
-                    <label>Once you click submit, you will get a mail on your registered e-mail Id.</label>
+<div class="container login-container">
+    <div class="panel panel-primary">
+        <div class="panel-heading"><img src="img/custombanner_lrnmodules.gif" id="Banner" alt="Logo"></div>
+        <div class="panel-body">
+            <div class="">
+                <div class="img-panel">
+                    <img src=" ../../../assets/media/img/login/blank-user.jpg" alt="Avatar" class="img-thumbnail" />
                 </div>
-            </div>
-
-            <div class="form-holder" style="clear:both">
-                <div class="form-group" [ngClass]="{'has-danger': email.invalid && (email.dirty || email.touched), 'has-success': email.valid && (email.dirty || email.touched)}">
-                    <label>Email</label>
-                    <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email="ngModel" placeholder="default@abc.com" />
-                </div>
-            </div>
-            <div class="form-holder">
-                <div class="form-control-feedback" *ngIf="email.errors && (email.dirty || email.touched)">
-                    <p *ngIf="email.errors.required">Email is required</p>
-                    <p *ngIf="email.errors.pattern">Need Valid Email format like default@abc.com</p>
-                </div>
-            </div>
-
-            <div style="clear:both" *ngIf="mode === 'login' || mode === 'register'">
-                <div class="form-holder">
-                    <div class="form-group" [ngClass]="{'has-danger': password.invalid && (password.dirty || password.touched),'has-success': password.valid && (password.dirty || password.touched)}">
-                        <label>Password</label>
-                        <input type="password" class="form-control" name="password" [(ngModel)]="model.password" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #password="ngModel" placeholder="must have Upper/Lower/Spl/Number and 8 char long"
-                        />
+                <div class="info-panel">
+                    <div *ngIf="model.mode === 'login'">
+                        <p>Enter your Registered E-mail</p>
+                        <p>Enter your Password</p>
                     </div>
-                </div>
-                <div class="form-holder">
-                    <div class="form-control-feedback" *ngIf="password.invalid && (password.dirty || password.touched) ">
-                        <p *ngIf="password.errors.required">Password is required</p>
-                        <p *ngIf="password.errors.pattern">Must have UpperCase, LowerCase, Number, SpecialChar and min 8 Chars</p>
+                    <div *ngIf="model.mode === 'fyp'">
+                        <p>Enter your Registered E-mail</p>
+                    </div>
+                    <div *ngIf="model.mode === 'register'">
+                        <p>Enter your valid e-mail to Register with us.</p>
+                        <p>Select Register As Doctor / Patient.</p>
+                    </div>
+                    <div *ngIf="model.mode === 'reset'">
+                        <p>Enter your registered e-mail.</p>
+                        <p>Enter your password.</p>
+                        <p>Enter new password.</p>
+                        <p><b>Note :</b></p>
+                        <p>Existing and New password should not be same.</p>
+                        <p>New and Confirm password should be same.</p>
                     </div>
                 </div>
             </div>
-
-            <div style="clear:both" *ngIf="mode === 'register'">
-                <div class="form-holder">
-                    <div class="form-group" [ngClass]="{'has-danger': cpassword.invalid && (cpassword.dirty || cpassword.touched),'has-success': cpassword.valid && (cpassword.dirty || cpassword.touched)}">
-                        <label>Confirm Password</label>
-                        <input type="password" class="form-control" name="cpassword" [(ngModel)]="model.cpassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #cpassword="ngModel" placeholder="must have Upper/Lower/Spl/Number and 8 char long"
-                        />
+            <form novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                <div class="login">
+                    <div class="form-holder">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" name="mode" value="{{model.mode}}" />
+                        </div>
                     </div>
-                    {{password}} || {{cpassword}}
 
-                </div>
-                <div class="form-holder">
-                    <div class="form-control-feedback" *ngIf="cpassword !== password && (cpassword.dirty)  ">
-                        <p>Confrim Password is required</p>
+                    <div class="form-holder">
+                        <div class="form-group" [ngClass]="{'has-danger': email.invalid && (email.dirty || email.touched), 'has-success': email.valid && (email.dirty || email.touched)}">
+                            <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email="ngModel" placeholder="Enter your registered email" disabled="{{disableMode}}" />
+                        </div>
+                    </div>
+
+                    <div class="form-holder" *ngIf="model.mode === 'register' ">
+                        <div class="form-group">
+                            <input type="radio" class="input-control" name="type" [(ngModel)]="model.type" value="doc"> Doctor
+                            <input type="radio" class="input-control" name="type" [(ngModel)]="model.type" value="pat" checked> Patient
+                        </div>
+                    </div>
+
+                    <div class="form-holder" *ngIf="model.mode === 'login' ">
+                        <div class="form-group" [ngClass]="{'has-danger': password.invalid && (password.dirty || password.touched),'has-success': password.valid && (password.dirty || password.touched)}">
+                            <input type="password" class="form-control" name="password" [(ngModel)]="model.password" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #password="ngModel" placeholder="Enter Valid Password"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-holder" *ngIf="model.mode === 'reset' ">
+                        <div class="form-group" [ngClass]="{'has-danger': oldPassword.invalid && (oldPassword.dirty || oldPassword.touched),'has-success': oldPassword.valid && (oldPassword.dirty || oldPassword.touched)}">
+                            <input type="password" class="form-control" name="oldPassword" [(ngModel)]="model.oldPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #oldPassword="ngModel" placeholder="Enter Existing Password"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-holder" *ngIf="model.mode === 'reset' ">
+                        <div class="form-group" [ngClass]="{'has-danger': newPassword.invalid && (newPassword.dirty || newPassword.touched),'has-success': newPassword.valid && (newPassword.dirty || newPassword.touched)}">
+                            <input type="password" class="form-control" name="newPassword" [(ngModel)]="model.newPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #newPassword="ngModel" placeholder="Enter New Password"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-holder" *ngIf="model.mode === 'reset' ">
+                        <div class="form-group" [ngClass]="{'has-danger': conPassword.invalid && (conPassword.dirty || conPassword.touched),'has-success': conPassword.valid && (conPassword.dirty || conPassword.touched)}">
+                            <input type="password" class="form-control" name="conPassword" [(ngModel)]="model.conPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #conPassword="ngModel" placeholder="Confirm New Password"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-holder" style="clear:both">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success" [disabled]="loginForm.invalid">Submit</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-holder" style="clear:both">
-                <div class="form-group">
-                    <button type="submit" [ngClass]="{'btn btn-primary': loginForm.invalid,'btn btn-success': loginForm.valid}" [disabled]="loginForm.invalid">Submit</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="panel-footer">
-        <div *ngIf="mode === 'login'">
-            <span>Forgot <a (click)="changeMode('fpw')">password?</a></span>
+
+            </form>
         </div>
-        <div *ngIf="mode !== 'register'">
-            <span><a (click)="changeMode('register')">New User?</a></span>
-        </div>
-
-        <div *ngIf="mode !== 'login'">
-            <span>Back to <a (click)="changeMode('login')">login page</a></span>
+        <div class="panel-footer">
+            <div *ngIf="model.mode === 'login'">
+                <span><a (click)="changeMode('fyp')">Forgot password?</a></span>
+            </div>
+            <div *ngIf="model.mode !== 'register'">
+                <span><a (click)="changeMode('register')">New User?</a></span>
+            </div>
+            <div *ngIf="model.mode !== 'reset' && model.mode !== 'register' ">
+                <span><a (click)="changeMode('reset')">Reset password</a></span>
+            </div>
+            <div *ngIf="model.mode !== 'login'">
+                <span>Back to <a (click)="changeMode('login')">login page</a></span>
+            </div>
         </div>
     </div>
 </div>

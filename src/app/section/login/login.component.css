@@ -1,30 +1,13 @@
+.form-holder {
+    clear: both;
+}
+
 .form-control {
     display: block;
     width: 250px;
     padding: .5rem .75rem;
-    font-size: 1rem;
-    line-height: 1.25;
-    color: #55595c;
-    background-color: #fff;
-    background-image: none;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, .15);
     border-radius: .25rem;
-}
-
-.form-control-feedback {
-    position: relative;
-    top: 35px;
-    right: 0;
-    left: 5px;
-    z-index: 2;
-    display: block;
-    width: 100%;
-    line-height: 14px;
-    text-align: left;
-    pointer-events: none;
-    color: red;
 }
 
 .form-group {
@@ -32,11 +15,37 @@
     margin-bottom: 0px;
 }
 
-img {
-    max-width: 33%;
+.login-container {
+    width: 40%;
+    float: right;
+}
+
+.img-panel {
+    width: 31%;
+    float: left;
+}
+
+.info-panel {
+    float: left;
+    padding: 20px;
 }
 
 .form-holder {
     width: 50%;
     float: left;
+}
+
+.panel-footer {
+    background: #ddd;
+    height: 40px;
+}
+
+.panel-footer div {
+    width: 33%;
+    float: left;
+}
+
+.input-control {
+    box-shadow: none;
+    display: inline;
 }
