@@ -26,8 +26,7 @@ export class AppComponent {
         parseString(response, { trim: true }, (err, result) => {
           this.dataService.setSectionData(result);
           this.isDataLoaded = true;
-          this.router.navigate(['./login']);
-          this.router.navigate(['./login']);
+          this.router.navigate(['./profile']);
         })
       }
     );
