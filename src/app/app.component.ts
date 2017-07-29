@@ -13,10 +13,11 @@ import { Router } from '@angular/router';
 
 export class AppComponent {
   private isDataLoaded = true;
-
+  private copyright: string;
   constructor(private parserService: ParserService, private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
+    this.copyright = '© copyright '+new Date().getFullYear();
     this.loadData();
   }
 
@@ -26,8 +27,7 @@ export class AppComponent {
         parseString(response, { trim: true }, (err, result) => {
           this.dataService.setSectionData(result);
           this.isDataLoaded = true;
-          this.router.navigate(['./login']);
-          this.router.navigate(['./login']);
+          this.router.navigate(['./profile']);
         })
       }
     );
