@@ -20,14 +20,17 @@ export class ParserService {
 
 
   private handleError(error: Response) {
-    console.error(error)
+    console.error(error);
     return 'Server Error ' + error;
   }
 
-  public getApiData(url, data) {
+  public getApiData(url, data, validation) {
     let headers = new Headers();
-    headers.append('x-access-token', '@$V!TA-#~ANMACH');
-	    let requestOptions = new RequestOptions({
+    if (validation) {
+      headers.append('x-access-token', '@$V!TA-#~ANMACH');
+    }
+    
+    let requestOptions = new RequestOptions({
       method: 'post',
       url: url,
       headers: headers,

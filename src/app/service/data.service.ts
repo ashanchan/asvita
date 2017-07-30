@@ -5,6 +5,7 @@ export class DataService {
   private isAuthenticated: boolean = false;
   private isDataLoaded: boolean = false;
   private sectionData: object = {};
+  private jwtToken: string = '';
   constructor() { }
 
   setSectionData(data: object) {
@@ -20,9 +21,19 @@ export class DataService {
     return this.isDataLoaded;
   }
 
-  setAuthentication(val:boolean) {
+  setToken(token) {
+    this.jwtToken = token;
+    this.isAuthenticated = true;
+  }
+
+  getToken() {
+    return this.jwtToken;
+  }
+
+  setAuthentication(val: boolean) {
     this.isAuthenticated = val;
   }
+
   hasAuthenticated() {
     return this.isAuthenticated;
   }
