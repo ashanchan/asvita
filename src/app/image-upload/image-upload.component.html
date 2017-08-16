@@ -1,0 +1,13 @@
+<div class="img-panel">
+    <img [src]="validIcon" class="valid-icon" />
+    <img [src]="profilePic" alt="Avatar" class="img-thumbnail" />
+    <div class="photo">
+        <p class="required text-center" [innerHTML]="imgStatus"></p>
+        <p class="text-center">[max 240px x 240px and max size 100 kb]</p>
+        <input type="file" name="photo" id="photoInput" (change)="checkPhoto($event)" #input accept="image/*" />
+    </div>
+</div>
+
+<div class="preview" id="preview">
+    <img [src]="previewImg" class="previewImg" />
+</div>

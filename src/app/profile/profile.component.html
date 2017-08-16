@@ -1,0 +1,242 @@
+<form novalidate (ngSubmit)="onSubmit()" #profileForm="ngForm">
+    <div class="card card-container">
+        <div class="tabs">
+            <ul class="nav nav-tabs  pull-right">
+                <li *ngFor="let tab of tabs; let i=index " role="presentation" [ngClass]="{'active' : tabId === i }" (click)="onTabClicked(i)"><a>{{tab}}</a></li>
+            </ul>
+        </div>
+
+        <table class="table table-striped" [hidden]="tabs[tabId] !=='Profile'">
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <app-image-upload [imgSpec]='imgSpec' (imageClicked)='onImageClicked($event)'></app-image-upload>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Full Name <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': fullName.invalid && (fullName.dirty || fullName.touched), 'has-success': fullName.valid && (fullName.dirty || fullName.touched)}">
+                            <input type="text" class="form-control" name="fullName" [(ngModel)]="model.fullName" required #fullName="ngModel" pattern=".{2,}" placeholder="Enter your Full Name" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mobile Number</td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': mobile.invalid && (mobile.dirty || mobile.touched), 'has-success': mobile.valid && (mobile.dirty || mobile.touched)}">
+                            <input type="text" class="form-control" name="mobile" [(ngModel)]="model.mobile" #mobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter your Mobile number" />
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <table class="table table-striped" [hidden]="tabs[tabId] !=='Clinic'">
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <ul class="pagination  pull-right">
+                            <li *ngFor="let clinic of clinics; let i=index " role="presentation" [ngClass]="{'active' : clinicId === i }" (click)="onClinicClicked(i)"><a>{{i+1}}</a></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Clinic <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="clinic" [(ngModel)]="model.clinic[clinicId]" required pattern=".{3,}" #clinic="ngModel" placeholder="Enter your Clinic/Hospital name" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group">
+                            <textarea rows="4" cols="50" required class="form-control" name="address" [(ngModel)]="model.address[clinicId]" required #address="ngModel" pattern=".{10,}" placeholder="Enter your Address"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pin <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': pin.invalid && (pin.dirty || pin.touched), 'has-success': pin.valid && (pin.dirty || pin.touched)}">
+                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin[clinicId]" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>State <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': state.invalid && (state.dirty || state.touched), 'has-success': state.valid && (state.dirty || state.touched)}">
+                            <input type="text" class="form-control" name="state" [(ngModel)]="model.state[clinicId]" required pattern=".{3,}" #state="ngModel" placeholder="Enter your State name" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Phone <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': mobile.invalid && (mobile.dirty || mobile.touched), 'has-success': mobile.valid && (mobile.dirty || mobile.touched)}">
+                            <input type="text" class="form-control" name="mobile" [(ngModel)]="model.mobile[clinicId]" required #mobile="ngModel" required maxlength="10" pattern="[0-9]{10}" placeholder="Contact Number, in case of emergency" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Timings <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control time-length" name="openTime" [(ngModel)]="model.openTime[clinicId]" required #openTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="HH" />
+                            <label style="float:left; padding:10px"> To </label>
+                            <input type="text" class="form-control time-length" name="endTime" [(ngModel)]="model.endTime[clinicId]" required #endTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="HH" />
+                            <label style="float:left; padding:10px"> 00 to 24 </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Days <span class="required">*</span></td>
+                    <td>
+                        <div>
+                            <span class="chk-box-option" *ngFor="let day of openDay"><input type="checkbox" class="input-control" name="day" [value]= "day.label" [checked] = 'day.checked' (change)="setCheckedItems('day', 'openDay')" /> <label [innerHTML] = "day.label"></label></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped" [hidden]="tabs[tabId] !=='Specialization'">
+            <tbody>
+                <tr>
+                    <td>Specialization <span class="required">*</span></td>
+                    <td>
+                        <div>
+                            <span class="chk-box-option-full" *ngFor="let specialization of specialization"><input type="checkbox" class="input-control" name="specialization" [value]= "specialization.label" [checked] = 'specialization.checked' (change)="setCheckedItems('specialization', 'specialization')"/> <label [innerHTML] = "specialization.label"></label></span>
+                            <input type="text" class="form-control" name="specializationOther" [(ngModel)]="model.specializationOther" #specializationOther placeholder="Other, if any." />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped" [hidden]="tabs[tabId] !=='General'">
+            <tbody>
+                <tr>
+                    <td>Salutation</td>
+                    <td>
+                        <div>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="mr" /> Mr.</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="ms" /> Ms.</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="no" /> None</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>
+                        <div>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="m" /> Male</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="f" /> Female</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="o" /> Other</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Address</td>
+                    <td>
+                        <div class="form-group">
+                            <textarea rows="4" cols="50" class="form-control" name="address" [(ngModel)]="model.address" #address="ngModel" pattern=".{10,}" placeholder="Enter your Address"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pin <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': pin.invalid && (pin.dirty || pin.touched), 'has-success': pin.valid && (pin.dirty || pin.touched)}">
+                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>State <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': state.invalid && (state.dirty || state.touched), 'has-success': state.valid && (state.dirty || state.touched)}">
+                            <input type="text" class="form-control" name="state" [(ngModel)]="model.state" required pattern=".{3,}" #state="ngModel" placeholder="Enter your State name" />
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Emergency<br>Person</td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="sosPerson" [(ngModel)]="model.sosPerson" #sosPerson="ngModel" placeholder="Contact Person, in case of emergency" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Emergency<br>Number</td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': sosMobile.invalid && (sosMobile.dirty || sosMobile.touched), 'has-success': sosMobile.valid && (sosMobile.dirty || sosMobile.touched)}">
+                            <input type="text" class="form-control" name="sosMobile" [(ngModel)]="model.sosMobile" #sosMobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Contact Number, in case of emergency" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped" [hidden]="tabs[tabId] !=='Medical'">
+            <tbody>
+                <tr>
+                    <td>D.O.B.<br>[mm/dd/yyyy]</td>
+                    <td>
+                        <div class="form-group">
+                            <input type="date" class="form-control" name="dob" [(ngModel)]="model.dob" #dob="ngModel" value="2013-01-08" placeholder="Contact Number, in case of emergency" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Height in cms <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': height.invalid && (height.dirty || height.touched), 'has-success': height.valid && (height.dirty || height.touched)}">
+                            <input type="text" class="form-control" name="height" [(ngModel)]="model.height" #height="ngModel" maxlength="3" pattern="[0-9]{3}" placeholder="Height in CMs" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Weight in Kgs <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group" [ngClass]="{'has-danger': weight.invalid && (weight.dirty || weight.touched), 'has-success': weight.valid && (weight.dirty || weight.touched)}">
+                            <input type="text" class="form-control" name="weight" [(ngModel)]="model.weight" #weight="ngModel" maxlength="3" pattern="[0-9]{3}" placeholder="Weight in KGs" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>History of</td>
+                    <td>
+                        <span class="chk-box-option" *ngFor="let history of medicalHistory;"><input type="checkbox" class="input-control" name="history" [value]= "history.label" [checked] = 'history.checked' (change)="setCheckedItems('history', 'medicalHistory')"/> <label [innerHTML] = "history.label"></label></span>
+                        <input type="text" class="form-control" name="medicalHistoryOther" [(ngModel)]="model.medicalHistoryOther" #medicalHistoryOther placeholder="Other, if any." />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Allergic</td>
+                    <td>
+                        <textarea rows="4" cols="50" class="form-control" name="allergy" [(ngModel)]="model.allergy" #allergy="ngModel" placeholder="Enter Any Allergy"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="panel-footer">
+            <div *ngIf="tabId === 2">
+                <div *ngIf="!submissionSuccess" class="alert alert-danger" role="alert" [innerHTML]="alertTip"></div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" *ngIf="tabId !== 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid" (click)="onNext()">Next</button>
+                <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid">Submit</button>
+            </div>
+        </div>
+
+    </div>
+</form>
