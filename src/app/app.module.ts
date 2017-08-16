@@ -6,36 +6,32 @@ import { HttpModule, JsonpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { RouteModule } from './route/route.module';
 
-import { SafeUrlPipe } from './service/safeUrl.pipe';
-import { ParserService } from './service/parser.service';
-import { DataService } from './service/data.service';
-import { ImageComponent } from './service/image.service';
 
-import { HomeComponent } from './section/home/home.component';
-import { LoginComponent } from './section/login/login.component';
-import { ProfileComponent } from './section/profile/profile.component';
-import { HeaderComponent } from './section/header/header.component';
-
+import { LoginComponent } from './login/login.component';
+import { DataService } from './services/data.service';
+import { HttpService } from './services/http.service';
+import { HeaderComponent } from './header/header.component';
+import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { DocProfileComponent } from './profile/doc.profile.component';
+import { PatProfileComponent } from './profile/pat.profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SafeUrlPipe,
-    HomeComponent,
-    HeaderComponent,
     LoginComponent,
-    ProfileComponent,
-    ImageComponent
+    HeaderComponent,
+    ImageUploadComponent,
+    DocProfileComponent,
+    PatProfileComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule,
     HttpModule,
-    JsonpModule,
     RouteModule
   ],
-  providers: [ParserService, DataService],
+
+  providers: [DataService, HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

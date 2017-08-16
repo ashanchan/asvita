@@ -1,0 +1,42 @@
+.form-group {
+    margin-bottom: 0px;
+}
+
+.auto-height {
+    height: 80px;
+}
+
+.chk-box-option {
+    width: 33%;
+    float: left;
+}
+
+.chk-box-option-full {
+    width: 100%;
+    float: left;
+    padding: 2px;
+}
+
+.time-length {
+    width: 50px;
+    float: left;
+}
+
+.date-length {
+    width: 150px;
+    float: left;
+}
+
+.pagination {
+    margin: 0;
+}
+
+.table td:first-child {
+    width: 28%;
+}
+
+input:focus,
+textarea:focus {
+    background-color: palevioletred;
+    color: white;
+}
