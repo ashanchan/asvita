@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
     this.model.mode = 'login';
     this.model.type = 'pat';
     this.model.email = 'ashanchan@gmail.com';
+    this.model.password = 'Ashtra123';
     this.title = "Login";
   }
   //=======================================
@@ -93,7 +94,9 @@ export class LoginComponent implements OnInit {
       case 'login':
         if (response.success) {
           this.dataService.setToken(response.response.token);
-          this.router.navigate(['./profile']);
+          this.dataService.setUserId(response.response.userId);
+          let url = this.dataService.getUserId().substr(0, 3);
+          this.router.navigate(['./profile-' + url]);
         }
         break;
     }

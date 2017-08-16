@@ -2,12 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from '../login/login.component';
-import { ProfileComponent } from '../profile/profile.component';
+import { DocProfileComponent } from '../profile/doc.profile.component';
+import { PatProfileComponent } from '../profile/pat.profile.component';
+
 
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profile-doc', component: DocProfileComponent },
+  { path: 'profile-pat', component: PatProfileComponent }
 ];
 
 @NgModule({

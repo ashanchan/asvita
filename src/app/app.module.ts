@@ -8,20 +8,21 @@ import { RouteModule } from './route/route.module';
 
 
 import { LoginComponent } from './login/login.component';
-import { ProfileComponent } from './profile/profile.component';
 import { DataService } from './services/data.service';
 import { HttpService } from './services/http.service';
 import { HeaderComponent } from './header/header.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
-
+import { DocProfileComponent } from './profile/doc.profile.component';
+import { PatProfileComponent } from './profile/pat.profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    ProfileComponent,
     HeaderComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    DocProfileComponent,
+    PatProfileComponent
   ],
   imports: [
     BrowserModule,

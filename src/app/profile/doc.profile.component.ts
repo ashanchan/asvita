@@ -3,25 +3,22 @@ import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { HttpService } from './../services/http.service';
 import { Router } from '@angular/router';
-import { ProfileModel } from '../../model/profile.model'
+import { DoctorProfileModel } from './../model/doctor.profile.model'
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
+  selector: 'app-doc-profile',
+  templateUrl: './doc.profile.component.html',
   styleUrls: ['./profile.component.css'],
   providers: []
 })
 
-
-export class ProfileComponent implements OnInit {
-  private model: ProfileModel = new ProfileModel();
+export class DocProfileComponent implements OnInit {
+  private model: DoctorProfileModel = new DoctorProfileModel();
   private canUploadImage: boolean = false;
   private tabs: Array<string> = [];
   private tabId: number = 0;
   private imgSpec: any;
-  private submissionSuccess: boolean = false;
   private alertTip: string;
-  private mode: string;
   private clinics = [1, 1, 1, 1, 1, 1, 1];
   private validFlag: Array<boolean> = [false, false, false];
   private medicalHistory = [];
@@ -41,59 +38,31 @@ export class ProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private getData(): void {
-    this.mode = 'doctors';
     this.imgSpec = { height: 100, width: 100, size: 100 };
-    this.submissionSuccess = false;
+	this.model.mode = "getProfile";
     this.alertTip = "Before Submit, Fill All Fields with *";
-    this.model.salutation = "mr";
-    this.model.fullName = "Ashok Anchan";
-    this.model.address = ["502-B, Samrat Apartment, Yashwant Nagar, Behind Vakola Church, Santa Cruz - East"];
-    this.model.city = ["Mumbai"];
-    this.model.pin = ["400055"];
-    this.model.state = ["Maharashtra"];
-    this.model.mobile = ["9320069001"];
-    this.model.sosPerson = "Sky";
-    this.model.sosMobile = "1234567890";
-    this.model.gender = "o";
-    this.model.dob = '2005-08-10';
-    this.model.medicalHistory = ['hbp', 'lbp'];
-    this.model.medicalHistoryOther = 'Obese';
-    this.model.allergy = 'smoke, dust';
-    this.model.clinic = ["Shashtri", "Sona", "Niron"];
-    this.model.openTime = [10, 12, 13, 18];
-    this.model.endTime = [11, 13, 14, 20];
-    this.model.openDay = ["Mon,Tue,Fri,Holiday", "Sun,Sat"];
-    this.model.specialization = ["Anesthesiologist", "Pediatrician", "Urologist"];
-    this.model.specializationOther = "Reikei";
+    this.model.userId = this.dataService.getUserId();
+	let apiUrl = 'http://localhost:1616/profile'
+	  this.httpService.getApiData(apiUrl, this.model, true).subscribe(
+		(response: any) => {
+		  if(response.response.isSuccess)
+		  {
+			for(var i in response.response.data)
+			{
+				let id:string = i;
+				this.model[id] = response.response.data[id];
+			}
+		  }
+		}
+	  )
+
   }
   //=======================================
   //=======================================
   private createFormElements() {
-    if (this.mode === 'doctor') {
-      this.tabs = ['Profile', 'Clinic', 'Specialization'];
-      this.createDays();
-      this.createDoctorSpecialization();
-    }
-    else {
-      this.tabs = ['Profile', 'General', 'Medical'];
-      this.createMedicalHistory()
-    }
-  }
-  //=======================================
-  //=======================================
-  private createMedicalHistory(): void {
-    let medicalHistoryLabel = ["LBP", "HBP", "Diabetic", "Heart", "Liver", "Kidney", "Brain", "Psycho", "Lungs"];
-    let labelCtr = medicalHistoryLabel.length;
-    let modelCtr = this.model.medicalHistory.length;
-    let checked: boolean;
-    this.medicalHistory = [];
-    for (var i = 0; i < labelCtr; i++) {
-      checked = false;
-      for (var j = 0; j < modelCtr; j++) {
-        if (medicalHistoryLabel[i].toLowerCase() === this.model.medicalHistory[j].toLowerCase()) checked = true;
-      }
-      this.medicalHistory.push({ label: medicalHistoryLabel[i], checked: checked });
-    }
+    this.tabs = ['Profile', 'Clinic', 'Specialization'];
+    this.createDays();
+    this.createDoctorSpecialization();
   }
   //=======================================
   //=======================================
@@ -139,6 +108,7 @@ export class ProfileComponent implements OnInit {
     if (this.form.valid) {
       this.tabId = id;
     }
+	this.alertTip = "Before Submit, Fill All Fields with *";
   }
   //=======================================
   //=======================================
@@ -156,10 +126,6 @@ export class ProfileComponent implements OnInit {
       case 'specialization':
         this.model[modelName] = this.getCheckedItems(checkBoxName);
         this.createDoctorSpecialization();
-        break;
-      case 'history':
-        this.model[modelName] = this.getCheckedItems(checkBoxName);
-        this.createMedicalHistory();
         break;
     }
   }
@@ -183,23 +149,19 @@ export class ProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private chkValidation(): boolean {
-    this.submissionSuccess = true;
-    if (this.mode === 'doctor') {
-      this.submissionSuccess = (this.model.specialization.length > 0 || this.model.specializationOther.length > 0) && this.model.openDay.length > 0;
-    }
-    return this.submissionSuccess;
+    return (this.model.specialization.length > 0 || this.model.specializationOther.length > 0) && this.model.openDay.length > 0;
   }
   //=======================================
   //=======================================
   private onSubmit(): void {
     if (this.form.valid && this.chkValidation()) {
+	  	this.model.mode = "updateProfile";
       let apiUrl = 'http://localhost:1616/profile'
       this.httpService.getApiData(apiUrl, this.model, true).subscribe(
-        (response: Response) => {
-         // this.onProcess(mode, response);
+        (response: any) => {
+          this.alertTip = response.response.msg;
         }
       )
-      this.form.reset();
     }
   }
   //=======================================

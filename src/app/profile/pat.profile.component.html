@@ -33,91 +33,6 @@
             </tbody>
         </table>
 
-        <table class="table table-striped" [hidden]="tabs[tabId] !=='Clinic'">
-            <tbody>
-                <tr>
-                    <td colspan="2">
-                        <ul class="pagination  pull-right">
-                            <li *ngFor="let clinic of clinics; let i=index " role="presentation" [ngClass]="{'active' : clinicId === i }" (click)="onClinicClicked(i)"><a>{{i+1}}</a></li>
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Clinic <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="clinic" [(ngModel)]="model.clinic[clinicId]" required pattern=".{3,}" #clinic="ngModel" placeholder="Enter your Clinic/Hospital name" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Address <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group">
-                            <textarea rows="4" cols="50" required class="form-control" name="address" [(ngModel)]="model.address[clinicId]" required #address="ngModel" pattern=".{10,}" placeholder="Enter your Address"></textarea>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Pin <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': pin.invalid && (pin.dirty || pin.touched), 'has-success': pin.valid && (pin.dirty || pin.touched)}">
-                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin[clinicId]" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>State <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': state.invalid && (state.dirty || state.touched), 'has-success': state.valid && (state.dirty || state.touched)}">
-                            <input type="text" class="form-control" name="state" [(ngModel)]="model.state[clinicId]" required pattern=".{3,}" #state="ngModel" placeholder="Enter your State name" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Phone <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': mobile.invalid && (mobile.dirty || mobile.touched), 'has-success': mobile.valid && (mobile.dirty || mobile.touched)}">
-                            <input type="text" class="form-control" name="mobile" [(ngModel)]="model.mobile[clinicId]" required #mobile="ngModel" required maxlength="10" pattern="[0-9]{10}" placeholder="Contact Number, in case of emergency" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Timings <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group">
-                            <input type="text" class="form-control time-length" name="openTime" [(ngModel)]="model.openTime[clinicId]" required #openTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="HH" />
-                            <label style="float:left; padding:10px"> To </label>
-                            <input type="text" class="form-control time-length" name="endTime" [(ngModel)]="model.endTime[clinicId]" required #endTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="HH" />
-                            <label style="float:left; padding:10px"> 00 to 24 </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Days <span class="required">*</span></td>
-                    <td>
-                        <div>
-                            <span class="chk-box-option" *ngFor="let day of openDay"><input type="checkbox" class="input-control" name="day" [value]= "day.label" [checked] = 'day.checked' (change)="setCheckedItems('day', 'openDay')" /> <label [innerHTML] = "day.label"></label></span>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table table-striped" [hidden]="tabs[tabId] !=='Specialization'">
-            <tbody>
-                <tr>
-                    <td>Specialization <span class="required">*</span></td>
-                    <td>
-                        <div>
-                            <span class="chk-box-option-full" *ngFor="let specialization of specialization"><input type="checkbox" class="input-control" name="specialization" [value]= "specialization.label" [checked] = 'specialization.checked' (change)="setCheckedItems('specialization', 'specialization')"/> <label [innerHTML] = "specialization.label"></label></span>
-                            <input type="text" class="form-control" name="specializationOther" [(ngModel)]="model.specializationOther" #specializationOther placeholder="Other, if any." />
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
         <table class="table table-striped" [hidden]="tabs[tabId] !=='General'">
             <tbody>
                 <tr>
@@ -207,7 +122,7 @@
                     <td>Weight in Kgs <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': weight.invalid && (weight.dirty || weight.touched), 'has-success': weight.valid && (weight.dirty || weight.touched)}">
-                            <input type="text" class="form-control" name="weight" [(ngModel)]="model.weight" #weight="ngModel" maxlength="3" pattern="[0-9]{3}" placeholder="Weight in KGs" />
+                            <input type="text" class="form-control" name="weight" [(ngModel)]="model.weight" #weight="ngModel" maxlength="3" pattern="[0-9]{2,3}" placeholder="Weight in KGs" />
                         </div>
                     </td>
                 </tr>
@@ -228,13 +143,16 @@
         </table>
 
         <div class="panel-footer">
+			<pre>dirty? {{ profileForm.form.dirty }}</pre>
+			<pre>Pristine? {{ profileForm.form.prestine }}</pre>
+
             <div *ngIf="tabId === 2">
-                <div *ngIf="!submissionSuccess" class="alert alert-danger" role="alert" [innerHTML]="alertTip"></div>
+                <div class="alert alert-danger" role="alert" [innerHTML]="alertTip"></div>
             </div>
 
             <div class="form-group">
                 <button type="button" *ngIf="tabId !== 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid" (click)="onNext()">Next</button>
-                <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid">Submit</button>
+                <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid || !profileForm.form.dirty">Submit</button>
             </div>
         </div>
 

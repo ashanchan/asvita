@@ -4,15 +4,23 @@ import { Injectable } from '@angular/core';
 export class DataService {
   private isAuthenticated: boolean = false;
   private jwtToken: string = '';
+  private userId: string = '';
   constructor() { }
 
-  setToken(token) {
+  public setToken(token): void {
     this.jwtToken = token;
     this.isAuthenticated = true;
   }
 
-  getToken() {
+  public getToken(): any {
     return this.jwtToken;
+  }
+
+  public setUserId(id: string): void {
+    this.userId = id;
+  }
+  public getUserId(): string {
+    return this.userId;
   }
 
 }
