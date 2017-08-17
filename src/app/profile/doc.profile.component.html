@@ -14,10 +14,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Full Name <span class="required">*</span></td>
+                    <td><input id="filetoupload" name="filetoupload" type="file" class="form-control" accept="image/*" placeholder="Select required course.xml"></td>
+                </tr>
+                <tr>
+                    <td>Full Name$ <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': fullName.invalid && (fullName.dirty || fullName.touched), 'has-success': fullName.valid && (fullName.dirty || fullName.touched)}">
-                            <input type="text" class="form-control" name="fullName" [(ngModel)]="model.fullName" required #fullName="ngModel" pattern=".{2,}" placeholder="Enter your Full Name" />
+                            <input type="text" class="form-control" name="fullName" [(ngModel)]="model.fullName" required #fullName="ngModel" pattern=".{2,}" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -25,7 +28,7 @@
                     <td>Mobile Number</td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': mobile.invalid && (mobile.dirty || mobile.touched), 'has-success': mobile.valid && (mobile.dirty || mobile.touched)}">
-                            <input type="text" class="form-control" name="mobile" [(ngModel)]="model.mobile" #mobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter your Mobile number" />
+                            <input type="text" class="form-control" name="mobile" [(ngModel)]="model.mobile" #mobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter your Mobile number" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -46,7 +49,7 @@
                     <td>Clinic <span class="required">*</span></td>
                     <td>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="clinic" [(ngModel)]="model.clinic[clinicId]" required pattern=".{3,}" #clinic="ngModel" placeholder="Enter your Clinic/Hospital name" />
+                            <input type="text" class="form-control" name="clinic" [(ngModel)]="model.clinic[clinicId]" required pattern=".{3,}" #clinic="ngModel" placeholder="Enter your Clinic/Hospital name" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -54,7 +57,7 @@
                     <td>Address <span class="required">*</span></td>
                     <td>
                         <div class="form-group">
-                            <textarea rows="4" cols="50" required class="form-control" name="address" [(ngModel)]="model.address[clinicId]" required #address="ngModel" placeholder="Enter your Address"></textarea>
+                            <textarea rows="4" cols="50" required class="form-control" name="address" [(ngModel)]="model.address[clinicId]" required #address="ngModel" placeholder="Enter your Address" (keydown)="enableform($event)"></textarea>
                         </div>
                     </td>
                 </tr>
@@ -62,7 +65,7 @@
                     <td>Pin <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': pin.invalid && (pin.dirty || pin.touched), 'has-success': pin.valid && (pin.dirty || pin.touched)}">
-                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin[clinicId]" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" />
+                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin[clinicId]" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -70,7 +73,7 @@
                     <td>State <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': state.invalid && (state.dirty || state.touched), 'has-success': state.valid && (state.dirty || state.touched)}">
-                            <input type="text" class="form-control" name="state" [(ngModel)]="model.state[clinicId]" required pattern=".{3,}" #state="ngModel" placeholder="Enter your State name" />
+                            <input type="text" class="form-control" name="state" [(ngModel)]="model.state[clinicId]" required pattern=".{3,}" #state="ngModel" placeholder="Enter your State name" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -78,7 +81,7 @@
                     <td>Phone <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': contact.invalid && (contact.dirty || contact.touched), 'has-success': contact.valid && (contact.dirty || contact.touched)}">
-                            <input type="text" class="form-control" name="contact" [(ngModel)]="model.contact[clinicId]" #contact="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter Clinic Contact Number" />
+                            <input type="text" class="form-control" name="contact" [(ngModel)]="model.contact[clinicId]" #contact="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter Clinic Contact Number" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -86,9 +89,9 @@
                     <td>Timings <span class="required">*</span></td>
                     <td>
                         <div class="form-group">
-                            <input type="text" class="form-control time-length" name="openTime" [(ngModel)]="model.openTime[clinicId]" required #openTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="HH" />
+                            <input type="text" class="form-control time-length" name="openTime" [(ngModel)]="model.openTime[clinicId]" required #openTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="HH" (keydown)="enableform($event)" />
                             <label style="float:left; padding:10px"> To </label>
-                            <input type="text" class="form-control time-length" name="endTime" [(ngModel)]="model.endTime[clinicId]" required #endTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="HH" />
+                            <input type="text" class="form-control time-length" name="endTime" [(ngModel)]="model.endTime[clinicId]" required #endTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="HH" (keydown)="enableform($event)" />
                             <label style="float:left; padding:10px"> 00 to 24 </label>
                         </div>
                     </td>
@@ -111,7 +114,7 @@
                     <td>
                         <div>
                             <span class="chk-box-option-full" *ngFor="let specialization of specialization"><input type="checkbox" class="input-control" name="specialization" [value]= "specialization.label" [checked] = 'specialization.checked' (change)="setCheckedItems('specialization', 'specialization')"/> <label [innerHTML] = "specialization.label"></label></span>
-                            <input type="text" class="form-control" name="specializationOther" [(ngModel)]="model.specializationOther" #specializationOther placeholder="Other, if any." />
+                            <input type="text" class="form-control" name="specializationOther" [(ngModel)]="model.specializationOther" #specializationOther placeholder="Other, if any." (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -125,7 +128,7 @@
 
             <div class="form-group">
                 <button type="button" *ngIf="tabId !== 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid" (click)="onNext()">Next</button>
-                <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid">Submit</button>
+                <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid || formDisabled">Submit</button>
             </div>
         </div>
 

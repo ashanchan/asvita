@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   private title: string = "Login";
   private emailTip: string = "Enter your registered Email";
   private alertTip: string = '';
+  private formDisabled: boolean = false;
   @ViewChild('loginForm') form: any;
 
   constructor(private httpService: HttpService, private dataService: DataService, private router: Router) { }
@@ -45,8 +46,13 @@ export class LoginComponent implements OnInit {
   //=======================================
   private changeMode(mode: string): void {
     this.alertTip = '';
+	this.formDisabled = false;
     this.emailTip = "Enter Your Registered Email";
     this.model.mode = mode;
+    this.model.password = '';
+	this.model.oldPassword = '';
+    this.model.newPassword = '';
+    this.model.conPassword = '';
     if (mode === "login") this.title = "Login";
     if (mode === "fyp") this.title = "Forgot Your Password";
     if (mode === "register") {
@@ -100,6 +106,10 @@ export class LoginComponent implements OnInit {
         }
         break;
     }
+	
+	if (response.success) {
+		this.formDisabled = true;
+	}
     this.alertTip = response.response.msg;
   }
 }

@@ -20,6 +20,7 @@ export class PatProfileComponent implements OnInit {
   private imgSpec: any;
   private alertTip: string;
   private medicalHistory = [];
+  private formDisabled: boolean = true;
   @ViewChild('profileForm') form: any;
 
   constructor(private httpService: HttpService, private dataService: DataService, private router: Router) { }
@@ -28,7 +29,6 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   public ngOnInit(): void {
     this.getData();
-    this.createFormElements();
   }
   //=======================================
   //=======================================
@@ -36,26 +36,26 @@ export class PatProfileComponent implements OnInit {
     this.imgSpec = { height: 100, width: 100, size: 100 };
     this.alertTip = "Before Submit, Fill All Fields with *";
     this.model.userId = this.dataService.getUserId();
-	this.model.mode = "getProfile";
+    this.model.mode = "getProfile";
     this.model.userId = this.dataService.getUserId();
-	let apiUrl = 'http://localhost:1616/profile'
-	  this.httpService.getApiData(apiUrl, this.model, true).subscribe(
-		(response: any) => {
-		  if(response.response.isSuccess)
-		  {
-			for(var i in response.response.data)
-			{
-				let id:string = i;
-				this.model[id] = response.response.data[id];
-			}
-		  }
-		}
-	  )
+    let apiUrl = 'http://localhost:1616/profile'
+    this.httpService.getApiData(apiUrl, this.model, true).subscribe(
+      (response: any) => {
+        if (response.response.isSuccess) {
+          for (var i in response.response.data) {
+            let id: string = i;
+            this.model[id] = response.response.data[id];
+          }
+          this.createFormElements();
+        }
+      }
+    )
   }
   //=======================================
   //=======================================
   private createFormElements() {
     this.tabs = ['Profile', 'General', 'Medical'];
+	this.model.profileUrl = this.model.profileUrl === '-' ? '../../../assets/img/blank-user.jpg'  : this.model.profileUrl 
     this.createMedicalHistory()
   }
   //=======================================
@@ -82,10 +82,8 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private onTabClicked(id: number): void {
-    if (this.form.valid) {
-      this.tabId = id;
-    }
-	this.alertTip = "Before Submit, Fill All Fields with *";
+    this.tabId = id;
+    this.alertTip = "Before Submit, Fill All Fields with *";
   }
   //=======================================
   //=======================================
@@ -95,6 +93,7 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private setCheckedItems(checkBoxName: string, modelName: string): void {
+    this.formDisabled = false;
     this.model[modelName] = this.getCheckedItems(checkBoxName);
     this.createMedicalHistory();
   }
@@ -113,13 +112,21 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   private onSubmit(): void {
     if (this.form.valid) {
-	  this.model.mode = "updateProfile";
+      this.formDisabled = true;
+      this.model.mode = "updateProfile";
       let apiUrl = 'http://localhost:1616/profile'
       this.httpService.getApiData(apiUrl, this.model, true).subscribe(
         (response: any) => {
-		  this.alertTip = response.response.msg;
+          this.alertTip = response.response.msg;
         }
       )
+    }
+  }
+  //=======================================
+  //=======================================
+  private enableform(event) {
+    if ((event.type === 'change') || (event.key.length === 1 || event.key === 'Backspace' || event.key === 'Delete')) {
+      this.formDisabled = false;
     }
   }
   //=======================================
