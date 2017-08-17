@@ -10,14 +10,16 @@
             <tbody>
                 <tr>
                     <td colspan="2">
-                        <app-image-upload [imgSpec]='imgSpec' (imageClicked)='onImageClicked($event)'></app-image-upload>
+                        <div class="img-panel">
+                            <img [src]="model.profileUrl" alt="Avatar" class="img-thumbnail" />
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td>Full Name <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': fullName.invalid && (fullName.dirty || fullName.touched), 'has-success': fullName.valid && (fullName.dirty || fullName.touched)}">
-                            <input type="text" class="form-control" name="fullName" [(ngModel)]="model.fullName" required #fullName="ngModel" pattern=".{2,}" placeholder="Enter your Full Name" />
+                            <input type="text" class="form-control" name="fullName" [(ngModel)]="model.fullName" required #fullName="ngModel" pattern=".{2,}" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -25,7 +27,7 @@
                     <td>Mobile Number</td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': mobile.invalid && (mobile.dirty || mobile.touched), 'has-success': mobile.valid && (mobile.dirty || mobile.touched)}">
-                            <input type="text" class="form-control" name="mobile" [(ngModel)]="model.mobile" #mobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter your Mobile number" />
+                            <input type="text" class="form-control" name="mobile" [(ngModel)]="model.mobile" #mobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter your Mobile number" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -39,9 +41,9 @@
                     <td>Salutation</td>
                     <td>
                         <div>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="mr" /> Mr.</span>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="ms" /> Ms.</span>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="no" /> None</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="mr" (change)="enableform($event)" /> Mr.</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="ms" (change)="enableform($event)"/> Ms.</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="no" (change)="enableform($event)"/> None</span>
                         </div>
                     </td>
                 </tr>
@@ -49,9 +51,9 @@
                     <td>Gender</td>
                     <td>
                         <div>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="m" /> Male</span>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="f" /> Female</span>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="o" /> Other</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="m" (change)="enableform($event)"/> Male</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="f" (change)="enableform($event)"/> Female</span>
+                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="o" (change)="enableform($event)"/> Other</span>
                         </div>
                     </td>
                 </tr>
@@ -60,7 +62,7 @@
                     <td>Address</td>
                     <td>
                         <div class="form-group">
-                            <textarea rows="4" cols="50" class="form-control" name="address" [(ngModel)]="model.address" #address="ngModel" pattern=".{10,}" placeholder="Enter your Address"></textarea>
+                            <textarea rows="4" cols="50" class="form-control" name="address" [(ngModel)]="model.address" #address="ngModel" pattern=".{10,}" placeholder="Enter your Address" (keydown)="enableform($event)"></textarea>
                         </div>
                     </td>
                 </tr>
@@ -68,7 +70,7 @@
                     <td>Pin <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': pin.invalid && (pin.dirty || pin.touched), 'has-success': pin.valid && (pin.dirty || pin.touched)}">
-                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" />
+                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -76,7 +78,7 @@
                     <td>State <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': state.invalid && (state.dirty || state.touched), 'has-success': state.valid && (state.dirty || state.touched)}">
-                            <input type="text" class="form-control" name="state" [(ngModel)]="model.state" required pattern=".{3,}" #state="ngModel" placeholder="Enter your State name" />
+                            <input type="text" class="form-control" name="state" [(ngModel)]="model.state" required pattern=".{3,}" #state="ngModel" placeholder="Enter your State name" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -85,7 +87,7 @@
                     <td>Emergency<br>Person</td>
                     <td>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="sosPerson" [(ngModel)]="model.sosPerson" #sosPerson="ngModel" placeholder="Contact Person, in case of emergency" />
+                            <input type="text" class="form-control" name="sosPerson" [(ngModel)]="model.sosPerson" #sosPerson="ngModel" placeholder="Contact Person, in case of emergency" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -93,7 +95,7 @@
                     <td>Emergency<br>Number</td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': sosMobile.invalid && (sosMobile.dirty || sosMobile.touched), 'has-success': sosMobile.valid && (sosMobile.dirty || sosMobile.touched)}">
-                            <input type="text" class="form-control" name="sosMobile" [(ngModel)]="model.sosMobile" #sosMobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Contact Number, in case of emergency" />
+                            <input type="text" class="form-control" name="sosMobile" [(ngModel)]="model.sosMobile" #sosMobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Contact Number, in case of emergency" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -106,7 +108,7 @@
                     <td>D.O.B.<br>[mm/dd/yyyy]</td>
                     <td>
                         <div class="form-group">
-                            <input type="date" class="form-control" name="dob" [(ngModel)]="model.dob" #dob="ngModel" value="2013-01-08" placeholder="Contact Number, in case of emergency" />
+                            <input type="date" class="form-control" name="dob" [(ngModel)]="model.dob" #dob="ngModel" value="2013-01-08" placeholder="Contact Number, in case of emergency" (change)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -114,7 +116,7 @@
                     <td>Height in cms <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': height.invalid && (height.dirty || height.touched), 'has-success': height.valid && (height.dirty || height.touched)}">
-                            <input type="text" class="form-control" name="height" [(ngModel)]="model.height" #height="ngModel" maxlength="3" pattern="[0-9]{3}" placeholder="Height in CMs" />
+                            <input type="text" class="form-control" name="height" [(ngModel)]="model.height" #height="ngModel" maxlength="3" pattern="[0-9]{3}" placeholder="Height in CMs" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -122,7 +124,7 @@
                     <td>Weight in Kgs <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': weight.invalid && (weight.dirty || weight.touched), 'has-success': weight.valid && (weight.dirty || weight.touched)}">
-                            <input type="text" class="form-control" name="weight" [(ngModel)]="model.weight" #weight="ngModel" maxlength="3" pattern="[0-9]{2,3}" placeholder="Weight in KGs" />
+                            <input type="text" class="form-control" name="weight" [(ngModel)]="model.weight" #weight="ngModel" maxlength="3" pattern="[0-9]{2,3}" placeholder="Weight in KGs" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -130,29 +132,26 @@
                     <td>History of</td>
                     <td>
                         <span class="chk-box-option" *ngFor="let history of medicalHistory;"><input type="checkbox" class="input-control" name="history" [value]= "history.label" [checked] = 'history.checked' (change)="setCheckedItems('history', 'medicalHistory')"/> <label [innerHTML] = "history.label"></label></span>
-                        <input type="text" class="form-control" name="medicalHistoryOther" [(ngModel)]="model.medicalHistoryOther" #medicalHistoryOther placeholder="Other, if any." />
+                        <input type="text" class="form-control" name="medicalHistoryOther" [(ngModel)]="model.medicalHistoryOther" #medicalHistoryOther placeholder="Other, if any." (keydown)="enableform($event)" />
                     </td>
                 </tr>
                 <tr>
                     <td>Allergic</td>
                     <td>
-                        <textarea rows="4" cols="50" class="form-control" name="allergy" [(ngModel)]="model.allergy" #allergy="ngModel" placeholder="Enter Any Allergy"></textarea>
+                        <textarea rows="4" cols="50" class="form-control" name="allergy" [(ngModel)]="model.allergy" #allergy="ngModel" placeholder="Enter Any Allergy" (keydown)="enableform($event)"></textarea>
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <div class="panel-footer">
-			<pre>dirty? {{ profileForm.form.dirty }}</pre>
-			<pre>Pristine? {{ profileForm.form.prestine }}</pre>
-
             <div *ngIf="tabId === 2">
                 <div class="alert alert-danger" role="alert" [innerHTML]="alertTip"></div>
             </div>
 
             <div class="form-group">
-                <button type="button" *ngIf="tabId !== 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid" (click)="onNext()">Next</button>
-                <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid || !profileForm.form.dirty">Submit</button>
+                <button type="button" *ngIf="tabId !== 2" class="btn  btn-block btn-primary" (click)="onNext()">Next</button>
+                <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid || formDisabled">Submit</button>
             </div>
         </div>
 
