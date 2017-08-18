@@ -13,10 +13,8 @@ import { Router } from '@angular/router';
 export class ImageComponent implements OnInit {
   private userId: string = '';
   private title: string = 'Profile Image';
-  private alertTip: string = '';
+  private alertTip: any = [];
   private previewImg = "";
-  private validIcon: string = '';
-  private imgStatus: string = 'Choose File as per Spec';
   private imgSpec: any;
   private formDisabled: boolean = true;
   private profilePic: string = '../../../assets/img/blank-user.jpg';
@@ -32,18 +30,22 @@ export class ImageComponent implements OnInit {
   //=======================================
   private getData(): void {
     this.imgSpec = { height: 400, width: 500, size: 100 };
-    this.alertTip = `Allowed Spec [hh x ww & size] <br>[max ${this.imgSpec['height']}px x ${this.imgSpec['width']}px and max size ${this.imgSpec['size']}kb]`;
+    this.alertTip[0] = `Allowed Height ${this.imgSpec['height']}px`;
+    this.alertTip[1] = `Allowed Width ${this.imgSpec['width']}px`;
+    this.alertTip[2] = `Allowed Size ${this.imgSpec['size']}kb`;
+
     this.userId = this.dataService.getUserId();
     let apiUrl = 'http://localhost:1616/profile'
 
     this.httpService.getApiData(apiUrl, { userId: this.userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
-         this.profilePic = response.response.data.profileUrl  ? response.response.data.profileUrl : '../../../assets/img/blank-user.jpg';
+          this.profilePic = response.response.data.profileUrl;
         }
+        this.profilePic = this.profilePic !== '-' ? this.profilePic : '../../../assets/img/blank-user.jpg';
       }
     )
-	 //this.profilePic = 'http://localhost:1616/uploads/doc-4mzsz8hwj6ex81ar/profile.jpg';
+
   }
   //=======================================
   //=======================================
@@ -67,14 +69,16 @@ export class ImageComponent implements OnInit {
   checkImageValidaty(size) {
     let img: any = document.getElementsByClassName('previewImg')[0];
     let success: boolean = false;
-    this.imgStatus = `Image Info :  ${img['height']}px x ${img['width']}px and  size ${size}kb]`;
+    this.alertTip[3] = `Selected Height ${img['height']}px`;
+    this.alertTip[4] = `Selected Width ${img['width']}px`;
+    this.alertTip[5] = `Selected Size ${size}kb`;
     if (img.height <= this.imgSpec.height && img.width <= this.imgSpec.width && size <= this.imgSpec.size) {
-      this.validIcon = "../../../assets/img/correct.png";
       this.formDisabled = false;
+      this.alertTip[6] = 'Click on Submit to Upload  file';
     }
     else {
-      this.validIcon = "../../../assets/img/incorrect.png";
       this.formDisabled = true;
+      this.alertTip[6] = 'Cannot Upload this file';
     }
   }
   //=======================================
@@ -82,10 +86,10 @@ export class ImageComponent implements OnInit {
   private onSubmit(): void {
     this.formDisabled = true;
     let apiUrl = 'http://localhost:1616/util/uploadImg';
-    let data = { userId: this.userId, filePath: this.profilePic, mode:'profile'}
+    let data = { userId: this.userId, filePath: this.profilePic, mode: 'profile' }
     this.httpService.getApiData(apiUrl, data, true).subscribe(
       (response: any) => {
-        this.imgStatus = response.response.msg;
+        this.alertTip[6] = '<strong>' + response.response.msg + '</strong>';
       }
     )
   }

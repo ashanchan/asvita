@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   public ngOnInit() {
     this.model.mode = 'login';
     this.model.type = 'pat';
-    this.model.email = 'ashanchan@gmail.com';
+    this.model.email = 'ashanchan@yahoo.com';
     this.model.password = 'Ashtra123';
     this.title = "Login";
   }
@@ -102,8 +102,8 @@ export class LoginComponent implements OnInit {
           this.dataService.setToken(response.response.token);
           this.dataService.setUserId(response.response.userId);
           let url: string = this.dataService.getUserId().substr(0, 3);
-          //this.router.navigate(['./profile-' + url.toLowerCase()]);
-          this.router.navigate(['./image']);
+          this.router.navigate(['./profile-' + url.toLowerCase()]);
+          //this.router.navigate(['./image']);
         }
         break;
     }

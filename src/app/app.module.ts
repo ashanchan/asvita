@@ -15,6 +15,7 @@ import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { DocProfileComponent } from './profile/doc.profile.component';
 import { PatProfileComponent } from './profile/pat.profile.component';
 import { ImageComponent } from './image/image.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ImageComponent } from './image/image.component';
     ImageUploadComponent,
     DocProfileComponent,
     PatProfileComponent,
-    ImageComponent
+    ImageComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

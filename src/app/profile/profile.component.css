@@ -44,9 +44,3 @@
 .table td:first-child {
     width: 28%;
 }
-
-input:focus,
-textarea:focus {
-    background-color: palevioletred;
-    color: white;
-}

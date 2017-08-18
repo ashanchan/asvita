@@ -8,12 +8,9 @@ import { Router } from '@angular/router';
 })
 
 export class AppComponent implements OnInit {
-  private copyright: string = '';
-
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.copyright = '© copyright ' + new Date().getFullYear();
     this.router.navigate(['./login']);
   }
 

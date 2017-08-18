@@ -1,77 +1,64 @@
-<div class="card card-container">
-    <img src="../../assets/img/blank-user.jpg" alt="Avatar" class="img-thumbnail" />
-    <p id="profile-name" class="form-header" [innerHTML]="title"></p>
+<div class=" w3-card-4 w3-quarter">
+    <div class="w3-tag w3-xlarge  w3-black w3-center full-stretch"><strong>{{title}}</strong></div>
 
-    <form novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm">
-        <div class="login">
-            <div class="form-holder">
-                <div class="form-group">
-                    <input type="hidden" class="form-control" name="mode" value="{{model.mode}}" />
+    <div class="w3-container w3-center">
+        <img src="../../assets/img/blank-user.jpg" alt="Avatar" class="w3-border w3-padding img-thumbnail" />
+    </div>
+
+    <form class="w3-container" novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <div class="w3-container">
+            <input type="hidden" name="mode" [value]="model.mode">
+
+            <label>Registered e-mail</label>
+            <input type="email" name="email" id="email" class="w3-input w3-border" [(ngModel)]="model.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email="ngModel" placeholder="{{emailTip}}" [disabled]="formDisabled" />
+
+            <div *ngIf="model.mode === 'login'">
+                <label>Password</label>
+                <input type="password" name="password" id="password" class="w3-input w3-border" [(ngModel)]="model.password" required #password="ngModel" minlength="8" maxlength="15" placeholder="Enter your password" [disabled]="formDisabled" />
+            </div>
+
+            <div *ngIf="model.mode === 'register'">
+                <label>Register as :</label><br>
+                <div class="w3-row-padding no-padding">
+                    <div class="w3-half no-padding">
+                        <label class="vertical-align">&nbsp;&nbsp;Doctor</label>
+                        <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.type" value="doc" [disabled]="formDisabled">
+                    </div>
+                    <div class="w3-half no-padding">
+                        <label class="vertical-align">&nbsp;&nbsp;Patient</label>
+                        <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.type" value="pat" [disabled]="formDisabled">
+                    </div>
                 </div>
             </div>
 
-            <div class="form-holder">
-                <div class="form-group" [ngClass]="{'has-danger': email.invalid && (email.dirty || email.touched), 'has-success': email.valid && (email.dirty || email.touched)}">
-                    <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email="ngModel" placeholder="{{emailTip}}" [disabled]="formDisabled" />
-                </div>
+            <div *ngIf="model.mode === 'reset'">
+                <label>Current Password</label>
+                <input type="password" name="oldPassword" id="oldPassword" class="w3-input w3-border" [(ngModel)]="model.oldPassword" required #newPassword="ngModel" minlength="8" maxlength="15" placeholder="Enter current password" [disabled]="formDisabled" />
+                <label>New Password</label>
+                <input type="password" name="newPassword" id="newPassword" class="w3-input w3-border" [(ngModel)]="model.newPassword" required #newPassword="ngModel" minlength="8" maxlength="15" placeholder="Enter new password" [disabled]="formDisabled" />
+                <label>Confirm Password</label>
+                <input type="password" name="conPassword" id="conPassword" class="w3-input w3-border" [(ngModel)]="model.conPassword" required #newPassword="ngModel" minlength="8" maxlength="15" placeholder="Retype your password" [disabled]="formDisabled" />
             </div>
 
-            <div class="form-holder" *ngIf="model.mode === 'register' ">
-                <div class="form-group">
-                    Register as :
-                    <input type="radio" class="input-control" name="type" [(ngModel)]="model.type" value="doc" [disabled]="formDisabled"> Doctor
-                    <input type="radio" class="input-control" name="type" [(ngModel)]="model.type" value="pat" [disabled]="formDisabled"> Patient
-                </div>
-            </div>
-
-            <div class="form-holder" *ngIf="model.mode === 'login' ">
-                <div class="form-group" [ngClass]="{'has-danger': password.invalid && (password.dirty || password.touched),'has-success': password.valid && (password.dirty || password.touched)}">
-                    <input type="password" class="form-control" name="password" [(ngModel)]="model.password" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #password="ngModel" placeholder="Enter Your Password" [disabled]="formDisabled" />
-                </div>
-            </div>
-
-            <div class="form-holder" *ngIf="model.mode === 'reset' ">
-                <div class="form-group" [ngClass]="{'has-danger': oldPassword.invalid && (oldPassword.dirty || oldPassword.touched),'has-success': oldPassword.valid && (oldPassword.dirty || oldPassword.touched)}">
-                    <input type="password" class="form-control" name="oldPassword" [(ngModel)]="model.oldPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #oldPassword="ngModel" placeholder="Enter Existing Password"
-                        [disabled]="formDisabled" />
-                </div>
-            </div>
-
-            <div class="form-holder" *ngIf="model.mode === 'reset' ">
-                <div class="form-group" [ngClass]="{'has-danger': newPassword.invalid && (newPassword.dirty || newPassword.touched),'has-success': newPassword.valid && (newPassword.dirty || newPassword.touched)}">
-                    <input type="password" class="form-control" name="newPassword" [(ngModel)]="model.newPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #newPassword="ngModel" placeholder="Enter New Password"
-                        [disabled]="formDisabled" />
-                </div>
-            </div>
-
-            <div class="form-holder" *ngIf="model.mode === 'reset' ">
-                <div class="form-group" [ngClass]="{'has-danger': conPassword.invalid && (conPassword.dirty || conPassword.touched),'has-success': conPassword.valid && (conPassword.dirty || conPassword.touched)}">
-                    <input type="password" class="form-control" name="conPassword" [(ngModel)]="model.conPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #conPassword="ngModel" placeholder="Confirm New Password"
-                        [disabled]="formDisabled" />
-                </div>
-            </div>
-
-            <div class="form-holder" style="clear:both">
-                <div class="form-group">
-                    <button type="submit" class="btn  btn-block btn-success" [disabled]="loginForm.invalid || formDisabled">Submit</button>
-                </div>
-            </div>
         </div>
 
-        <div [hidden]="alertTip === ''" class="alert alert-danger" role="alert" [innerHTML]="alertTip"></div>
-        <div class="panel-footer">
-            <div *ngIf="model.mode === 'login'">
-                <span><a (click)="changeMode('fyp')">Forgot password?</a></span>
-            </div>
-            <div *ngIf="model.mode !== 'register'">
-                <span><a (click)="changeMode('register')">New User?</a></span>
-            </div>
-            <div *ngIf="model.mode !== 'reset' && model.mode !== 'register' ">
-                <span><a (click)="changeMode('reset')">Reset password</a></span>
-            </div>
-            <div *ngIf="model.mode !== 'login'">
-                <span>Back to <a (click)="changeMode('login')">login page</a></span>
-            </div>
+        <div class="w3-container">
+            <button type="submit" class="w3-button w3-block	w3-black w3-hover-gray" [disabled]="loginForm.invalid || formDisabled">Submit</button>
         </div>
     </form>
+
+    <footer class="w3-container w3-light-gray">
+        <div *ngIf="model.mode === 'login'" class="w3-tag w3-round w3-gray" style="padding:3px">
+            <span class="w3-tag w3-round w3-black w3-border w3-border-white w3-hover-gray hand-cursor" (click)="changeMode('fyp')">Forgot pwd?</span>
+        </div>
+        <div *ngIf="model.mode !== 'register'" class="w3-tag w3-round w3-gray" style="padding:3px">
+            <span class="w3-tag w3-round w3-black w3-border w3-border-white w3-hover-gray hand-cursor" (click)="changeMode('register')">New User</span>
+        </div>
+        <div *ngIf="model.mode !== 'reset' && model.mode !== 'register'" class="w3-tag w3-round w3-gray" style="padding:3px">
+            <span class="w3-tag w3-round w3-black w3-border w3-border-white w3-hover-gray hand-cursor" (click)="changeMode('reset')">Reset pwd?</span>
+        </div>
+        <div *ngIf="model.mode !== 'login'" class="w3-tag w3-round w3-gray" style="padding:3px">
+            <span class="w3-tag w3-round w3-black w3-border w3-border-white w3-hover-gray hand-cursor" (click)="changeMode('login')">Login</span>
+        </div>
+    </footer>
 </div>
