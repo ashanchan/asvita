@@ -1,5 +1,9 @@
-.valid-icon {
-    position: relative;
-    top: 150px;
-    left: 50px;
+.img-thumbnail {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }

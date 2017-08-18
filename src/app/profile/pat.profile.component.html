@@ -1,169 +1,130 @@
-<form novalidate (ngSubmit)="onSubmit()" #profileForm="ngForm">
-    <div class="card card-container">
-        <div class="tabs">
-            <ul class="nav nav-tabs  pull-right">
-                <li *ngFor="let tab of tabs; let i=index " role="presentation" [ngClass]="{'active' : tabId === i }" (click)="onTabClicked(i)"><a>{{tab}}</a></li>
-            </ul>
+<div class=" w3-card-4 w3-quarter">
+    <div class="w3-bar w3-black">
+        <button class="w3-bar-item w3-button quarter-stretch" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
+    </div>
+
+    <form class="w3-container" novalidate (ngSubmit)="onSubmit()" #profileForm="ngForm">
+        <input type="hidden" name="mode" [value]="model.mode">
+        <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">
+
+            <div class="w3-container w3-center">
+                <img src="../../assets/img/blank-user.jpg" alt="Avatar" class="w3-border w3-padding img-thumbnail" />
+            </div>
+
+            <label>Full Name <span class="required">*</span></label>
+            <input type="text" name="fullName" id="fullName" class="w3-input w3-border" [(ngModel)]="model.fullName" required #fullName="ngModel" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
+
+            <label>Contact Number</label>
+            <input type="text" name="mobile" id="mobile" class="w3-input w3-border" [(ngModel)]="model.mobile" #mobile="ngModel" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
         </div>
 
-        <table class="table table-striped" [hidden]="tabs[tabId] !=='Profile'">
-            <tbody>
-                <tr>
-                    <td colspan="2">
-                        <div class="img-panel">
-                            <img [src]="model.profileUrl" alt="Avatar" class="img-thumbnail" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Full Name <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': fullName.invalid && (fullName.dirty || fullName.touched), 'has-success': fullName.valid && (fullName.dirty || fullName.touched)}">
-                            <input type="text" class="form-control" name="fullName" [(ngModel)]="model.fullName" required #fullName="ngModel" pattern=".{2,}" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Mobile Number</td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': mobile.invalid && (mobile.dirty || mobile.touched), 'has-success': mobile.valid && (mobile.dirty || mobile.touched)}">
-                            <input type="text" class="form-control" name="mobile" [(ngModel)]="model.mobile" #mobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter your Mobile number" (keydown)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
+        <div class="w3-container" [hidden]="tabs[tabId] !=='General'">
 
-            </tbody>
-        </table>
+            <div class="w3-row-padding no-padding">
+                <div class="w3-quarter no-padding">
+                    <label class="vertical-align">Salutation</label>
+                </div>
 
-        <table class="table table-striped" [hidden]="tabs[tabId] !=='General'">
-            <tbody>
-                <tr>
-                    <td>Salutation</td>
-                    <td>
-                        <div>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="mr" (change)="enableform($event)" /> Mr.</span>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="ms" (change)="enableform($event)"/> Ms.</span>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="salutation" [(ngModel)]="model.salutation" value="no" (change)="enableform($event)"/> None</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Gender</td>
-                    <td>
-                        <div>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="m" (change)="enableform($event)"/> Male</span>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="f" (change)="enableform($event)"/> Female</span>
-                            <span class="chk-box-option"><input type="radio" class="input-control" name="gender" [(ngModel)]="model.gender" value="o" (change)="enableform($event)"/> Other</span>
-                        </div>
-                    </td>
-                </tr>
+                <div class="w3-quarter no-padding">
+                    <label class="vertical-align">Mr</label>
+                    <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="mr" (change)="enableform($event)">
+                </div>
+                <div class="w3-quarter no-padding">
+                    <label class="vertical-align">Ms</label>
+                    <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="ms" (change)="enableform($event)">
+                </div>
+                <div class="w3-quarter no-padding">
+                    <label class="vertical-align">None</label>
+                    <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="np" (change)="enableform($event)">
+                </div>
+            </div>
 
-                <tr>
-                    <td>Address</td>
-                    <td>
-                        <div class="form-group">
-                            <textarea rows="4" cols="50" class="form-control" name="address" [(ngModel)]="model.address" #address="ngModel" pattern=".{10,}" placeholder="Enter your Address" (keydown)="enableform($event)"></textarea>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>City <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group">
-                            <input type="text" class="form-control city-length" name="city" [(ngModel)]="model.city" required #city="ngModel" placeholder="City" (keydown)="enableform($event)" />
-                            <label style="float:left; padding:10px"> Pin <span class="required">*</span></label>
-                            <input type="text" class="form-control pin-length" name="pin" [(ngModel)]="model.pin" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Pin" (keydown)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>State <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': state.invalid && (state.dirty || state.touched), 'has-success': state.valid && (state.dirty || state.touched)}">
-                            <input type="text" class="form-control" name="state" [(ngModel)]="model.state" required pattern=".{3,}" #state="ngModel" placeholder="Enter your State name" (keydown)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
+            <div class="w3-row-padding no-padding">
+                <div class="w3-quarter no-padding">
+                    <label class="vertical-align">Gender</label>
+                </div>
 
-                <tr>
-                    <td>Emergency<br>Person</td>
-                    <td>
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="sosPerson" [(ngModel)]="model.sosPerson" #sosPerson="ngModel" placeholder="Contact Person, in case of emergency" (keydown)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Emergency<br>Number</td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': sosMobile.invalid && (sosMobile.dirty || sosMobile.touched), 'has-success': sosMobile.valid && (sosMobile.dirty || sosMobile.touched)}">
-                            <input type="text" class="form-control" name="sosMobile" [(ngModel)]="model.sosMobile" #sosMobile="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Contact Number, in case of emergency" (keydown)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <div class="w3-quarter no-padding">
+                    <label class="vertical-align">Male</label>
+                    <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="m" (change)="enableform($event)">
+                </div>
+                <div class="w3-quarter no-padding">
+                    <label class="vertical-align">Female</label>
+                    <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="f" (change)="enableform($event)">
+                </div>
+                <div class="w3-quarter no-padding">
+                    <label class="vertical-align">Other</label>
+                    <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="o" (change)="enableform($event)">
+                </div>
+            </div>
+            <hr>
+            <label>Address <span class="required">*</span></label>
+            <textarea rows="3" cols="50" type="text" name="address" id="address" class="w3-input w3-border" [(ngModel)]="model.address" required #address="ngModel" placeholder="Enter your address" (keydown)="enableform($event)"></textarea>
 
-        <table class="table table-striped" [hidden]="tabs[tabId] !=='Medical'">
-            <tbody>
-                <tr>
-                    <td>D.O.B.<br>[mm/dd/yyyy]</td>
-                    <td>
-                        <div class="form-group">
-                            <input type="date" class="form-control" name="dob" [(ngModel)]="model.dob" #dob="ngModel" value="2013-01-08" placeholder="Contact Number, in case of emergency" (change)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Height in cms <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': height.invalid && (height.dirty || height.touched), 'has-success': height.valid && (height.dirty || height.touched)}">
-                            <input type="text" class="form-control" name="height" [(ngModel)]="model.height" #height="ngModel" maxlength="3" pattern="[0-9]{3}" placeholder="Height in CMs" (keydown)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Weight in Kgs <span class="required">*</span></td>
-                    <td>
-                        <div class="form-group" [ngClass]="{'has-danger': weight.invalid && (weight.dirty || weight.touched), 'has-success': weight.valid && (weight.dirty || weight.touched)}">
-                            <input type="text" class="form-control" name="weight" [(ngModel)]="model.weight" #weight="ngModel" maxlength="3" pattern="[0-9]{2,3}" placeholder="Weight in KGs" (keydown)="enableform($event)" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>History of</td>
-                    <td>
-                        <span class="chk-box-option" *ngFor="let history of medicalHistory;"><input type="checkbox" class="input-control" name="history" [value]= "history.label" [checked] = 'history.checked' (change)="setCheckedItems('history', 'medicalHistory')"/> <label [innerHTML] = "history.label"></label></span>
-                        <input type="text" class="form-control" name="medicalHistoryOther" [(ngModel)]="model.medicalHistoryOther" #medicalHistoryOther placeholder="Other, if any." (keydown)="enableform($event)" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Allergic</td>
-                    <td>
-                        <textarea rows="4" cols="50" class="form-control" name="allergy" [(ngModel)]="model.allergy" #allergy="ngModel" placeholder="Enter Any Allergy" (keydown)="enableform($event)"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Notes</td>
-                    <td>
-                        <div class="form-group">
-                            <textarea rows="4" cols="50" class="form-control" name="notes" [(ngModel)]="model.notes" #notes="ngModel" placeholder="Enter Any Important Notes" (keydown)="enableform($event)"></textarea>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="w3-row no-padding">
+                <div class="w3-twothird">
+                    <label>City <span class="required">*</span></label>
+                    <input type="text" name="city" id="city" class="w3-input w3-border" [(ngModel)]="model.city" required #city="ngModel" placeholder="Enter city" (keydown)="enableform($event)" />
+                </div>
+                <div class="w3-third">
+                    <label>Pin <span class="required">*</span></label>
+                    <input type="text" name="pin" id="pin" class="w3-input w3-border" [(ngModel)]="model.pin" required #pin="ngModel" placeholder="Enter pin" (keydown)="enableform($event)" />
+                </div>
+            </div>
 
-        <div class="panel-footer">
-            <div *ngIf="tabId === 2">
+            <label>State <span class="required">*</span></label>
+            <input type="text" name="state" id="state" class="w3-input w3-border" [(ngModel)]="model.state" required #state="ngModel" placeholder="Enter your State" (keydown)="enableform($event)" />
+            <hr>
+            <label>Emergency, Contact Person</label>
+            <input type="text" name="sosPerson" id="sosPerson" class="w3-input w3-border" [(ngModel)]="model.sosPerson" #sosPerson="ngModel" placeholder="Enter Person's Name to contact" (keydown)="enableform($event)" />
+
+            <label>Emergency, Contact Number</label>
+            <input type="text" name="sosMobile" id="sosMobile" class="w3-input w3-border" [(ngModel)]="model.sosMobile" #sosMobile="ngModel" placeholder="Enter Person's Name to contact" (keydown)="enableform($event)" />
+        </div>
+
+        <div class="w3-container" [hidden]="tabs[tabId] !=='Medical'">
+            <label>Date of Birth [mm/dd/yyyy]</label>
+            <input type="date" name="dob" id="dob" class="w3-input w3-border" [(ngModel)]="model.dob" #dob="ngModel" (keydown)="enableform($event)" />
+
+            <div class="w3-row no-padding">
+                <div class="w3-half">
+                    <label>Height in cms<span class="required">*</span></label>
+                    <input type="text" name="height" id="height" class="w3-input w3-border" [(ngModel)]="model.height" required #height="ngModel" maxlength="3" placeholder="Enter height in cms" (keydown)="enableform($event)" />
+                </div>
+                <div class="w3-half">
+                    <label>Weight in kgs <span class="required">*</span></label>
+                    <input type="text" name="weight" id="weight" class="w3-input w3-border" [(ngModel)]="model.weight" required #weight="ngModel" maxlength="3" placeholder="Enter weight in kgs" (keydown)="enableform($event)" />
+                </div>
+            </div>
+            <hr>
+            <label>Medical History</label>
+            <div class="w3-row no-padding">
+                <div class="w3-third" *ngFor="let history of medicalHistory;">
+                    <input type="checkbox" name="history" id="history" class="w3-check" [value]="history.label" [checked]='history.checked' (change)="setCheckedItems('history', 'medicalHistory')" /> <label [innerHTML]="history.label"></label>
+                </div>
+            </div>
+            <hr>
+            <label>Other History</label>
+            <input type="text" name="medicalHistoryOther" id="medicalHistoryOther" class="w3-input w3-border" [(ngModel)]="model.medicalHistoryOther" #medicalHistoryOther="ngModel" placeholder="Any other medical history" (keydown)="enableform($event)" />
+
+            <hr>
+            <label>Allergy</label>
+            <textarea rows="2" cols="50" type="text" name="allergy" id="allergy" class="w3-input w3-border" [(ngModel)]="model.allergy" #allergy="ngModel" placeholder="Allergies, if any" (keydown)="enableform($event)"></textarea>
+            <hr>
+            <label>Special Notes</label>
+            <textarea rows="2" cols="50" type="text" name="notes" id="notes" class="w3-input w3-border" [(ngModel)]="model.notes" #notes="ngModel" placeholder="Notes, if any" (keydown)="enableform($event)"></textarea>
+
+            <div class="w3-panel w3-red">
                 <div class="alert alert-danger" role="alert" [innerHTML]="alertTip"></div>
             </div>
-
-            <div class="form-group">
-                <button type="button" *ngIf="tabId !== 2" class="btn  btn-block btn-primary" (click)="onNext()">Next</button>
-                <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid || formDisabled">Submit</button>
-            </div>
         </div>
 
-    </div>
-</form>
+
+        <div class="w3-container">
+
+            <button type="button" *ngIf="tabId !== 2" class="w3-button w3-block	w3-black w3-hover-gray" (click)="onNext()">Next</button>
+            <button type="submit" *ngIf="tabId === 2" class="w3-button w3-block	w3-black w3-hover-gray" [disabled]="profileForm.invalid || formDisabled">Submit</button>
+        </div>
+
+    </form>
+</div>
