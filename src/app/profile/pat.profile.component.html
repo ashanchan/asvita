@@ -67,10 +67,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Pin <span class="required">*</span></td>
+                    <td>City <span class="required">*</span></td>
                     <td>
-                        <div class="form-group" [ngClass]="{'has-danger': pin.invalid && (pin.dirty || pin.touched), 'has-success': pin.valid && (pin.dirty || pin.touched)}">
-                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" (keydown)="enableform($event)" />
+                        <div class="form-group">
+                            <input type="text" class="form-control city-length" name="city" [(ngModel)]="model.city" required #city="ngModel" placeholder="City" (keydown)="enableform($event)" />
+                            <label style="float:left; padding:10px"> Pin <span class="required">*</span></label>
+                            <input type="text" class="form-control pin-length" name="pin" [(ngModel)]="model.pin" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Pin" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -139,6 +141,14 @@
                     <td>Allergic</td>
                     <td>
                         <textarea rows="4" cols="50" class="form-control" name="allergy" [(ngModel)]="model.allergy" #allergy="ngModel" placeholder="Enter Any Allergy" (keydown)="enableform($event)"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Notes</td>
+                    <td>
+                        <div class="form-group">
+                            <textarea rows="4" cols="50" class="form-control" name="notes" [(ngModel)]="model.notes" #notes="ngModel" placeholder="Enter Any Important Notes" (keydown)="enableform($event)"></textarea>
+                        </div>
                     </td>
                 </tr>
             </tbody>

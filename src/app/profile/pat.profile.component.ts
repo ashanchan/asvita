@@ -14,10 +14,8 @@ import { PatientProfileModel } from './../model/patient.profile.model'
 
 export class PatProfileComponent implements OnInit {
   private model: PatientProfileModel = new PatientProfileModel();
-  private canUploadImage: boolean = false;
   private tabs: Array<string> = [];
   private tabId: number = 0;
-  private imgSpec: any;
   private alertTip: string;
   private medicalHistory = [];
   private formDisabled: boolean = true;
@@ -33,7 +31,6 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private getData(): void {
-    this.imgSpec = { height: 100, width: 100, size: 100 };
     this.alertTip = "Before Submit, Fill All Fields with *";
     this.model.userId = this.dataService.getUserId();
     this.model.mode = "getProfile";
@@ -46,8 +43,8 @@ export class PatProfileComponent implements OnInit {
             let id: string = i;
             this.model[id] = response.response.data[id];
           }
-          this.createFormElements();
         }
+        this.createFormElements();
       }
     )
   }
@@ -55,7 +52,7 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   private createFormElements() {
     this.tabs = ['Profile', 'General', 'Medical'];
-	this.model.profileUrl = this.model.profileUrl === '-' ? '../../../assets/img/blank-user.jpg'  : this.model.profileUrl 
+    this.model.profileUrl = this.model.profileUrl === '-' ? '../../../assets/img/blank-user.jpg' : this.model.profileUrl;
     this.createMedicalHistory()
   }
   //=======================================
@@ -73,11 +70,6 @@ export class PatProfileComponent implements OnInit {
       }
       this.medicalHistory.push({ label: medicalHistoryLabel[i], checked: checked });
     }
-  }
-  //=======================================
-  //=======================================
-  private onImageClicked(success: boolean): void {
-    this.canUploadImage = success;
   }
   //=======================================
   //=======================================

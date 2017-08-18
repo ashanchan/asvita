@@ -46,11 +46,11 @@ export class LoginComponent implements OnInit {
   //=======================================
   private changeMode(mode: string): void {
     this.alertTip = '';
-	this.formDisabled = false;
+    this.formDisabled = false;
     this.emailTip = "Enter Your Registered Email";
     this.model.mode = mode;
     this.model.password = '';
-	this.model.oldPassword = '';
+    this.model.oldPassword = '';
     this.model.newPassword = '';
     this.model.conPassword = '';
     if (mode === "login") this.title = "Login";
@@ -101,15 +101,16 @@ export class LoginComponent implements OnInit {
         if (response.success) {
           this.dataService.setToken(response.response.token);
           this.dataService.setUserId(response.response.userId);
-          let url = this.dataService.getUserId().substr(0, 3);
-          this.router.navigate(['./profile-' + url]);
+          let url: string = this.dataService.getUserId().substr(0, 3);
+          //this.router.navigate(['./profile-' + url.toLowerCase()]);
+          this.router.navigate(['./image']);
         }
         break;
     }
-	
-	if (response.success) {
-		this.formDisabled = true;
-	}
+
+    if (response.success) {
+      this.formDisabled = true;
+    }
     this.alertTip = response.response.msg;
   }
 }
