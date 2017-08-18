@@ -10,14 +10,13 @@
             <tbody>
                 <tr>
                     <td colspan="2">
-                        <app-image-upload [imgSpec]='imgSpec' (imageClicked)='onImageClicked($event)'></app-image-upload>
+                        <div class="img-panel">
+                            <img [src]="model.profileUrl" alt="Avatar" class="img-thumbnail" />
+                        </div>
                     </td>
                 </tr>
                 <tr>
-                    <td><input id="filetoupload" name="filetoupload" type="file" class="form-control" accept="image/*" placeholder="Select required course.xml"></td>
-                </tr>
-                <tr>
-                    <td>Full Name$ <span class="required">*</span></td>
+                    <td>Full Name <span class="required">*</span></td>
                     <td>
                         <div class="form-group" [ngClass]="{'has-danger': fullName.invalid && (fullName.dirty || fullName.touched), 'has-success': fullName.valid && (fullName.dirty || fullName.touched)}">
                             <input type="text" class="form-control" name="fullName" [(ngModel)]="model.fullName" required #fullName="ngModel" pattern=".{2,}" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
@@ -62,10 +61,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Pin <span class="required">*</span></td>
+                    <td>City <span class="required">*</span></td>
                     <td>
-                        <div class="form-group" [ngClass]="{'has-danger': pin.invalid && (pin.dirty || pin.touched), 'has-success': pin.valid && (pin.dirty || pin.touched)}">
-                            <input type="text" class="form-control" name="pin" [(ngModel)]="model.pin[clinicId]" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Enter valid Pin Number" (keydown)="enableform($event)" />
+                        <div class="form-group">
+                            <input type="text" class="form-control city-length" name="city" [(ngModel)]="model.city[clinicId]" required #city="ngModel" placeholder="City" (keydown)="enableform($event)" />
+                            <label style="float:left; padding:10px"> Pin <span class="required">*</span></label>
+                            <input type="text" class="form-control pin-length" name="pin" [(ngModel)]="model.pin[clinicId]" required #pin="ngModel" maxlength="6" pattern="[0-9]{6}" placeholder="Pin" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -80,8 +81,8 @@
                 <tr>
                     <td>Phone <span class="required">*</span></td>
                     <td>
-                        <div class="form-group" [ngClass]="{'has-danger': contact.invalid && (contact.dirty || contact.touched), 'has-success': contact.valid && (contact.dirty || contact.touched)}">
-                            <input type="text" class="form-control" name="contact" [(ngModel)]="model.contact[clinicId]" #contact="ngModel" maxlength="10" pattern="[0-9]{10}" placeholder="Enter Clinic Contact Number" (keydown)="enableform($event)" />
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="contact" [(ngModel)]="model.contact[clinicId]" #contact="ngModel" maxlength="20" placeholder="Enter Clinic Contact Number" (keydown)="enableform($event)" />
                         </div>
                     </td>
                 </tr>
@@ -110,6 +111,14 @@
         <table class="table table-striped" [hidden]="tabs[tabId] !=='Specialization'">
             <tbody>
                 <tr>
+                    <td>Qualification <span class="required">*</span></td>
+                    <td>
+                        <div class="form-group">
+                            <textarea rows="4" cols="50" required class="form-control" name="qualification" [(ngModel)]="model.qualification" required #qualification="ngModel" placeholder="Enter your qualification" (keydown)="enableform($event)"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td>Specialization <span class="required">*</span></td>
                     <td>
                         <div>
@@ -127,10 +136,9 @@
             </div>
 
             <div class="form-group">
-                <button type="button" *ngIf="tabId !== 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid" (click)="onNext()">Next</button>
+                <button type="button" *ngIf="tabId !== 2" class="btn  btn-block btn-primary" (click)="onNext()">Next</button>
                 <button type="submit" *ngIf="tabId === 2" class="btn  btn-block btn-primary" [disabled]="profileForm.invalid || formDisabled">Submit</button>
             </div>
         </div>
-
     </div>
 </form>

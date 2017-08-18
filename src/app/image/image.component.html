@@ -1,0 +1,37 @@
+<div class="card card-container">
+    <form novalidate (ngSubmit)="onSubmit()" #imageForm="ngForm">
+
+        <div class="panel-header">
+            <p id="profile-name" class="form-header" [innerHTML]="title"></p>
+        </div>
+
+        <div class="panel-body">
+            <input type="hidden" name="userId" [value]="userId">
+
+            <div class="img-panel">
+                <img [src]="validIcon" class="valid-icon" />
+                <img [src]="profilePic" alt="Avatar" class="img-thumbnail" />
+                <div class="photo">
+                    <input id="filetoupload" name="filetoupload" type="file" (change)="checkPhoto($event)" accept="image/*.jpg">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <div class="alert alert-info" role="alert" [innerHTML]="alertTip"></div>
+            <div class="alert alert-info" role="alert" [innerHTML]="imgStatus"></div>
+
+            <div class="form-group">
+                <button type="submit" class="btn  btn-block btn-primary" [disabled]="formDisabled">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+<div class="preview" id="preview">
+    <img [src]="previewImg" class="previewImg" />
+</div>

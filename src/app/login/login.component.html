@@ -19,32 +19,35 @@
             <div class="form-holder" *ngIf="model.mode === 'register' ">
                 <div class="form-group">
                     Register as :
-                    <input type="radio" class="input-control" name="type" [(ngModel)]="model.type" value="doc" [disabled]="formDisabled" > Doctor
+                    <input type="radio" class="input-control" name="type" [(ngModel)]="model.type" value="doc" [disabled]="formDisabled"> Doctor
                     <input type="radio" class="input-control" name="type" [(ngModel)]="model.type" value="pat" [disabled]="formDisabled"> Patient
                 </div>
             </div>
 
             <div class="form-holder" *ngIf="model.mode === 'login' ">
                 <div class="form-group" [ngClass]="{'has-danger': password.invalid && (password.dirty || password.touched),'has-success': password.valid && (password.dirty || password.touched)}">
-                    <input type="password" class="form-control" name="password" [(ngModel)]="model.password" required minlength="8" maxlength="15" #password="ngModel" placeholder="Enter Your Password" [disabled]="formDisabled" />
+                    <input type="password" class="form-control" name="password" [(ngModel)]="model.password" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #password="ngModel" placeholder="Enter Your Password" [disabled]="formDisabled" />
                 </div>
             </div>
 
             <div class="form-holder" *ngIf="model.mode === 'reset' ">
                 <div class="form-group" [ngClass]="{'has-danger': oldPassword.invalid && (oldPassword.dirty || oldPassword.touched),'has-success': oldPassword.valid && (oldPassword.dirty || oldPassword.touched)}">
-                    <input type="password" class="form-control" name="oldPassword" [(ngModel)]="model.oldPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #oldPassword="ngModel" placeholder="Enter Existing Password" [disabled]="formDisabled" />
+                    <input type="password" class="form-control" name="oldPassword" [(ngModel)]="model.oldPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #oldPassword="ngModel" placeholder="Enter Existing Password"
+                        [disabled]="formDisabled" />
                 </div>
             </div>
 
             <div class="form-holder" *ngIf="model.mode === 'reset' ">
                 <div class="form-group" [ngClass]="{'has-danger': newPassword.invalid && (newPassword.dirty || newPassword.touched),'has-success': newPassword.valid && (newPassword.dirty || newPassword.touched)}">
-                    <input type="password" class="form-control" name="newPassword" [(ngModel)]="model.newPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #newPassword="ngModel" placeholder="Enter New Password" [disabled]="formDisabled"/>
+                    <input type="password" class="form-control" name="newPassword" [(ngModel)]="model.newPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #newPassword="ngModel" placeholder="Enter New Password"
+                        [disabled]="formDisabled" />
                 </div>
             </div>
 
             <div class="form-holder" *ngIf="model.mode === 'reset' ">
                 <div class="form-group" [ngClass]="{'has-danger': conPassword.invalid && (conPassword.dirty || conPassword.touched),'has-success': conPassword.valid && (conPassword.dirty || conPassword.touched)}">
-                    <input type="password" class="form-control" name="conPassword" [(ngModel)]="model.conPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" minlength="8" maxlength="15" #conPassword="ngModel" placeholder="Confirm New Password" [disabled]="formDisabled" />
+                    <input type="password" class="form-control" name="conPassword" [(ngModel)]="model.conPassword" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[aA-zZ]).*$" minlength="8" maxlength="15" #conPassword="ngModel" placeholder="Confirm New Password"
+                        [disabled]="formDisabled" />
                 </div>
             </div>
 

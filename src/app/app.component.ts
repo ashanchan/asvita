@@ -7,15 +7,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent  implements OnInit{
-  private copyright:string = '';
+export class AppComponent implements OnInit {
+  private copyright: string = '';
 
   constructor(private router: Router) { }
-  
-  ngOnInit()
-  {
+
+  ngOnInit() {
     this.copyright = '© copyright ' + new Date().getFullYear();
-    this.router.navigate (['./login']);
+    this.router.navigate(['./login']);
   }
- 
+
 }

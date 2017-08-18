@@ -14,6 +14,7 @@ export class DoctorProfileModel {
     public openTime: Array<number> = [],
     public endTime: Array<number> = [],
     public openDay: Array<string> = [],
+    public qualification: string = '',
     public specialization: Array<string> = [],
     public specializationOther: string = ''
   ) { }

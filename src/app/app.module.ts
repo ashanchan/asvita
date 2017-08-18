@@ -14,6 +14,7 @@ import { HeaderComponent } from './header/header.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { DocProfileComponent } from './profile/doc.profile.component';
 import { PatProfileComponent } from './profile/pat.profile.component';
+import { ImageComponent } from './image/image.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PatProfileComponent } from './profile/pat.profile.component';
     HeaderComponent,
     ImageUploadComponent,
     DocProfileComponent,
-    PatProfileComponent
+    PatProfileComponent,
+    ImageComponent
   ],
   imports: [
     BrowserModule,

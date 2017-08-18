@@ -27,6 +27,16 @@
     float: left;
 }
 
+.pin-length {
+    width: 30%;
+    float: left;
+}
+
+.city-length {
+    width: 50%;
+    float: left;
+}
+
 .pagination {
     margin: 0;
 }

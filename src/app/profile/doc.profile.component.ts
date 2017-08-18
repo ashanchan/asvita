@@ -14,10 +14,8 @@ import { DoctorProfileModel } from './../model/doctor.profile.model'
 
 export class DocProfileComponent implements OnInit {
   private model: DoctorProfileModel = new DoctorProfileModel();
-  private canUploadImage: boolean = false;
   private tabs: Array<string> = [];
   private tabId: number = 0;
-  private imgSpec: any;
   private alertTip: string;
   private clinics = [1, 1, 1, 1, 1, 1, 1];
   private validFlag: Array<boolean> = [false, false, false];
@@ -38,7 +36,6 @@ export class DocProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private getData(): void {
-    this.imgSpec = { height: 100, width: 100, size: 100 };
     this.model.mode = "getProfile";
     this.alertTip = "Before Submit, Fill All Fields with *";
     this.model.userId = this.dataService.getUserId();
@@ -50,8 +47,8 @@ export class DocProfileComponent implements OnInit {
             let id: string = i;
             this.model[id] = response.response.data[id];
           }
-          this.createFormElements();
         }
+        this.createFormElements();
       }
     )
 
@@ -60,6 +57,7 @@ export class DocProfileComponent implements OnInit {
   //=======================================
   private createFormElements() {
     this.tabs = ['Profile', 'Clinic', 'Specialization'];
+    this.model.profileUrl = this.model.profileUrl === '-' ? '../../../assets/img/blank-user.jpg' : this.model.profileUrl;
     this.createDays();
     this.createDoctorSpecialization();
   }
@@ -98,15 +96,8 @@ export class DocProfileComponent implements OnInit {
   }
   //=======================================
   //=======================================
-  private onImageClicked(success: boolean): void {
-    this.canUploadImage = success;
-  }
-  //=======================================
-  //=======================================
   private onTabClicked(id: number): void {
-    if (this.form.valid) {
-      this.tabId = id;
-    }
+    this.tabId = id;
     this.alertTip = "Before Submit, Fill All Fields with *";
   }
   //=======================================
