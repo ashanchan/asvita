@@ -4,13 +4,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { DocProfileComponent } from '../profile/doc.profile.component';
 import { PatProfileComponent } from '../profile/pat.profile.component';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 import { ImageComponent } from '../image/image.component';
+import { LogoutComponent } from '../logout/logout.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'profile-doc', component: DocProfileComponent },
   { path: 'profile-pat', component: PatProfileComponent },
-  { path: 'image', component: ImageComponent }
+  { path: 'image', component: ImageComponent },
+  { path: 'logout', component: LogoutComponent }
 ];
 
 @NgModule({

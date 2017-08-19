@@ -14,22 +14,30 @@ import { HttpService } from './services/http.service';
 import { MessageService } from './services/message.service';
 
 import { HeaderComponent } from './header/header.component';
-import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { DocProfileComponent } from './profile/doc.profile.component';
 import { PatProfileComponent } from './profile/pat.profile.component';
 import { ImageComponent } from './image/image.component';
 import { FooterComponent } from './footer/footer.component';
+import { LeftPanelComponent } from './left/left.component';
+import { RightPanelComponent } from './right/right.component';
+import { CenterPanelComponent } from './center/center.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HeaderComponent,
-    ImageUploadComponent,
     DocProfileComponent,
     PatProfileComponent,
     ImageComponent,
-    FooterComponent
+    FooterComponent,
+    LeftPanelComponent,
+    RightPanelComponent,
+    CenterPanelComponent,
+    DashboardComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

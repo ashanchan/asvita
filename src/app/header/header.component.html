@@ -1,29 +1,29 @@
-<div [hidden]="!showTabs">
+<div [hidden]="!isAuthenticated">
     <div class="w3-top">
-        <div class="w3-bar w3-black w3-card-2">
-            <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-            <a href="#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-            <a href="#band" class="w3-bar-item w3-button w3-padding-large w3-hide-small">BAND</a>
-            <a href="#tour" class="w3-bar-item w3-button w3-padding-large w3-hide-small">TOUR</a>
-            <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
-            <div class="w3-dropdown-hover w3-hide-small">
-                <button class="w3-padding-large w3-button" title="More">Add Records <i class="fa fa-caret-down"></i></button>
-                <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                    <a href="#" class="w3-bar-item w3-button">Merchandise</a>
-                    <a href="#" class="w3-bar-item w3-button">Extras</a>
-                    <a href="#" class="w3-bar-item w3-button">Media</a>
-                </div>
-            </div>
-            <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
+        <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+            <ul>
+                <li *ngFor="let tab of tabs; let i=index ">
+                    <a class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" [ngClass]="{'active-tab' : tab.link === activeUrl }" [routerLink]="tab.link" title="{{tab.title}}"><i class="{{tab.icon}}"></i>  {{tab.title}}</a>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    <a class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right" routerLink="./logout" title="Logout"><i class="fa fa-window-close-o"></i> Logout</a>
+                    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" (click)="openNav()"><i class="fa fa-bars"></i></a>
+                </li>
+            </ul>
+
         </div>
     </div>
 
     <!-- Navbar on small screens -->
-    <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-        <a href="#band" class="w3-bar-item w3-button w3-padding-large">BAND</a>
-        <a href="#tour" class="w3-bar-item w3-button w3-padding-large">TOUR</a>
-        <a href="#contact" class="w3-bar-item w3-button w3-padding-large">CONTACT</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding-large">MERCH</a>
+    <div class=" w3-bar-block w3-theme-d2  w3-hide-large w3-hide-medium w3-large nav-bar" [hidden]="isNavOpen">
+        <ul>
+            <li *ngFor="let tab of tabs; let i=index ">
+                <a class="w3-bar-item w3-button w3-padding-large w3-hover-white" [routerLink]="tab.link" title="{{tab.title}}"><i class="{{tab.icon}}"></i>  {{tab.title}}</a>
+            </li>
+        </ul>
     </div>
 
     <div class="pad-top"></div>

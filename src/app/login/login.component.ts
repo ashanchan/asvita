@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { HttpService } from './../services/http.service';
@@ -23,7 +23,7 @@ class Signup {
   providers: []
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   private model: Signup = new Signup();
   private title: string = "Login";
   private emailTip: string = "Enter your registered Email";
@@ -38,9 +38,13 @@ export class LoginComponent implements OnInit {
   public ngOnInit() {
     this.model.mode = 'login';
     this.model.type = 'pat';
-    this.model.email = 'ashanchan@yahoo.com';
+    this.model.email = 'ashanchan@gmail.com';
     this.model.password = 'Ashtra123';
     this.title = "Login";
+  }
+  //=======================================
+  //=======================================
+  public ngOnDestroy(): void {
   }
   //=======================================
   //=======================================
@@ -101,8 +105,7 @@ export class LoginComponent implements OnInit {
         if (response.success) {
           this.dataService.setToken(response.response.token);
           this.dataService.setUserId(response.response.userId);
-          let url: string = this.dataService.getUserId().substr(0, 3);
-          this.messageService.sendMessage({ component: 'login', success: true });
+          this.messageService.sendMessage({ event: 'onLogin', component: 'login', success: true });
         }
         break;
     }

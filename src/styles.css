@@ -3,8 +3,12 @@
 }
 
 .img-thumbnail {
-    width: 150px;
-    height: 150px;
+    width: 25%;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .no-margin {
@@ -46,4 +50,12 @@ input:focus,
 textarea:focus {
     background-color: gray;
     color: white;
+}
+
+.active-tab {
+    background-color: lightgray !important;
+}
+
+.active-page {
+    background-color: lightgray !important;
 }

@@ -1,27 +1,27 @@
-<div class=" w3-card-4 w3-quarter">
-    <header class="w3-container w3-blue">
-        <h4 class="w3-center no-margin" [innerHTML]="title"></h4>
-    </header>
+<form novalidate (ngSubmit)="onSubmit()" #imageForm="ngForm">
 
-    <form class="w3-container" novalidate (ngSubmit)="onSubmit()" #imageForm="ngForm">
-        <div class="w3-container no-padding">
-            <input type="hidden" name="userId" [value]="userId">
+    <div class="w3-container w3-padding">
+        <h6 class="w3-opacity w3-center"><strong>{{title}}</strong></h6>
 
+        <input type="hidden" name="userId" [value]="userId">
 
-            <img [src]="profilePic" alt="Avatar" class="w3-border img-thumbnail" />
-            <img [src]="validIcon" class="valid-icon" />
+        <img [src]="profilePic" alt="Avatar" class="w3-border img-thumbnail" />
+        <img [src]="validIcon" class="valid-icon" />
 
-            <input id="filetoupload" name="filetoupload" type="file" (change)="checkPhoto($event)" accept="image/*.jpg">
+        <input id="filetoupload" name="filetoupload" type="file" (change)="checkPhoto($event)" accept="image/*.jpg">
 
-            <div class="w3-panel w3-red">
-                <ul>
-                    <li *ngFor="let tip of alertTip;" [innerHTML]="tip"></li>
-                </ul>
-            </div>
-            <button type="submit" class="w3-button w3-block	w3-green w3-hover-red" [disabled]="imageForm.invalid || formDisabled">Submit</button>
+        <div class="w3-panel w3-red">
+            <ul>
+                <li *ngFor="let tip of alertTip;" [innerHTML]="tip"></li>
+            </ul>
         </div>
-    </form>
-</div>
+    </div>
+
+    <div class="w3-container">
+        <button type="submit" class="w3-button w3-block w3-theme" [disabled]="imageForm.invalid || formDisabled"><i class="fa fa-check-circle "></i> Submit</button>
+    </div>
+
+</form>
 
 <div class="preview" id="preview">
     <img [src]="previewImg" class="previewImg" />
