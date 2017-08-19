@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { HttpService } from './../services/http.service';
-import { Router } from '@angular/router';
 import { PatientProfileModel } from './../model/patient.profile.model'
 
 @Component({
@@ -21,7 +20,7 @@ export class PatProfileComponent implements OnInit {
   private formDisabled: boolean = true;
   @ViewChild('profileForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService, private router: Router) { }
+  constructor(private httpService: HttpService, private dataService: DataService) { }
 
   //=======================================
   //=======================================

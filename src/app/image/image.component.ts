@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { HttpService } from './../services/http.service';
-import { Router } from '@angular/router';
+import { fadeInAnimation } from "./../animation/fade.animation";
 
 @Component({
   selector: 'app-image',
@@ -20,7 +20,7 @@ export class ImageComponent implements OnInit {
   private profilePic: string = '../../../assets/img/blank-user.jpg';
   @ViewChild('imageForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService, private router: Router) { }
+  constructor(private httpService: HttpService, private dataService: DataService) { }
   //=======================================
   //=======================================
   public ngOnInit(): void {
