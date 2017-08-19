@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { HttpService } from './../services/http.service';
-import { Router } from '@angular/router';
+import { MessageService } from './../services/message.service';
 
 class Signup {
   constructor(
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   private formDisabled: boolean = false;
   @ViewChild('loginForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService, private router: Router) { }
+  constructor(private httpService: HttpService, private dataService: DataService, private messageService: MessageService) { }
 
   //=======================================
   //=======================================
@@ -102,8 +102,7 @@ export class LoginComponent implements OnInit {
           this.dataService.setToken(response.response.token);
           this.dataService.setUserId(response.response.userId);
           let url: string = this.dataService.getUserId().substr(0, 3);
-          this.router.navigate(['./profile-' + url.toLowerCase()]);
-          //this.router.navigate(['./image']);
+          this.messageService.sendMessage({ component: 'login', success: true });
         }
         break;
     }

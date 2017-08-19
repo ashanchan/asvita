@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
@@ -10,6 +11,8 @@ import { RouteModule } from './route/route.module';
 import { LoginComponent } from './login/login.component';
 import { DataService } from './services/data.service';
 import { HttpService } from './services/http.service';
+import { MessageService } from './services/message.service';
+
 import { HeaderComponent } from './header/header.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { DocProfileComponent } from './profile/doc.profile.component';
@@ -30,12 +33,13 @@ import { FooterComponent } from './footer/footer.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     RouteModule
   ],
 
-  providers: [DataService, HttpService],
+  providers: [DataService, HttpService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

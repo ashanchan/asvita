@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { HttpService } from './../services/http.service';
-import { Router } from '@angular/router';
 import { DoctorProfileModel } from './../model/doctor.profile.model'
 
 @Component({
@@ -17,8 +16,6 @@ export class DocProfileComponent implements OnInit {
   private tabs: Array<string> = [];
   private tabId: number = 0;
   private alertTip: string;
-  private clinics = [1, 1, 1, 1, 1, 1, 1];
-  private validFlag: Array<boolean> = [false, false, false];
   private medicalHistory = [];
   private specialization = [];
   private openDay = [];
@@ -26,7 +23,7 @@ export class DocProfileComponent implements OnInit {
   private formDisabled: boolean = true;
   @ViewChild('profileForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService, private router: Router) { }
+  constructor(private httpService: HttpService, private dataService: DataService) { }
 
   //=======================================
   //=======================================
