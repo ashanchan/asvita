@@ -1,12 +1,14 @@
-<div class=" w3-card-4 w3-quarter">
-    <div class="w3-bar w3-black">
-        <button class="w3-bar-item w3-button quarter-stretch" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
-    </div>
+<form novalidate (ngSubmit)="onSubmit()" #profileForm="ngForm">
 
-    <form class="w3-container" novalidate (ngSubmit)="onSubmit()" #profileForm="ngForm">
+    <div class="w3-container">
+
+        <div class="w3-container">
+            <button class="w3-bar-item w3-button w3-third w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
+        </div>
+
         <input type="hidden" name="mode" [value]="model.mode">
-        <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">
 
+        <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">
             <div class="w3-container w3-center">
                 <img src="../../assets/img/blank-user.jpg" alt="Avatar" class="w3-border w3-padding img-thumbnail" />
             </div>
@@ -119,12 +121,9 @@
             </div>
         </div>
 
-
         <div class="w3-container">
-
-            <button type="button" *ngIf="tabId !== 2" class="w3-button w3-block	w3-black w3-hover-gray" (click)="onNext()">Next</button>
-            <button type="submit" *ngIf="tabId === 2" class="w3-button w3-block	w3-black w3-hover-gray" [disabled]="profileForm.invalid || formDisabled">Submit</button>
+            <button type="button" *ngIf="tabId !== 2" class="w3-button w3-block w3-theme" (click)="onNext()">Next</button>
+            <button type="submit" *ngIf="tabId === 2" class="w3-button w3-block w3-theme" (click)="onSubmitClicked()" [disabled]="profileForm.invalid || formDisabled">Submit</button>
         </div>
-
-    </form>
-</div>
+    </div>
+</form>

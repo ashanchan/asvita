@@ -1,11 +1,10 @@
-<div class=" w3-card-4 w3-quarter">
-    <div class="w3-tag w3-xlarge  w3-black w3-center full-stretch"><strong>{{title}}</strong></div>
+<form novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <div class="w3-container w3-padding">
+        <h6 class="w3-opacity w3-center"><strong>{{title}}</strong></h6>
+        <div class="w3-container w3-center">
+            <img src="../../assets/img/blank-user.jpg" alt="Avatar" class="w3-border w3-padding img-thumbnail" />
+        </div>
 
-    <div class="w3-container w3-center">
-        <img src="../../assets/img/blank-user.jpg" alt="Avatar" class="w3-border w3-padding img-thumbnail" />
-    </div>
-
-    <form class="w3-container" novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm">
         <div class="w3-container">
             <input type="hidden" name="mode" [value]="model.mode">
 
@@ -43,22 +42,17 @@
         </div>
 
         <div class="w3-container">
-            <button type="submit" class="w3-button w3-block	w3-black w3-hover-gray" [disabled]="loginForm.invalid || formDisabled">Submit</button>
+            <button type="submit" class="w3-button w3-block w3-theme" [disabled]="loginForm.invalid || formDisabled"><i class="fa fa-check-circle "></i> Submit</button>
         </div>
-    </form>
 
-    <footer class="w3-container w3-light-gray">
-        <div *ngIf="model.mode === 'login'" class="w3-tag w3-round w3-gray" style="padding:3px">
-            <span class="w3-tag w3-round w3-black w3-border w3-border-white w3-hover-gray hand-cursor" (click)="changeMode('fyp')">Forgot pwd?</span>
+        <div class="w3-container">
+            <button *ngIf="model.mode === 'login'" class="w3-button w3-theme w3-small" (click)="changeMode('fyp')"><i class="fa fa-pencil"></i> Forgot pwd?</button>
+            <button *ngIf="model.mode !== 'register'" class="w3-button w3-theme w3-small" (click)="changeMode('register')"><i class="fa fa-handshake-o"></i> Register</button>
+            <button *ngIf="model.mode !== 'reset' && model.mode !== 'register'" class="w3-button w3-theme w3-small" (click)="changeMode('reset')"><i class="fa fa-exchange"></i> Reset Pwd</button>
+            <button *ngIf="model.mode !== 'login'" class="w3-button w3-theme w3-small" (click)="changeMode('login')"><i class="fa fa-refresh"></i> Login</button>
         </div>
-        <div *ngIf="model.mode !== 'register'" class="w3-tag w3-round w3-gray" style="padding:3px">
-            <span class="w3-tag w3-round w3-black w3-border w3-border-white w3-hover-gray hand-cursor" (click)="changeMode('register')">New User</span>
-        </div>
-        <div *ngIf="model.mode !== 'reset' && model.mode !== 'register'" class="w3-tag w3-round w3-gray" style="padding:3px">
-            <span class="w3-tag w3-round w3-black w3-border w3-border-white w3-hover-gray hand-cursor" (click)="changeMode('reset')">Reset pwd?</span>
-        </div>
-        <div *ngIf="model.mode !== 'login'" class="w3-tag w3-round w3-gray" style="padding:3px">
-            <span class="w3-tag w3-round w3-black w3-border w3-border-white w3-hover-gray hand-cursor" (click)="changeMode('login')">Login</span>
-        </div>
-    </footer>
-</div>
+
+    </div>
+</form>
+
+<img class="logo" src="http://localhost:1616/" alt="My_Logo">

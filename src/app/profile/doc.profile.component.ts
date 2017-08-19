@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { HttpService } from './../services/http.service';
+import { MessageService } from './../services/message.service';
 import { DoctorProfileModel } from './../model/doctor.profile.model'
 
 @Component({
@@ -21,9 +22,10 @@ export class DocProfileComponent implements OnInit {
   private openDay = [];
   private clinicId: number = 0;
   private formDisabled: boolean = true;
+  private hasFormSubmitted: boolean = false;
   @ViewChild('profileForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService) { }
+  constructor(private httpService: HttpService, private dataService: DataService, private messageService: MessageService) { }
 
   //=======================================
   //=======================================
@@ -37,7 +39,7 @@ export class DocProfileComponent implements OnInit {
     this.alertTip = "Before Submit, Fill All Fields with *";
     this.model.userId = this.dataService.getUserId();
     let apiUrl = 'http://localhost:1616/profile'
-    this.httpService.getApiData(apiUrl, this.model, true).subscribe(
+    let httpServiceSubscription = this.httpService.getApiData(apiUrl, this.model, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
           for (var i in response.response.data) {
@@ -45,6 +47,7 @@ export class DocProfileComponent implements OnInit {
             this.model[id] = response.response.data[id];
           }
         }
+        httpServiceSubscription.unsubscribe();
         this.createFormElements();
       }
     )
@@ -142,16 +145,24 @@ export class DocProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private onSubmit(): void {
-    if (this.form.valid && this.chkValidation()) {
+    if (this.form.valid && this.chkValidation() && !this.hasFormSubmitted) {
       this.model.mode = "updateProfile";
       this.formDisabled = true;
       let apiUrl = 'http://localhost:1616/profile'
-      this.httpService.getApiData(apiUrl, this.model, true).subscribe(
+      let httpServiceSubscription = this.httpService.getApiData(apiUrl, this.model, true).subscribe(
         (response: any) => {
           this.alertTip = response.response.msg;
+          this.hasFormSubmitted = true;
+          this.messageService.sendMessage({ event: 'onUserProfileUpdated', component: 'profile', success: true });
+          httpServiceSubscription.unsubscribe();
         }
       )
     }
+  }
+  //=======================================
+  //=======================================
+  private onSubmitClicked() {
+    this.hasFormSubmitted = false;
   }
   //=======================================
   //=======================================

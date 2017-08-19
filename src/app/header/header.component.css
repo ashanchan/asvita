@@ -1,3 +1,21 @@
 .pad-top {
     margin-top: 50px;
 }
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+ul li a {
+    text-decoration: none;
+}
+
+.nav-bar {
+    position: absolute;
+    width: 100%;
+}

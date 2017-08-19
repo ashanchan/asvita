@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { HttpService } from './../services/http.service';
-import { fadeInAnimation } from "./../animation/fade.animation";
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-image',
@@ -10,7 +10,7 @@ import { fadeInAnimation } from "./../animation/fade.animation";
   styleUrls: ['./image.component.css']
 })
 
-export class ImageComponent implements OnInit {
+export class ImageComponent implements OnInit, OnDestroy {
   private userId: string = '';
   private title: string = 'Profile Image';
   private alertTip: any = [];
@@ -20,11 +20,15 @@ export class ImageComponent implements OnInit {
   private profilePic: string = '../../../assets/img/blank-user.jpg';
   @ViewChild('imageForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService) { }
+  constructor(private httpService: HttpService, private dataService: DataService, private messageService: MessageService) { }
   //=======================================
   //=======================================
   public ngOnInit(): void {
     this.getData();
+  }
+  //=======================================
+  //=======================================
+  public ngOnDestroy(): void {
   }
   //=======================================
   //=======================================
@@ -37,19 +41,19 @@ export class ImageComponent implements OnInit {
     this.userId = this.dataService.getUserId();
     let apiUrl = 'http://localhost:1616/profile'
 
-    this.httpService.getApiData(apiUrl, { userId: this.userId }, true).subscribe(
+    let httpServiceSubscription = this.httpService.getApiData(apiUrl, { userId: this.userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
           this.profilePic = response.response.data.profileUrl;
         }
         this.profilePic = this.profilePic !== '-' ? this.profilePic : '../../../assets/img/blank-user.jpg';
+        httpServiceSubscription.unsubscribe();
       }
     )
-
   }
   //=======================================
   //=======================================
-  checkPhoto(event) {
+  private checkPhoto(event: any): void {
     if (event.target.files && event.target.files[0]) {
       let reader = new FileReader();
       reader.onload = (event: any) => {
@@ -66,7 +70,7 @@ export class ImageComponent implements OnInit {
   }
   //=======================================
   //=======================================
-  checkImageValidaty(size) {
+  private checkImageValidaty(size: number): void {
     let img: any = document.getElementsByClassName('previewImg')[0];
     let success: boolean = false;
     this.alertTip[3] = `Selected Height ${img['height']}px`;
@@ -87,13 +91,14 @@ export class ImageComponent implements OnInit {
     this.formDisabled = true;
     let apiUrl = 'http://localhost:1616/util/uploadImg';
     let data = { userId: this.userId, filePath: this.profilePic, mode: 'profile' }
-    this.httpService.getApiData(apiUrl, data, true).subscribe(
+    let httpServiceSubscription = this.httpService.getApiData(apiUrl, data, true).subscribe(
       (response: any) => {
         this.alertTip[6] = '<strong>' + response.response.msg + '</strong>';
+        this.messageService.sendMessage({ event: 'onImageUpload', success: true });
+        httpServiceSubscription.unsubscribe();
       }
     )
   }
   //=======================================
   //=======================================
-
 }
