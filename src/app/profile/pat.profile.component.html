@@ -1,11 +1,9 @@
-<form novalidate (ngSubmit)="onSubmit()" #profileForm="ngForm">
-
+<div class="w3-container">
     <div class="w3-container">
+        <button class="w3-bar-item w3-button w3-third w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
+    </div>
 
-        <div class="w3-container">
-            <button class="w3-bar-item w3-button w3-third w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
-        </div>
-
+    <form novalidate (ngSubmit)="onSubmit()" #profileForm="ngForm">
         <input type="hidden" name="mode" [value]="model.mode">
 
         <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">
@@ -123,7 +121,7 @@
 
         <div class="w3-container">
             <button type="button" *ngIf="tabId !== 2" class="w3-button w3-block w3-theme" (click)="onNext()">Next</button>
-            <button type="submit" *ngIf="tabId === 2" class="w3-button w3-block w3-theme" (click)="onSubmitClicked()" [disabled]="profileForm.invalid || formDisabled">Submit</button>
+            <button type="submit" *ngIf="tabId === 2" class="w3-button w3-block w3-theme" [disabled]="profileForm.invalid || formDisabled">Submit</button>
         </div>
-    </div>
-</form>
+    </form>
+</div>

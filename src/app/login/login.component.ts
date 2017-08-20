@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
-import { HttpService } from './../services/http.service';
 import { MessageService } from './../services/message.service';
+import { Subscription } from 'rxjs/Subscription';
 
 class Signup {
   constructor(
@@ -25,20 +25,24 @@ class Signup {
 
 export class LoginComponent implements OnInit, OnDestroy {
   private model: Signup = new Signup();
+  private subscription: Subscription;
   private title: string = "Login";
   private emailTip: string = "Enter your registered Email";
   private alertTip: string = '';
   private formDisabled: boolean = false;
   @ViewChild('loginForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService, private messageService: MessageService) { }
+  constructor(private dataService: DataService, private messageService: MessageService) { }
 
   //=======================================
   //=======================================
   public ngOnInit() {
+    this.subscription = this.messageService.getMessage().subscribe(message => {
+      this.onMessageReceived(message);
+    });
+
     this.model.mode = 'login';
-    this.model.type = 'pat';
-    this.model.email = 'ashanchan@gmail.com';
+    this.model.email = 'ashanchan@yahoo.com';
     this.model.password = 'Ashtra123';
     this.title = "Login";
   }
@@ -88,32 +92,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   private onSubmit(): void {
     this.alertTip = '';
     if (this.chkValidation() && this.form.valid) {
-      let mode = this.model.mode;
-      let apiUrl = 'http://localhost:1616/login'
-      this.httpService.getApiData(apiUrl, this.model, true).subscribe(
-        (response: Response) => {
-          this.onProcess(mode, response);
-        }
-      )
+      this.messageService.sendMessage({ event: 'onLoginSubmit', component: 'login', data: { mode: this.model.mode, model: this.model } });
     }
   }
   //=======================================
   //=======================================
-  private onProcess(mode, response): void {
-    switch (mode) {
-      case 'login':
-        if (response.success) {
-          this.dataService.setToken(response.response.token);
-          this.dataService.setUserId(response.response.userId);
-          this.messageService.sendMessage({ event: 'onLogin', component: 'login', success: true });
-        }
-        break;
+  private onMessageReceived(message: any): void {
+    if (message.event === 'onLoginProcessed') {
+      if (message.isSuccess) {
+        this.formDisabled = true;
+      }
+      this.alertTip = message.msg;
     }
-
-    if (response.success) {
-      this.formDisabled = true;
-    }
-    this.alertTip = response.response.msg;
   }
 }
 //=======================================

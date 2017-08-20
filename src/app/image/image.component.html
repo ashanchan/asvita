@@ -1,27 +1,57 @@
-<form novalidate (ngSubmit)="onSubmit()" #imageForm="ngForm">
+<div class="w3-container w3-padding">
+    <div class="w3-container">
+        <button class="w3-bar-item w3-button w3-third w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab.mode"></button>
+    </div>
 
-    <div class="w3-container w3-padding">
-        <h6 class="w3-opacity w3-center"><strong>{{title}}</strong></h6>
+    <div class="w3-container" [hidden]="this.tabId !== 2">
+        <button class="w3-button w3-theme w3-small w3-right" (click)="getFileList()"><i class="fa fa-refresh"></i> Refresh List</button>
+    </div>
 
+    <form novalidate (ngSubmit)="onSubmit()" #imageForm="ngForm">
         <input type="hidden" name="userId" [value]="userId">
 
-        <img [src]="profilePic" alt="Avatar" class="w3-border img-thumbnail" />
-        <img [src]="validIcon" class="valid-icon" />
+        <div class="w3-container" *ngIf="this.tabId ===0">
+            <img [src]="profilePic" alt="Avatar" class="w3-border img-thumbnail" />
 
-        <input id="filetoupload" name="filetoupload" type="file" (change)="checkPhoto($event)" accept="image/*.jpg">
+            <input id="filetoupload" name="filetoupload" type="file" (change)="checkPhoto($event)" accept="image/*.jpg">
+        </div>
 
-        <div class="w3-panel w3-red">
+        <div class="w3-container" *ngIf="this.tabId ===1">
+            <img [src]="profilePic" alt="Avatar" class="w3-border img-thumbnail" />
+
+            <input id="filetoupload" name="filetoupload" type="file" (change)="checkPhoto($event)" accept="image/*.jpg">
+
+            <div class="w3-row no-padding">
+                <div class="w3-half">
+                    <label>Record Number<span class="required">*</span></label>
+                    <input type="text" name="recordNum" id="recordNum" class="w3-input w3-border" [(ngModel)]="model.recordNum" required #recordNum="ngModel" placeholder="Enter Medical Record Number" />
+                </div>
+                <div class="w3-half">
+                    <label>Record Date [mm/dd/yyyy]<span class="required">*</span></label>
+                    <input type="date" name="recordDate" id="recordDate" class="w3-input w3-border" [(ngModel)]="model.recordDate" required #recordDate="ngModel" />
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-container" *ngIf="this.tabId !==2">
+            <div class="w3-panel w3-red">
+                <ul>
+                    <li *ngFor="let tip of alertTip;" [innerHTML]="tip"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="w3-container" [hidden]="this.tabId !== 2">
             <ul>
-                <li *ngFor="let tip of alertTip;" [innerHTML]="tip"></li>
+                <li *ngFor="let file of fileList;" [innerHTML]="file"></li>
             </ul>
         </div>
-    </div>
 
-    <div class="w3-container">
-        <button type="submit" class="w3-button w3-block w3-theme" [disabled]="imageForm.invalid || formDisabled"><i class="fa fa-check-circle "></i> Submit</button>
-    </div>
-
-</form>
+        <div class="w3-container">
+            <button type="submit" class="w3-button w3-block w3-theme" [disabled]="imageForm.invalid || formDisabled"><i class="fa fa-check-circle "></i> Submit</button>
+        </div>
+    </form>
+</div>
 
 <div class="preview" id="preview">
     <img [src]="previewImg" class="previewImg" />

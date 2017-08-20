@@ -16,7 +16,7 @@ export class LogoutComponent implements OnInit {
   //=======================================
   public ngOnInit() {
     let profileData = this.dataService.getProfileData();
-    this.greeting = `Bye bye  ${profileData.fullName}. Your session has been ended... Please use browser exit button to close the window.`;
+    this.greeting = `Bye bye  ${profileData.fullName}.`;
     this.dataService.setDiskSpace(null);
     this.dataService.setProfileData(null);
     this.dataService.setToken(null);

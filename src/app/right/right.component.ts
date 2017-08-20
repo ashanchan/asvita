@@ -20,7 +20,7 @@ export class RightPanelComponent implements OnInit {
   //=======================================
   public ngOnInit(): void {
     this.subscription = this.messageService.getMessage().subscribe(message => {
-      this.onAuthentication(message);
+      this.onMessageReceived(message);
     });
   }
   //=======================================
@@ -29,11 +29,11 @@ export class RightPanelComponent implements OnInit {
     this.subscription.unsubscribe();
     setTimeout(() => {
       this.isAuthenticated = false;
-    }, 1000);
+    }, 500);
   }
   //=======================================
   //=======================================
-  private onAuthentication(message: any): void {
+  private onMessageReceived(message: any): void {
     switch (message.event) {
       case 'onProfileUpdate':
         this.isAuthenticated = true;

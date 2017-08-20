@@ -3,7 +3,6 @@
         <div class="w3-container">
             <h4 class="w3-center">My Profile</h4>
             <p class="w3-center"><img [src]="profilePic" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-
             <div *ngIf="isAuthenticated">
                 <hr>
                 <p><i class="fa fa-id-card fa-fw w3-margin-right w3-text-theme"></i> {{profileData.userId}}</p>
