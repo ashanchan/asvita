@@ -60,4 +60,9 @@ export class DataService {
   public getFolderPath(): any {
     return this.folerPath;
   }
+  //=======================================
+  //=======================================
+  public getRandomExt(): any {
+    return Math.random();
+  }
 }

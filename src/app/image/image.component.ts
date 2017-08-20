@@ -1,8 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
-import { HttpService } from './../services/http.service';
-import { MessageService } from '../services/message.service';
+import { MessageService } from './../services/message.service';
+import { Subscription } from 'rxjs/Subscription';
+
+class Record {
+  constructor(
+    public recordNum: string = '',
+    public recordDate: string = ''
+  ) { }
+}
 
 @Component({
   selector: 'app-image',
@@ -11,45 +18,73 @@ import { MessageService } from '../services/message.service';
 })
 
 export class ImageComponent implements OnInit, OnDestroy {
+  private model: Record = new Record();
+  private subscription: Subscription;
   private userId: string = '';
-  private title: string = 'Profile Image';
   private alertTip: any = [];
   private previewImg = "";
   private imgSpec: any;
   private formDisabled: boolean = true;
   private profilePic: string = '../../../assets/img/blank-user.jpg';
+  private tabs: any;
+  private tabId: number = 0;
+  private fileName: string = '';
+  private fileList: any;
   @ViewChild('imageForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService, private messageService: MessageService) { }
+  constructor(private dataService: DataService, private messageService: MessageService) { }
   //=======================================
   //=======================================
   public ngOnInit(): void {
+    this.subscription = this.messageService.getMessage().subscribe(message => {
+      this.onMessageReceived(message);
+    });
+
     this.getData();
   }
   //=======================================
   //=======================================
   public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
   //=======================================
   //=======================================
   private getData(): void {
-    this.imgSpec = { height: 400, width: 500, size: 100 };
-    this.alertTip[0] = `Allowed Height ${this.imgSpec['height']}px`;
-    this.alertTip[1] = `Allowed Width ${this.imgSpec['width']}px`;
-    this.alertTip[2] = `Allowed Size ${this.imgSpec['size']}kb`;
-
-    this.userId = this.dataService.getUserId();
-    let apiUrl = 'http://localhost:1616/profile'
-
-    let httpServiceSubscription = this.httpService.getApiData(apiUrl, { userId: this.userId }, true).subscribe(
-      (response: any) => {
-        if (response.response.isSuccess) {
-          this.profilePic = response.response.data.profileUrl;
-        }
-        this.profilePic = this.profilePic !== '-' ? this.profilePic : '../../../assets/img/blank-user.jpg';
-        httpServiceSubscription.unsubscribe();
+    this.tabs = [];
+    this.tabs.push({ mode: 'Profile', imgSpec: { height: 225, width: 225, size: 25 } });
+    this.tabs.push({ mode: 'Medical', imgSpec: { height: 768, width: 1024, size: 100 } });
+    this.tabs.push({ mode: 'Manage', imgSpec: { height: 0, width: 0, size: 0 } });
+    this.updateImageSpec();
+  }
+  //=======================================
+  //=======================================
+  private updateImageSpec() {
+    if (this.tabId !== 2) {
+      this.alertTip = [];
+      this.alertTip[0] = `Allowed Height ${this.tabs[this.tabId].imgSpec['height']}px`;
+      this.alertTip[1] = `Allowed Width ${this.tabs[this.tabId].imgSpec['width']}px`;
+      this.alertTip[2] = `Allowed Size ${this.tabs[this.tabId].imgSpec['size']}kb`;
+      if (this.tabs[this.tabId].mode === 'Profile') {
+        this.profilePic = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
+        this.fileName = 'profile';
       }
-    )
+      else {
+        this.profilePic = '../../../assets/img/blank-user.jpg?' + this.dataService.getRandomExt();
+        this.fileName = 'med-';
+      }
+    }
+
+  }
+  //=======================================
+  //=======================================
+  private getFileList(): void {
+    this.messageService.sendMessage({ event: 'onFileList', component: 'image' });
+  }
+  //=======================================
+  //=======================================
+  private onTabClicked(idx: number): void {
+    this.tabId = idx;
+    this.updateImageSpec();
   }
   //=======================================
   //=======================================
@@ -76,7 +111,7 @@ export class ImageComponent implements OnInit, OnDestroy {
     this.alertTip[3] = `Selected Height ${img['height']}px`;
     this.alertTip[4] = `Selected Width ${img['width']}px`;
     this.alertTip[5] = `Selected Size ${size}kb`;
-    if (img.height <= this.imgSpec.height && img.width <= this.imgSpec.width && size <= this.imgSpec.size) {
+    if (img.height <= this.tabs[this.tabId].imgSpec.height && img.width <= this.tabs[this.tabId].imgSpec.width && size <= this.tabs[this.tabId].imgSpec.size) {
       this.formDisabled = false;
       this.alertTip[6] = 'Click on Submit to Upload  file';
     }
@@ -88,16 +123,22 @@ export class ImageComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private onSubmit(): void {
+    this.fileName = this.fileName === 'profile' ? 'profile' : String(this.model.recordDate) + '-med-' + String(this.model.recordNum).trim();
+    let model = { filePath: this.profilePic, mode: this.fileName };
     this.formDisabled = true;
-    let apiUrl = 'http://localhost:1616/util/uploadImg';
-    let data = { userId: this.userId, filePath: this.profilePic, mode: 'profile' }
-    let httpServiceSubscription = this.httpService.getApiData(apiUrl, data, true).subscribe(
-      (response: any) => {
-        this.alertTip[6] = '<strong>' + response.response.msg + '</strong>';
-        this.messageService.sendMessage({ event: 'onImageUpload', success: true });
-        httpServiceSubscription.unsubscribe();
-      }
-    )
+    this.messageService.sendMessage({ event: 'onImageSubmit', component: 'image', data: { model: model } });
+  }
+  //=======================================
+  //=======================================
+  private onMessageReceived(message: any): void {
+    switch (message.event) {
+      case 'onImageProcessed':
+        this.alertTip[6] = '<strong>' + message.data.msg + '</strong>';
+        break;
+      case 'onFileListUpdate':
+        this.fileList = message.data.fileList;
+        break;
+    }
   }
   //=======================================
   //=======================================

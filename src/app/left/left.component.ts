@@ -29,7 +29,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   public ngOnDestroy(): void {
-    this.profilePic = '../../assets/img/blank-user.jpg';
+    this.profilePic = '../../assets/img/blank-user.jpg?' + this.dataService.getRandomExt();
     this.subscription.unsubscribe();
     setTimeout(() => {
       this.isAuthenticated = false;
@@ -39,8 +39,11 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   //=======================================
   private onMessageReceived(message: any): void {
     switch (message.event) {
+      case 'onProfileImageUpdate':
+        this.profilePic = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
+        break;
       case 'onProfileUpdate':
-        this.profilePic = this.dataService.getFolderPath() + 'profile.jpg';
+        this.profilePic = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
         this.profileData = this.dataService.getProfileData();
         this.locationInfo = Array.isArray(this.profileData.city) ? this.profileData.city[0] + ',' + this.profileData.state[0] : this.profileData.city + ',' + this.profileData.state;
         this.isAuthenticated = message.isSuccess;

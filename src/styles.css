@@ -53,7 +53,7 @@ textarea:focus {
 }
 
 .active-tab {
-    background-color: lightgray !important;
+    background-color: tomato !important;
 }
 
 .active-page {

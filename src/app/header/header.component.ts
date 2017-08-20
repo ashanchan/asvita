@@ -61,11 +61,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.submitLoginData(message.data);
         break;
       case 'onProfileSubmit':
-        console.log('event  onProfileSubmit')
         this.submitProfileData(message.data);
+        break;
+      case 'onImageSubmit':
+        this.submitImageData(message.data);
         break;
       case 'onImageUpload':
         this.getDiskUsage();
+        break;
+      case 'onFileList':
+        this.getFileList();
         break;
       case 'onLogout':
         this.ngOnDestroy();
@@ -85,29 +90,43 @@ export class HeaderComponent implements OnInit, OnDestroy {
         else {
           this.messageService.sendMessage({ event: 'onLoginProcessed', isSuccess: response.success, msg: response.response.msg });
         }
+        httpServiceSubscription.unsubscribe();
       }
     )
   }
   //=======================================
   //=======================================
   private submitProfileData(val: any): void {
-    console.log('=================================  . submitProfileData');
-
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile', val.model, true).subscribe(
       (response: any) => {
         if (response.success && val.model.mode === 'updateProfile') {
           this.getProfileData('profile');
         }
         this.messageService.sendMessage({ event: 'onProfileProcessed', data: response.response, mode: val.model.mode });
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+  //=======================================
+  //=======================================
+  private submitImageData(val: any): void {
+    val.model.userId = this.dataService.getUserId();
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/uploadImg', val.model, true).subscribe(
+      (response: any) => {
+        if (response.success && val.model.mode === 'profile') {
+          this.messageService.sendMessage({ event: 'onProfileImageUpdate', mode: '', isSuccess: true });
+        }
+        this.getDiskUsage();
+        this.messageService.sendMessage({ event: 'onImageProcessed', data: response.response, mode: val.mode });
+        httpServiceSubscription.unsubscribe();
       }
     )
   }
   //=======================================
   //=======================================
   private getProfileData(calledFrom): void {
-    let apiUrl = SERVER_PATH + 'profile';
     let userId = this.dataService.getUserId();
-    this.httpService.getApiData(apiUrl, { userId: userId }, true).subscribe(
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile', { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
           this.dataService.setProfileData(response.response.data);
@@ -120,23 +139,39 @@ export class HeaderComponent implements OnInit, OnDestroy {
             this.router.navigate(['./dashboard']);
           }
         }
+        httpServiceSubscription.unsubscribe();
       }
     )
   }
   //=======================================
   //=======================================
   private getDiskUsage(): void {
-    let apiUrl = SERVER_PATH + 'util/diskSpace';
     let userId = this.dataService.getUserId();
-    this.httpService.getApiData(apiUrl, { userId: userId }, true).subscribe(
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/diskSpace', { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
           this.dataService.setDiskSpace(response.response.diskSpace);
           this.messageService.sendMessage({ event: 'onDiskSpaceUpdate', isSuccess: true });
         }
+        httpServiceSubscription.unsubscribe();
       }
     )
   }
+  //=======================================
+  //=======================================
+  private getFileList(): void {
+    let userId = this.dataService.getUserId();
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/fileList', { userId: userId }, true).subscribe(
+      (response: any) => {
+        if (response.response.isSuccess) {
+          this.messageService.sendMessage({ event: 'onFileListUpdate', data: response.response });
+        }
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+
+
   //=======================================
   //=======================================
   private openNav(): void {
