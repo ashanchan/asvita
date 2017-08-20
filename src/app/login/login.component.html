@@ -41,6 +41,12 @@
 
         </div>
 
+        <div class="w3-container" [hidden]="alertTip === ''">
+            <div class="w3-panel w3-red">
+                <div class="alert alert-danger" role="alert" [innerHTML]="alertTip"></div>
+            </div>
+        </div>
+
         <div class="w3-container">
             <button type="submit" class="w3-button w3-block w3-theme" [disabled]="loginForm.invalid || formDisabled"><i class="fa fa-check-circle "></i> Submit</button>
         </div>
@@ -51,8 +57,5 @@
             <button *ngIf="model.mode !== 'reset' && model.mode !== 'register'" class="w3-button w3-theme w3-small" (click)="changeMode('reset')"><i class="fa fa-exchange"></i> Reset Pwd</button>
             <button *ngIf="model.mode !== 'login'" class="w3-button w3-theme w3-small" (click)="changeMode('login')"><i class="fa fa-refresh"></i> Login</button>
         </div>
-
     </div>
 </form>
-
-<img class="logo" src="http://localhost:1616/" alt="My_Logo">

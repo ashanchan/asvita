@@ -5,6 +5,8 @@ import { HttpService } from './../services/http.service';
 import { DataService } from './../services/data.service';
 import { Router } from '@angular/router';
 
+const SERVER_PATH: string = 'http://localhost:1616/';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -24,8 +26,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   public ngOnInit(): void {
+    console.log(SERVER_PATH);
     this.subscription = this.messageService.getMessage().subscribe(message => {
-      this.onAuthentication(message);
+      this.onMessageReceived(message);
     });
     this.routerSubscription = this.router.events.subscribe((val: any) => {
       this.activeUrl = val.url;
@@ -52,11 +55,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private onAuthentication(message: any): void {
+  private onMessageReceived(message: any): void {
     switch (message.event) {
-      case 'onLogin':
-      case 'onUserProfileUpdated':
-        this.getProfileData(message.component);
+      case 'onLoginSubmit':
+        this.submitLoginData(message.data);
+        break;
+      case 'onProfileSubmit':
+        console.log('event  onProfileSubmit')
+        this.submitProfileData(message.data);
         break;
       case 'onImageUpload':
         this.getDiskUsage();
@@ -68,15 +74,45 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
+  private submitLoginData(val: any): void {
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login', val.model, true).subscribe(
+      (response: any) => {
+        if (val.mode === 'login' && response.success) {
+          this.dataService.setToken(response.response.token);
+          this.dataService.setUserId(response.response.userId);
+          this.getProfileData('login');
+        }
+        else {
+          this.messageService.sendMessage({ event: 'onLoginProcessed', isSuccess: response.success, msg: response.response.msg });
+        }
+      }
+    )
+  }
+  //=======================================
+  //=======================================
+  private submitProfileData(val: any): void {
+    console.log('=================================  . submitProfileData');
+
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile', val.model, true).subscribe(
+      (response: any) => {
+        if (response.success && val.model.mode === 'updateProfile') {
+          this.getProfileData('profile');
+        }
+        this.messageService.sendMessage({ event: 'onProfileProcessed', data: response.response, mode: val.model.mode });
+      }
+    )
+  }
+  //=======================================
+  //=======================================
   private getProfileData(calledFrom): void {
-    this.messageService.sendMessage({ component: 'router', isSuccess: false });
-    let apiUrl = 'http://localhost:1616/profile';
+    let apiUrl = SERVER_PATH + 'profile';
     let userId = this.dataService.getUserId();
     this.httpService.getApiData(apiUrl, { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
           this.dataService.setProfileData(response.response.data);
-          this.messageService.sendMessage({ event: 'onProfileUpdate', isSuccess: true });
+          this.dataService.setFolderPath(SERVER_PATH + 'uploads/' + userId + '/');
+          this.messageService.sendMessage({ event: 'onProfileUpdate', mode: '', isSuccess: true });
           if (calledFrom === 'login') {
             this.getDiskUsage();
             this.createTabs();
@@ -90,7 +126,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private getDiskUsage(): void {
-    let apiUrl = 'http://localhost:1616/util/diskSpace';
+    let apiUrl = SERVER_PATH + 'util/diskSpace';
     let userId = this.dataService.getUserId();
     this.httpService.getApiData(apiUrl, { userId: userId }, true).subscribe(
       (response: any) => {

@@ -8,6 +8,7 @@ export class DataService {
   private userId: string = '';
   private profileData: any;
   private diskSpace: any;
+  private folerPath: string;
   //=======================================
   //=======================================
   public setToken(token): void {
@@ -31,8 +32,8 @@ export class DataService {
   }
   //=======================================
   //=======================================
-  public setProfileData(data): void {
-    this.profileData = data;
+  public setProfileData(val): void {
+    this.profileData = val;
   }
   //=======================================
   //=======================================
@@ -41,12 +42,22 @@ export class DataService {
   }
   //=======================================
   //=======================================
-  public setDiskSpace(data): void {
-    this.diskSpace = data;
+  public setDiskSpace(val): void {
+    this.diskSpace = val;
   }
   //=======================================
   //=======================================
   public getDiskSpace(): any {
     return this.diskSpace;
+  }
+  //=======================================
+  //=======================================
+  public setFolderPath(val): void {
+    this.folerPath = val;
+  }
+  //=======================================
+  //=======================================
+  public getFolderPath(): any {
+    return this.folerPath;
   }
 }

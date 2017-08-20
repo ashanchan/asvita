@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
-import { HttpService } from './../services/http.service';
 import { MessageService } from './../services/message.service';
+import { Subscription } from 'rxjs/Subscription';
 import { DoctorProfileModel } from './../model/doctor.profile.model'
 
 @Component({
@@ -14,6 +14,7 @@ import { DoctorProfileModel } from './../model/doctor.profile.model'
 
 export class DocProfileComponent implements OnInit {
   private model: DoctorProfileModel = new DoctorProfileModel();
+  private subscription: Subscription;
   private tabs: Array<string> = [];
   private tabId: number = 0;
   private alertTip: string;
@@ -22,14 +23,16 @@ export class DocProfileComponent implements OnInit {
   private openDay = [];
   private clinicId: number = 0;
   private formDisabled: boolean = true;
-  private hasFormSubmitted: boolean = false;
   @ViewChild('profileForm') form: any;
 
-  constructor(private httpService: HttpService, private dataService: DataService, private messageService: MessageService) { }
+  constructor(private dataService: DataService, private messageService: MessageService) { }
 
   //=======================================
   //=======================================
   public ngOnInit(): void {
+    this.subscription = this.messageService.getMessage().subscribe(message => {
+      this.onMessageReceived(message);
+    });
     this.getData();
   }
   //=======================================
@@ -37,21 +40,12 @@ export class DocProfileComponent implements OnInit {
   private getData(): void {
     this.model.mode = "getProfile";
     this.alertTip = "Before Submit, Fill All Fields with *";
-    this.model.userId = this.dataService.getUserId();
-    let apiUrl = 'http://localhost:1616/profile'
-    let httpServiceSubscription = this.httpService.getApiData(apiUrl, this.model, true).subscribe(
-      (response: any) => {
-        if (response.response.isSuccess) {
-          for (var i in response.response.data) {
-            let id: string = i;
-            this.model[id] = response.response.data[id];
-          }
-        }
-        httpServiceSubscription.unsubscribe();
-        this.createFormElements();
-      }
-    )
-
+    let profileData = this.dataService.getProfileData();
+    for (let i in profileData) {
+      let id: string = i;
+      this.model[id] = profileData[id];
+    }
+    this.createFormElements();
   }
   //=======================================
   //=======================================
@@ -145,24 +139,18 @@ export class DocProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private onSubmit(): void {
-    if (this.form.valid && this.chkValidation() && !this.hasFormSubmitted) {
+    if (this.form.valid && this.chkValidation()) {
       this.model.mode = "updateProfile";
       this.formDisabled = true;
-      let apiUrl = 'http://localhost:1616/profile'
-      let httpServiceSubscription = this.httpService.getApiData(apiUrl, this.model, true).subscribe(
-        (response: any) => {
-          this.alertTip = response.response.msg;
-          this.hasFormSubmitted = true;
-          this.messageService.sendMessage({ event: 'onUserProfileUpdated', component: 'profile', success: true });
-          httpServiceSubscription.unsubscribe();
-        }
-      )
+      this.messageService.sendMessage({ event: 'onProfileSubmit', component: 'profile', data: { model: this.model } });
     }
   }
   //=======================================
   //=======================================
-  private onSubmitClicked() {
-    this.hasFormSubmitted = false;
+  private onMessageReceived(message: any): void {
+    if (message.event === 'onProfileUpdate' && message.mode === 'updateProfile') {
+      this.alertTip = message.data.msg;
+    }
   }
   //=======================================
   //=======================================
