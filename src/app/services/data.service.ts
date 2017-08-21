@@ -7,8 +7,11 @@ export class DataService {
   private jwtToken: string = '';
   private userId: string = '';
   private profileData: any;
-  private diskSpace: any;
-  private folerPath: string;
+  private diskSpace: any = '0';
+  private folderPath: string;
+  private rootPath: string;
+  private subscription: any;
+  private searchList: any;
   //=======================================
   //=======================================
   public setToken(token): void {
@@ -53,12 +56,48 @@ export class DataService {
   //=======================================
   //=======================================
   public setFolderPath(val): void {
-    this.folerPath = val;
+    this.folderPath = val;
   }
   //=======================================
   //=======================================
   public getFolderPath(): any {
-    return this.folerPath;
+    return this.folderPath;
+  }
+  //=======================================
+  //=======================================
+  public setRootPath(val): void {
+    this.rootPath = val;
+  }
+  //=======================================
+  //=======================================
+  public getRootPath(): any {
+    return this.rootPath;
+  }
+
+  //=======================================
+  //=======================================
+  public setSubscription(val): any {
+    this.subscription = val;
+  }
+  //=======================================
+  //=======================================
+  public getSubscription(): any {
+    return this.subscription;
+  }
+  //=======================================
+  //=======================================
+  public setSearchList(val): any {
+    this.searchList = val;
+  }
+  //=======================================
+  //=======================================
+  public getSearchList(): any {
+    return this.searchList;
+  }
+  //=======================================
+  //=======================================
+  public getConvertedDate(val): any {
+    return String(new Date(val)).substr(4, 12);
   }
   //=======================================
   //=======================================

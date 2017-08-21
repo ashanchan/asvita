@@ -14,6 +14,7 @@ import { PatientProfileModel } from './../model/patient.profile.model'
 
 export class PatProfileComponent implements OnInit {
   private model: PatientProfileModel = new PatientProfileModel();
+  private profileUrl: string = '';
   private subscription: Subscription;
   private tabs: Array<string> = [];
   private tabId: number = 0;
@@ -48,7 +49,7 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   private createFormElements() {
     this.tabs = ['Profile', 'General', 'Medical'];
-    this.model.profileUrl = this.model.profileUrl === '-' ? '../../../assets/img/blank-user.jpg' : this.model.profileUrl;
+    this.profileUrl = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
     this.createMedicalHistory()
   }
   //=======================================

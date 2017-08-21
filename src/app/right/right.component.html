@@ -1,24 +1,25 @@
-<div class="w3-col m2">
-    <div class="w3-card-2 w3-round w3-white w3-center">
+<div class="w3-col m3" *ngIf="isAuthenticated">
+    <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
-            <p>Upcoming Events:</p>
-            <p><strong>Holiday</strong></p>
-            <p>Friday 15:00</p>
-            <p><button class="w3-button w3-block w3-theme-l4">Info</button></p>
+            <h4 class="w3-center">My Profile</h4>
+            <p class="w3-center"><img [src]="profilePic" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+            <hr>
+            <p><i class="fa fa-id-card fa-fw w3-margin-right w3-text-theme"></i> {{profileData.userId}}</p>
+            <p><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> {{profileData.fullName}}</p>
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{locationInfo}}</p>
         </div>
     </div>
 
-    <div [hidden]="!isAuthenticated">
-        <hr>
-        <div class="w3-card-2 w3-round w3-white">
-            <div class="w3-container">
-                <h4 class="w3-center">My Profile</h4>
-                <p class="w3-center"><img [src]="profilePic" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-                <hr>
-                <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
-                <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-                <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
-            </div>
+    <hr>
+
+    <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+            <h4 class="w3-center">My Subscription</h4>
+            <p><i class="fa fa-barcode fa-fw w3-margin-right w3-text-theme"></i> {{'From '+ userSubscription['startFrom'] +' - '+userSubscription.expiresOn}}</p>
+            <p><i class="fa fa-database fa-fw w3-margin-right w3-text-theme"></i> {{'Used '+ userSubscription['usedSize'] +'mb from '+userSubscription['totalSize']+'mb'}}</p>
+            <p><i class="fa fa-bar-chart fa-fw w3-margin-right w3-text-theme"></i> {{userSubscription['addOn']}}</p>
         </div>
     </div>
+    <hr>
+
 </div>

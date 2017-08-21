@@ -18,11 +18,11 @@ import { DocProfileComponent } from './profile/doc.profile.component';
 import { PatProfileComponent } from './profile/pat.profile.component';
 import { ImageComponent } from './image/image.component';
 import { FooterComponent } from './footer/footer.component';
-import { LeftPanelComponent } from './left/left.component';
 import { RightPanelComponent } from './right/right.component';
 import { CenterPanelComponent } from './center/center.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogoutComponent } from './logout/logout.component';
+import { ConnectComponent } from './connect/connect.component';
 
 @NgModule({
   declarations: [
@@ -33,11 +33,11 @@ import { LogoutComponent } from './logout/logout.component';
     PatProfileComponent,
     ImageComponent,
     FooterComponent,
-    LeftPanelComponent,
     RightPanelComponent,
     CenterPanelComponent,
     DashboardComponent,
-    LogoutComponent
+    LogoutComponent,
+    ConnectComponent
   ],
   imports: [
     BrowserModule,

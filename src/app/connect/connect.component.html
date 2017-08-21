@@ -1,0 +1,59 @@
+<div class="w3-container">
+    <div class="w3-container">
+        <button *ngIf="!hideRefreshBtn" class="w3-button w3-theme w3-small w3-right" (click)="getConnectionList()"><i class="fa fa-refresh"></i> Refresh Connection</button>
+    </div>
+
+    <div *ngIf="hideRefreshBtn">
+        <form #searchForm="ngForm">
+            <table class="'w3-table-all w3-striped" style='width:100%'>
+                <thead>
+                    <tr class="w3-theme">
+                        <th>Doctor's Id</th>
+                        <th>Doctor's Name</th>
+                        <th>Clinic Name</th>
+                        <th>City</th>
+                        <th>Pin</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td><input type="text" name="userId" id="userId" class="w3-input w3-border" [(ngModel)]="model.userId" #userId="ngModel" placeholder="Enter Id" /></td>
+                    <td><input type="text" name="fullName" id="fullName" class="w3-input w3-border" [(ngModel)]="model.fullName" #fullName="ngModel" placeholder="Enter Doctor Name" /></td>
+                    <td><input type="text" name="clinic" id="clinic" class="w3-input w3-border" [(ngModel)]="model.clinic" #clinic="ngModel" placeholder="Enter Clinic Name" /></td>
+                    <td><input type="text" name="city" id="city" class="w3-input w3-border" [(ngModel)]="model.city" #city="ngModel" placeholder="Enter City" /></td>
+                    <td><input type="text" name="pin" id="pin" class="w3-input w3-border" [(ngModel)]="model.pin" #pin="ngModel" placeholder="Enter pin" /></td>
+                </tr>
+            </table>
+        </form>
+
+        <div class="w3-container">
+            <span>Use form data to filter search</span>
+            <button class="w3-button w3-theme w3-small w3-right" (click)="searchAvailableData()"><i class="fa fa-search"></i> Search</button>
+        </div>
+
+        <div *ngIf="!hideSearchResults" class="w3-responsive w3-block">
+            <table class="'w3-table-all w3-striped" style='width:100%'>
+                <thead>
+                    <tr class="w3-theme">
+                        <th>Link</th>
+                        <th>Details</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let search of searchData; let i=index">
+                    <td class="w3-center">
+                        <img [src]="search.profPic" class="w3-box" alt="Avatar">
+                        <button *ngIf="search.connection == 0" class="w3-button w3-theme w3-tiny w3-block" (click)="connectNow(search.connection)"><i class="fa fa-hand-paper-o"></i> send request</button><br>
+                        <button *ngIf="search.connection == 1" class="w3-button w3-theme w3-tiny w3-block" (click)="connectNow(search.connection)"><i class="fa fa-hand-paper-o"></i> accept request</button><br>
+                        <button *ngIf="search.connection == 2" class="w3-button w3-theme w3-tiny w3-block" (click)="connectNow(search.connection)"><i class="fa fa-hand-o-right"></i> waiting</button><br>
+                        <button *ngIf="search.connection == 3" class="w3-button w3-theme w3-tiny w3-block" (click)="connectNow(search.connection)"><i class="fa fa-handshake-o"></i> connected</button><br>
+                        <button *ngIf="search.connection == 4" class="w3-button w3-theme w3-tiny w3-block" (click)="connectNow(search.connection)"><i class="fa fa-thumbs-o-down"></i> block</button><br>
+                    </td>
+
+                    <td [innerHTML]="search.userDetail"></td>
+                    <td [innerHTML]="search.clinicDetail"></td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+td {
+    vertical-align: top;
+    padding: 5px;
+}
+
+td img {
+    height: auto;
+    width: 75px;
+}

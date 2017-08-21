@@ -9,7 +9,6 @@
 
             <ul>
                 <li>
-                    <a class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right" routerLink="./logout" title="Logout"><i class="fa fa-window-close-o"></i> Logout</a>
                     <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" (click)="openNav()"><i class="fa fa-bars"></i></a>
                 </li>
             </ul>
@@ -20,7 +19,7 @@
     <!-- Navbar on small screens -->
     <div class=" w3-bar-block w3-theme-d2  w3-hide-large w3-hide-medium w3-large nav-bar" [hidden]="isNavOpen">
         <ul>
-            <li *ngFor="let tab of tabs; let i=index ">
+            <li *ngFor="let tab of tabs; let i=index">
                 <a class="w3-bar-item w3-button w3-padding-large w3-hover-white" [routerLink]="tab.link" title="{{tab.title}}"><i class="{{tab.icon}}"></i>  {{tab.title}}</a>
             </li>
         </ul>
