@@ -16,6 +16,10 @@ ul li a {
 }
 
 .nav-bar {
-    position: absolute;
+    position: fixed;
     width: 100%;
+}
+
+.headerTab li:last-child {
+    float: right !important;
 }

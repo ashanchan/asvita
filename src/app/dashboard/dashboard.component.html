@@ -1,6 +1,8 @@
-<div class="w3-container w3-padding">
-    <div class="w3-panel w3-pale-yellow w3-topbar w3-bottombar w3-border-amber">
-        <h2 [innerHTML]="greeting"></h2>
-        <p>London is the most populous city in the United Kingdom, with a metropolitan area of over 9 million inhabitants.</p>
+<div class="w3-container">
+    <div class="w3-container">
+        <div class="w3-panel w3-pale-yellow w3-topbar w3-bottombar w3-border-amber">
+            <h2 [innerHTML]="greeting['name']"></h2>
+            <p [innerHTML]="greeting['msg']"></p>
+        </div>
     </div>
 </div>

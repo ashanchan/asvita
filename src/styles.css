@@ -59,3 +59,27 @@ textarea:focus {
 .active-page {
     background-color: lightgray !important;
 }
+
+hr {
+    margin: 10px 0;
+    border-top: 1px dotted teal
+}
+
+.remove-opacity {
+    opacity: 1 !important;
+}
+
+.thumbnail {
+    border: 1px solid teal;
+    border-radius: 4px;
+    padding: 5px;
+    width: 75px;
+    height: auto !important;
+    float: left;
+    max-width: 75px !important;
+}
+
+.thumbnail:hover {
+    border: 2px solid;
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}

@@ -5,6 +5,7 @@ import { LoginComponent } from '../login/login.component';
 import { DocProfileComponent } from '../profile/doc.profile.component';
 import { PatProfileComponent } from '../profile/pat.profile.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { ConnectComponent } from '../connect/connect.component';
 import { ImageComponent } from '../image/image.component';
 import { LogoutComponent } from '../logout/logout.component';
 
@@ -14,6 +15,7 @@ const appRoutes: Routes = [
   { path: 'profile-doc', component: DocProfileComponent },
   { path: 'profile-pat', component: PatProfileComponent },
   { path: 'image', component: ImageComponent },
+  { path: 'connect', component: ConnectComponent },
   { path: 'logout', component: LogoutComponent }
 ];
 

@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.model.mode = 'login';
     this.model.email = 'ashanchan@yahoo.com';
     this.model.password = 'Ashtra123';
+    this.model.type = "pat";
     this.title = "Login";
   }
   //=======================================

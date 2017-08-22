@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./center.component.css']
 })
 export class CenterPanelComponent implements OnInit {
-
+  private isAuthenticated: boolean = true;
   constructor() { }
 
   ngOnInit() {

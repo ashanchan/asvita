@@ -8,7 +8,7 @@
 
         <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">
             <div class="w3-container w3-center">
-                <img src="../../assets/img/blank-user.jpg" alt="Avatar" class="w3-border w3-padding img-thumbnail" />
+                <img [src]="profileUrl" alt="Avatar" class="w3-border  img-thumbnail" />
             </div>
 
             <label>Full Name <span class="required">*</span></label>
@@ -26,15 +26,15 @@
                 </div>
 
                 <div class="w3-quarter no-padding">
-                    <label class="vertical-align">Mr</label>
+                    <label class="vertical-align">&nbsp; Mr</label>
                     <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="mr" (change)="enableform($event)">
                 </div>
                 <div class="w3-quarter no-padding">
-                    <label class="vertical-align">Ms</label>
+                    <label class="vertical-align">&nbsp; Ms</label>
                     <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="ms" (change)="enableform($event)">
                 </div>
                 <div class="w3-quarter no-padding">
-                    <label class="vertical-align">None</label>
+                    <label class="vertical-align">&nbsp; None</label>
                     <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="np" (change)="enableform($event)">
                 </div>
             </div>
@@ -45,15 +45,15 @@
                 </div>
 
                 <div class="w3-quarter no-padding">
-                    <label class="vertical-align">Male</label>
+                    <label class="vertical-align">&nbsp; Male</label>
                     <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="m" (change)="enableform($event)">
                 </div>
                 <div class="w3-quarter no-padding">
-                    <label class="vertical-align">Female</label>
+                    <label class="vertical-align">&nbsp; Female</label>
                     <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="f" (change)="enableform($event)">
                 </div>
                 <div class="w3-quarter no-padding">
-                    <label class="vertical-align">Other</label>
+                    <label class="vertical-align">&nbsp; Other</label>
                     <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="o" (change)="enableform($event)">
                 </div>
             </div>

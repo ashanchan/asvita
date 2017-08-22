@@ -2,7 +2,6 @@ export class PatientProfileModel {
     constructor(
         public mode: string = '',
         public userId: string = '',
-        public profileUrl: string = '',
         public fullName: string = '',
         public mobile: string = '',
         public gender: string = '',

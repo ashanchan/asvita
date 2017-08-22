@@ -26,7 +26,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   public ngOnInit(): void {
-    console.log(SERVER_PATH);
     this.subscription = this.messageService.getMessage().subscribe(message => {
       this.onMessageReceived(message);
     });
@@ -49,9 +48,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //=======================================
   private createTabs(): void {
     let profile = String(this.dataService.getUserId()).substr(0, 3).toLowerCase();
-    this.tabs.push({ link: "/dashboard", title: "Dashboard", icon: 'fa fa-home' });
-    this.tabs.push({ link: "/profile-" + profile, title: "Profile", icon: 'fa fa-user' });
-    this.tabs.push({ link: "/image", title: "Upload", icon: 'fa fa-file-archive-o' });
+    this.tabs.push({ link: "/dashboard", title: "Dashboard", icon: 'fa fa-home', style: '' });
+    this.tabs.push({ link: "/profile-" + profile, title: "Profile", icon: 'fa fa-user', style: '' });
+    this.tabs.push({ link: "/image", title: "Upload", icon: 'fa fa-file-archive-o', style: '' });
+    this.tabs.push({ link: "/connect", title: "Connect", icon: 'fa fa-handshake-o', style: '' });
+    this.tabs.push({ link: "/logout", title: "Logout", icon: 'fa fa-window-close-o', style: 'w3-right' });
+
   }
   //=======================================
   //=======================================
@@ -69,8 +71,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
       case 'onImageUpload':
         this.getDiskUsage();
         break;
+      case 'onSubmitConnection':
+        this.onSubmitConnection(message.data);
+        break;
       case 'onFileList':
         this.getFileList();
+        break;
+      case 'onGetSearchList':
+        this.getSearchList();
+        break;
+      case 'onSendMailRequest':
+        this.sendMailRequest(message.data);
         break;
       case 'onLogout':
         this.ngOnDestroy();
@@ -93,6 +104,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
         httpServiceSubscription.unsubscribe();
       }
     )
+  }
+  //=======================================
+  //=======================================
+  private onSubmitConnection(val: any) {
+    val.userId = this.dataService.getUserId();
+    console.log(val.userId, val.reqId, val.reqMode);
+    if (val.reqMode === 'received') {
+      let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/updateProfileConnection', val, true).subscribe(
+        (response: any) => {
+          httpServiceSubscription.unsubscribe();
+        }
+      )
+    }
   }
   //=======================================
   //=======================================
@@ -124,19 +148,47 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
+  private sendMailRequest(val: any): void {
+    console.log(val.userId, val.fullName, val.requestName, val.requestNumber, val.requestType);
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/sendRequestMail', val, true).subscribe(
+      (response: any) => {
+        if (response.success && val.model.mode === 'profile') {
+          this.messageService.sendMessage({ event: 'onProfileImageUpdate', mode: '', isSuccess: true });
+        }
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+
+  //=======================================
+  //=======================================
   private getProfileData(calledFrom): void {
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile', { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
+          if (!response.response.data.fullName) {
+            response.response.data.fullName = '';
+            if (Array.isArray(response.response.data.city)) {
+              response.response.data.city[0] = '';
+              response.response.data.state[0] = '';
+            }
+            else {
+              response.response.data.city = '';
+              response.response.data.state = '';
+            }
+          }
           this.dataService.setProfileData(response.response.data);
+          this.dataService.setRootPath(SERVER_PATH + 'uploads/');
           this.dataService.setFolderPath(SERVER_PATH + 'uploads/' + userId + '/');
           this.messageService.sendMessage({ event: 'onProfileUpdate', mode: '', isSuccess: true });
           if (calledFrom === 'login') {
-            this.getDiskUsage();
+            this.getSubsciption();
             this.createTabs();
+            this.getDiskUsage();
             this.isAuthenticated = true;
             this.router.navigate(['./dashboard']);
+            this.messageService.sendMessage({ event: 'onAuthenticate', isSuccess: true });
           }
         }
         httpServiceSubscription.unsubscribe();
@@ -150,9 +202,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/diskSpace', { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
-          this.dataService.setDiskSpace(response.response.diskSpace);
-          this.messageService.sendMessage({ event: 'onDiskSpaceUpdate', isSuccess: true });
+          this.dataService.setDiskSpace(response.response.diskSpace.usedSize);
         }
+        this.messageService.sendMessage({ event: 'onDiskSpaceUpdate', isSuccess: true });
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -170,8 +222,33 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     )
   }
-
-
+  //=======================================
+  //=======================================
+  private getSubsciption(): void {
+    let userId = this.dataService.getUserId();
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login/subscription', { userId: userId }, true).subscribe(
+      (response: any) => {
+        if (response.response.isSuccess) {
+          this.dataService.setSubscription(response.response.data);
+        }
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+  //=======================================
+  //=======================================
+  private getSearchList(): void {
+    let userId = this.dataService.getUserId();
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/getProfileList', { userId: userId }, true).subscribe(
+      (response: any) => {
+        if (response.response.isSuccess) {
+          this.dataService.setSearchList(response.response.data);
+          this.messageService.sendMessage({ event: 'onSearchListUpdate' });
+        }
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
   //=======================================
   //=======================================
   private openNav(): void {
@@ -179,5 +256,4 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-
 }
