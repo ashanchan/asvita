@@ -21,11 +21,11 @@
                 <div class="w3-row-padding no-padding">
                     <div class="w3-half no-padding">
                         <label class="vertical-align">&nbsp;&nbsp;Doctor</label>
-                        <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.type" value="doc" [disabled]="formDisabled">
+                        <input type="radio" id="type" name="type" class="w3-radio w3-half" [(ngModel)]="model.type" value="doc" [disabled]="formDisabled">
                     </div>
                     <div class="w3-half no-padding">
                         <label class="vertical-align">&nbsp;&nbsp;Patient</label>
-                        <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.type" value="pat" [disabled]="formDisabled">
+                        <input type="radio" id="type" name="type" class="w3-radio w3-half w3-checked" [(ngModel)]="model.type" value="pat" [disabled]="formDisabled">
                     </div>
                 </div>
             </div>

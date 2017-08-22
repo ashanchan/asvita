@@ -1,7 +1,7 @@
 <div [hidden]="!isAuthenticated">
     <div class="w3-top">
         <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
-            <ul>
+            <ul class="headerTab">
                 <li *ngFor="let tab of tabs; let i=index ">
                     <a class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" [ngClass]="{'active-tab' : tab.link === activeUrl }" [routerLink]="tab.link" title="{{tab.title}}"><i class="{{tab.icon}}"></i>  {{tab.title}}</a>
                 </li>

@@ -26,7 +26,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   public ngOnInit(): void {
-    console.log(SERVER_PATH);
     this.subscription = this.messageService.getMessage().subscribe(message => {
       this.onMessageReceived(message);
     });
@@ -72,11 +71,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
       case 'onImageUpload':
         this.getDiskUsage();
         break;
+      case 'onSubmitConnection':
+        this.onSubmitConnection(message.data);
+        break;
       case 'onFileList':
         this.getFileList();
         break;
-      case 'onGetConnection':
-        this.getConnectionList();
+      case 'onGetSearchList':
+        this.getSearchList();
+        break;
+      case 'onSendMailRequest':
+        this.sendMailRequest(message.data);
         break;
       case 'onLogout':
         this.ngOnDestroy();
@@ -99,6 +104,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
         httpServiceSubscription.unsubscribe();
       }
     )
+  }
+  //=======================================
+  //=======================================
+  private onSubmitConnection(val: any) {
+    val.userId = this.dataService.getUserId();
+    console.log(val.userId, val.reqId, val.reqMode);
+    if (val.reqMode === 'received') {
+      let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/updateProfileConnection', val, true).subscribe(
+        (response: any) => {
+          httpServiceSubscription.unsubscribe();
+        }
+      )
+    }
   }
   //=======================================
   //=======================================
@@ -130,6 +148,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
+  private sendMailRequest(val: any): void {
+    console.log(val.userId, val.fullName, val.requestName, val.requestNumber, val.requestType);
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/sendRequestMail', val, true).subscribe(
+      (response: any) => {
+        if (response.success && val.model.mode === 'profile') {
+          this.messageService.sendMessage({ event: 'onProfileImageUpdate', mode: '', isSuccess: true });
+        }
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+
+  //=======================================
+  //=======================================
   private getProfileData(calledFrom): void {
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile', { userId: userId }, true).subscribe(
@@ -145,7 +177,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
               response.response.data.city = '';
               response.response.data.state = '';
             }
-            console.log('Oye no name found yaar ', Array.isArray(response.response.data.city));
           }
           this.dataService.setProfileData(response.response.data);
           this.dataService.setRootPath(SERVER_PATH + 'uploads/');
@@ -157,6 +188,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             this.getDiskUsage();
             this.isAuthenticated = true;
             this.router.navigate(['./dashboard']);
+            this.messageService.sendMessage({ event: 'onAuthenticate', isSuccess: true });
           }
         }
         httpServiceSubscription.unsubscribe();
@@ -205,13 +237,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private getConnectionList(): void {
+  private getSearchList(): void {
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/getProfileList', { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
           this.dataService.setSearchList(response.response.data);
-          this.messageService.sendMessage({ event: 'onConnectionUpdate' });
+          this.messageService.sendMessage({ event: 'onSearchListUpdate' });
         }
         httpServiceSubscription.unsubscribe();
       }

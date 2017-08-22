@@ -3,15 +3,12 @@
         <div class="w3-container">
             <h4 class="w3-center">My Profile</h4>
             <p class="w3-center"><img [src]="profilePic" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-            <hr>
             <p><i class="fa fa-id-card fa-fw w3-margin-right w3-text-theme"></i> {{profileData.userId}}</p>
             <p><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> {{profileData.fullName}}</p>
             <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{locationInfo}}</p>
         </div>
     </div>
-
     <hr>
-
     <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
             <h4 class="w3-center">My Subscription</h4>
@@ -21,5 +18,13 @@
         </div>
     </div>
     <hr>
+    <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+            <h4 class="w3-center">My Connection</h4>
+            <div *ngFor="let thumb of thumbnails">
+                <img class="thumbnail" [src]="thumb">
+            </div>
 
+        </div>
+    </div>
 </div>

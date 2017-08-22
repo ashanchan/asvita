@@ -3,7 +3,21 @@ td {
     padding: 5px;
 }
 
-td img {
-    height: auto;
-    width: 75px;
+.restrict-size {
+    max-height: 400px;
+}
+
+.thumbnail {
+    width: 125px !important;
+    height: auto !important;
+    max-width: 125px !important;
+    margin-bottom: 5px;
+}
+
+.search-list td:nth-child(1) {
+    width: 125px;
+}
+
+.search-list td:nth-child(2) {
+    width: 175px;
 }
