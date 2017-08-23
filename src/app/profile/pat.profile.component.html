@@ -110,9 +110,15 @@
             <hr>
             <label>Allergy</label>
             <textarea rows="2" cols="50" type="text" name="allergy" id="allergy" class="w3-input w3-border" [(ngModel)]="model.allergy" #allergy="ngModel" placeholder="Allergies, if any" (keydown)="enableform($event)"></textarea>
+
             <hr>
             <label>Special Notes</label>
             <textarea rows="2" cols="50" type="text" name="notes" id="notes" class="w3-input w3-border" [(ngModel)]="model.notes" #notes="ngModel" placeholder="Notes, if any" (keydown)="enableform($event)"></textarea>
+
+            <hr>
+            <label>Life Style</label>
+            <textarea rows="2" cols="50" type="text" name="lifeStyle" id="lifeStyle" class="w3-input w3-border" [(ngModel)]="model.lifeStyle" #notes="ngModel" placeholder="Life Style details" (keydown)="enableform($event)"></textarea>
+
 
             <div class="w3-panel w3-red">
                 <div class="alert alert-danger" role="alert" [innerHTML]="alertTip"></div>

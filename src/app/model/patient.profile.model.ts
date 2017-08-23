@@ -18,6 +18,7 @@ export class PatientProfileModel {
         public medicalHistory: Array<string> = [],
         public medicalHistoryOther: string = '',
         public allergy: string = '',
-        public notes: string = ''
+        public notes: string = '',
+        public lifeStyle: string = ''
     ) { }
 }
