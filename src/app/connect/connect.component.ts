@@ -52,7 +52,6 @@ export class ConnectComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.profileConnection = { connection: this.dataService.getProfileData().connection, connectionReq: this.dataService.getProfileData().connectionReq };
     this.userId = this.dataService.getUserId();
-    this.mode = this.userId.substr(0, 3);
     this.reqModel.requestType = 'doc';
 
     if (this.dataService.getSearchList()) {
@@ -70,7 +69,7 @@ export class ConnectComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private getSearchList() {
-    this.messageService.sendMessage({ event: 'onGetSearchList' });
+    this.messageService.sendMessage({ event: 'onGetSearchList', data: { userId: this.userId, reqMode: 'search' } });
   }
   //=======================================
   //=======================================
@@ -79,9 +78,6 @@ export class ConnectComponent implements OnInit, OnDestroy {
       case 'onSearchListUpdate':
         this.hideRefreshBtn = true;
         break;
-      case 'onConnectionUpdate':
-        this.searchAvailableData();
-        break;
     }
   }
   //=======================================
@@ -89,13 +85,15 @@ export class ConnectComponent implements OnInit, OnDestroy {
   private searchAvailableData(): void {
     let data = this.dataService.getSearchList()
     let totalClinic = data.length;
+    let userMode = this.dataService.getUserMode();
     this.searchData = [];
+
     let profData;
 
     for (let i = 0; i < totalClinic; i++) {
       if (data[i].fullName) {
         let conStatus = this.checkConnection(data[i].userId, data[i].connection, data[i].connectionReq);
-        if (this.mode === 'PAT') {
+        if (userMode === 'PAT') {
           let userDetail = '<i class="fa fa-id-badge"></i> ' + data[i].userId + '<br>' + '<i class="fa fa-stethoscope"></i> ' + 'Dr.' + data[i].fullName + '<br>' + '<i class="fa fa-graduation-cap"></i> ' + data[i].specialization.toString() + '<br>' + '<i class="fa fa-superpowers"></i> ' + data[i].qualification + '<br>' + data[i].specializationOther;
           let clinicDetail = '';
           let ctr = data[i].clinic.length;
@@ -107,7 +105,7 @@ export class ConnectComponent implements OnInit, OnDestroy {
           profData = { userId: data[i].userId, profPic: this.dataService.getRootPath() + data[i].userId + '/profile_thumb.jpg', userDetail: userDetail, adressDetail: clinicDetail, conStatus: conStatus }
         }
         else {
-          let genderIcon = data[i].gender === 'm' ? '<i class="fa fa-male"></i> ' : '<i class="fa fa-femal"></i> ';
+          let genderIcon = data[i].gender === 'm' ? '<i class="fa fa-male"></i> ' : '<i class="fa fa-female"></i> ';
           let userDetail = '<i class="fa fa-id-badge"></i> ' + data[i].userId + '<br>' + genderIcon + data[i].salutation + '.' + data[i].fullName + '<br>' + '<i class="fa fa-thermometer-empty"></i> ' + data[i].medicalHistory + '<br>' + '<i class="fa fa-thermometer-full"></i> ' + data[i].medicalHistoryOther + '<br>' + '<i class="fa fa-medkit"></i> ' + data[i].allergy;
           let address = '<i class="fa fa-address-card-o"></i> ' + data[i].address + ' ' + data[i].city + '-' + data[i].pin + '<br>' + '<i class="fa fa-phone"></i> ' + data[i].mobile;
           profData = { userId: data[i].userId, profPic: this.dataService.getRootPath() + data[i].userId + '/profile_thumb.jpg', userDetail: userDetail, adressDetail: address, conStatus: conStatus }

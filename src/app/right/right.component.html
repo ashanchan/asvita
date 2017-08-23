@@ -3,18 +3,18 @@
         <div class="w3-container">
             <h4 class="w3-center">My Profile</h4>
             <p class="w3-center"><img [src]="profilePic" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-            <p><i class="fa fa-id-card fa-fw w3-margin-right w3-text-theme"></i> {{profileData.userId}}</p>
-            <p><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> {{profileData.fullName}}</p>
-            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{locationInfo}}</p>
+            <p><i class="fa fa-id-card fa-fw w3-text-theme"></i> {{profileData.userId}}</p>
+            <p [innerHTML]="userTip.icon + ' '+ userTip.salutation+profileData.fullName"></p>
+            <p><i class="fa fa-home fa-fw w3-text-theme"></i> {{locationInfo}}</p>
         </div>
     </div>
     <hr>
     <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
             <h4 class="w3-center">My Subscription</h4>
-            <p><i class="fa fa-barcode fa-fw w3-margin-right w3-text-theme"></i> {{'From '+ userSubscription['startFrom'] +' - '+userSubscription.expiresOn}}</p>
-            <p><i class="fa fa-database fa-fw w3-margin-right w3-text-theme"></i> {{'Used '+ userSubscription['usedSize'] +'mb from '+userSubscription['totalSize']+'mb'}}</p>
-            <p><i class="fa fa-bar-chart fa-fw w3-margin-right w3-text-theme"></i> {{userSubscription['addOn']}}</p>
+            <p><i class="fa fa-barcode fa-fw w3-text-theme"></i> {{'From '+ userSubscription['startFrom'] +' - '+userSubscription.expiresOn}}</p>
+            <p><i class="fa fa-database fa-fw w3-text-theme"></i> {{'Used '+ userSubscription['usedSize'] +'mb from '+userSubscription['totalSize']+'mb'}}</p>
+            <p><i class="fa fa-bar-chart fa-fw w3-text-theme"></i> {{userSubscription['addOn']}}</p>
         </div>
     </div>
     <hr>
@@ -22,7 +22,7 @@
         <div class="w3-container">
             <h4 class="w3-center">My Connection</h4>
             <div *ngFor="let thumb of thumbnails">
-                <img class="thumbnail" [src]="thumb">
+                <img class="thumbnail" [src]="thumb.thumbnail" alt="ashtra">
             </div>
 
         </div>

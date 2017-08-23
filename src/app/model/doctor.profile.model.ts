@@ -15,6 +15,8 @@ export class DoctorProfileModel {
     public openDay: Array<string> = [],
     public qualification: string = '',
     public specialization: Array<string> = [],
-    public specializationOther: string = ''
+    public specializationOther: string = '',
+    public connection: Array<string> = [],
+    public connectionReq: Array<string> = []
   ) { }
 }

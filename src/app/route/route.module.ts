@@ -7,13 +7,16 @@ import { PatProfileComponent } from '../profile/pat.profile.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { ConnectComponent } from '../connect/connect.component';
 import { ImageComponent } from '../image/image.component';
+import { RecordComponent } from '../record/record.component';
 import { LogoutComponent } from '../logout/logout.component';
+
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'profile-doc', component: DocProfileComponent },
   { path: 'profile-pat', component: PatProfileComponent },
+  { path: 'record', component: RecordComponent },
   { path: 'image', component: ImageComponent },
   { path: 'connect', component: ConnectComponent },
   { path: 'logout', component: LogoutComponent }
