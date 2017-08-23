@@ -1,0 +1,34 @@
+.medicine td:nth-child(1) {
+    width: 3px;
+    vertical-align: middle;
+}
+
+.medicine td:nth-child(3),
+.medicine td:nth-child(4),
+.medicine td:nth-child(5),
+.medicine td:nth-child(6),
+.medicine td:nth-child(7),
+.medicine td:nth-child(8),
+.medicine td:nth-child(9),
+.medicine td:nth-child(10) {
+    width: 50px;
+}
+
+.medicine .w3-button {
+    color: tomato;
+    padding: 0px;
+    margin: 0px 10px;
+    background-color: #607d8b !important;
+}
+
+.connection li {
+    height: 100px;
+}
+
+.small-10-font {
+    font-size: 10pt;
+}
+
+.small-10-margin-bottom {
+    margin-bottom: 10px;
+}

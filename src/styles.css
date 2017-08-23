@@ -73,10 +73,9 @@ hr {
     border: 1px solid teal;
     border-radius: 4px;
     padding: 5px;
-    width: 75px;
-    height: auto !important;
+    width: 75px !important;
+    height: 75px !important;
     float: left;
-    max-width: 75px !important;
 }
 
 .thumbnail:hover {

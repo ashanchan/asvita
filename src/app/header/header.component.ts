@@ -47,13 +47,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private createTabs(): void {
-    let profile = String(this.dataService.getUserId()).substr(0, 3).toLowerCase();
+    let profile = this.dataService.getUserMode().toLowerCase();
     this.tabs.push({ link: "/dashboard", title: "Dashboard", icon: 'fa fa-home', style: '' });
     this.tabs.push({ link: "/profile-" + profile, title: "Profile", icon: 'fa fa-user', style: '' });
+    this.tabs.push({ link: "/record", title: "Record", icon: 'fa fa-medkit', style: '' });
     this.tabs.push({ link: "/image", title: "Upload", icon: 'fa fa-file-archive-o', style: '' });
     this.tabs.push({ link: "/connect", title: "Connect", icon: 'fa fa-handshake-o', style: '' });
     this.tabs.push({ link: "/logout", title: "Logout", icon: 'fa fa-window-close-o', style: 'w3-right' });
-
   }
   //=======================================
   //=======================================
@@ -78,11 +78,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.getFileList();
         break;
       case 'onGetSearchList':
-        this.getSearchList();
+        this.getSearchList(message.data);
         break;
       case 'onSendMailRequest':
         this.sendMailRequest(message.data);
         break;
+
+      case 'onPrescriptionSubmit':
+        this.submitPrescription(message.data);
+        break;
+
+
       case 'onLogout':
         this.ngOnDestroy();
         break;
@@ -96,6 +102,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (val.mode === 'login' && response.success) {
           this.dataService.setToken(response.response.token);
           this.dataService.setUserId(response.response.userId);
+          this.dataService.setUserMode();
           this.getProfileData('login');
         }
         else {
@@ -117,6 +124,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       )
     }
+  }
+  //=======================================
+  //=======================================
+  private submitPrescription(val: any) {
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/addPrescription', val.model, true).subscribe(
+      (response: any) => {
+        httpServiceSubscription.unsubscribe();
+      }
+    )
   }
   //=======================================
   //=======================================
@@ -237,13 +253,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private getSearchList(): void {
-    let userId = this.dataService.getUserId();
-    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/getProfileList', { userId: userId }, true).subscribe(
+  private getSearchList(val): void {
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/getSearchList', val, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
-          this.dataService.setSearchList(response.response.data);
-          this.messageService.sendMessage({ event: 'onSearchListUpdate' });
+          if (val.reqMode === 'search') {
+            this.dataService.setSearchList(response.response.data);
+            this.messageService.sendMessage({ event: 'onSearchListUpdate' });
+          }
+          else {
+            this.dataService.setConnectionList(response.response.data);
+            this.messageService.sendMessage({ event: 'onConnectionUpdate' });
+          }
         }
         httpServiceSubscription.unsubscribe();
       }

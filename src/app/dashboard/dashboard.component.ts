@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   //=======================================
   //=======================================
   public ngOnInit() {
+    let userTip = this.dataService.getUserTip();
     let fullName = this.dataService.getProfileData().fullName;
     if (fullName === '') {
       this.greeting['msg'] = 'Welcome. You are a new user. Please click on Profile Section and update your records.'
@@ -22,8 +23,7 @@ export class DashboardComponent implements OnInit {
     else {
       this.greeting['msg'] = 'London is the most populous city in the United Kingdom, with a metropolitan area of over 9 million inhabitants.';
     }
-    this.greeting['name'] = `Hello  ${fullName}`;
-
+    this.greeting['name'] = 'Hello ' + userTip['salutation'] + fullName;
   }
 
 }

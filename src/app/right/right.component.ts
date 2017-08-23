@@ -17,6 +17,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private isAuthenticated: boolean = false;
   private thumbnails: any = [];
+  private userTip: any = {};
   //=======================================
   //=======================================
   constructor(private messageService: MessageService, private dataService: DataService) { }
@@ -26,6 +27,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.subscription = this.messageService.getMessage().subscribe(message => {
       this.onMessageReceived(message);
     });
+    this.userTip = this.dataService.getUserTip();
   }
   //=======================================
   //=======================================
@@ -41,7 +43,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   private onMessageReceived(message: any): void {
     switch (message.event) {
       case 'onAuthenticate':
-        this.showConnection();
+        this.createConnectionRequest();
         break;
       case 'onProfileImageUpdate':
         this.profilePic = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
@@ -60,6 +62,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.userSubscription['expiresOn'] = this.dataService.getConvertedDate(sub.expiresOn);
         this.userSubscription['addOn'] = sub.addOn === '' ? '-' : sub.addOn;
         break;
+      case 'onConnectionUpdate':
+        this.thumbnails = this.dataService.getUserConnectionList();
+        break;
       case 'onLogout':
         this.ngOnDestroy();
         break;
@@ -67,14 +72,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private showConnection() {
-    let tmp = this.dataService.getProfileData()['connection'];
-    let ctr = tmp.length;
-    let path = this.dataService.getRootPath();
-    this.thumbnails = [];
-    for (let i = 0; i < ctr; i++) {
-      this.thumbnails[i] = path + tmp[i] + '/profile_thumb.jpg';
-    }
+  private createConnectionRequest() {
+    let tmp = this.profileData.connection.concat(this.profileData.connectionReq);
+    let userId = this.dataService.getUserId();
+    this.messageService.sendMessage({ event: 'onGetSearchList', data: { userId: userId, connection: tmp, reqMode: 'connection' } });
   }
   //=======================================
   //=======================================

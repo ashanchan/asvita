@@ -1,0 +1,107 @@
+<div class="connection" *ngIf="!isConnected">
+    <div class="w3-container">
+        <div class="w3-panel w3-pale-yellow w3-topbar w3-bottombar w3-border-amber">
+            <h2 [innerHTML]="greeting['name']"></h2>
+            <p [innerHTML]="greeting['msg']"></p>
+        </div>
+
+        <div class="w3-row">
+            <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of thumbnails; let i=index">
+                <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right" (click)='onConnected(i)'>
+                <span class="w3-large" [innerHTML]="userTip['iconx'] + userTip['salutationx']+thumb.fullName"></span><br>
+                <span class="small-10-font" [innerHTML]="thumb.address"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="w3-container" *ngIf="isConnected">
+    <div class="w3-responsive">
+        <form novalidate (ngSubmit)="onSubmit()" #recordForm="ngForm">
+            <table class="w3-table w3-bordered w3-border ">
+                <tr class="w3-theme">
+                    <th><i class="fa fa-user-md"></i> Doctor</th>
+                    <th><i class="fa fa-user-circle-o"></i> Patient</th>
+                    <th><i class="fa fa-birthday-cake"></i> Age</th>
+                    <th><i class="fa {{genderIcon}}"></i> Gender</th>
+                    <th><i class="fa fa-calendar"></i> Date</th>
+                </tr>
+
+                <tr>
+                    <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['doctorName']" disabled/></td>
+                    <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['patientName']" disabled/></td>
+                    <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['age']" disabled/></td>
+                    <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['gender']" disabled/></td>
+                    <td><input type="date" name="recordDate" id="recordDate" class="w3-input w3-border" [(ngModel)]="model.recordDate" required #fullName="ngModel" placeholder="Enter your Full Name" (keydown)="enableform($event)" /></td>
+                </tr>
+
+                <tr class="w3-theme">
+                    <th><i class="fa fa-smile-o"></i> Referred by</th>
+                    <th><i class="fa fa-balance-scale"></i> Weight</th>
+                    <th><i class="fa fa-thermometer-full"></i> Temperature</th>
+                    <th><i class="fa fa-heartbeat"></i> Blood Pressure</th>
+                    <th><i class="fa fa-heart"></i> Pulse</th>
+                </tr>
+
+                <tr>
+                    <td><input type="text" name="referred" id="referred" class="w3-input w3-border" [(ngModel)]="model.referred" #referred="ngModel" placeholder="Referred by" /></td>
+                    <td><input type="text" name="weight" id="weight" class="w3-input w3-border" [(ngModel)]="model.weight" #weight="ngModel" placeholder="Enter weight" /></td>
+                    <td><input type="text" name="temprature" id="temprature" class="w3-input w3-border" [(ngModel)]="model.temprature" #temprature="ngModel" placeholder="Enter temprature" /></td>
+                    <td><input type="text" name="bp" id="bp" class="w3-input w3-border" [(ngModel)]="model.bp" #bp="ngModel" placeholder="Enter blood pressure" /></td>
+                    <td><input type="text" name="pulse" id="pulse" class="w3-input w3-border" [(ngModel)]="model.pulse" #fullName="ngModel" placeholder="Enter pulse rate" /></td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <table class="w3-table-all w3-hoverable	medicine">
+                <tr class="w3-theme">
+                    <td></td>
+                    <td><span><i class="fa fa-medkit"></i> Medicine</span></td>
+                    <td>BB</td>
+                    <td>AB</td>
+                    <td>BL</td>
+                    <td>AL</td>
+                    <td>Eve</td>
+                    <td>BD</td>
+                    <td>AD</td>
+                    <td>Days</td>
+                </tr>
+
+                <tr *ngFor="let record of  [0,1,2,3,4,5,6,7,8,9]; let i=index">
+                    <td>{{i+1}}</td>
+                    <td><input type="text" name="medicine" id="medicine" class="w3-input w3-border" [(ngModel)]="model.medicine[i]" required #medicine="ngModel" placeholder="Enter Medicine Name" /></td>
+                    <td><input type="text" name="bbf" id="bbf" class="w3-input w3-border" [(ngModel)]="model.bbf[i]" #bbf="ngModel" maxlength="1" /></td>
+                    <td><input type="text" name="abf" id="abf" class="w3-input w3-border" [(ngModel)]="model.abf[i]" #abf="ngModel" maxlength="1" /></td>
+                    <td><input type="text" name="bl" id="bl" class="w3-input w3-border" [(ngModel)]="model.bl[i]" #bl="ngModel" maxlength="1" /></td>
+                    <td><input type="text" name="al" id="al" class="w3-input w3-border" [(ngModel)]="model.al[i]" #al="ngModel" maxlength="1" /></td>
+                    <td><input type="text" name="eve" id="eve" class="w3-input w3-border" [(ngModel)]="model.eve[i]" #eve="ngModel" maxlength="1" /></td>
+                    <td><input type="text" name="bd" id="bd" class="w3-input w3-border" [(ngModel)]="model.bd[i]" #bd="ngModel" maxlength="1" /></td>
+                    <td><input type="text" name="ad" id="bd" class="w3-input w3-border" [(ngModel)]="model.ad[i]" #ad="ngModel" maxlength="1" /></td>
+                    <td><input type="text" name="day" id="day" class="w3-input w3-border" [(ngModel)]="model.day[i]" #day="ngModel" maxlength="2" /></td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <table class="w3-table w3-bordered w3-border">
+                <tr class="w3-theme">
+                    <th><i class="fa fa-question-circle"></i> Diagnosis</th>
+                    <th><i class="fa fa-search"></i> Investigation Advised</th>
+                    <th><i class="fa fa-sticky-note-o"></i> Notes</th>
+                    <th><i class="fa fa-calendar-check-o"></i> Next Followup</th>
+                </tr>
+                <tr>
+                    <td><textarea rows="4" cols="50" type="text" name="diagnosis" id="diagnosis" class="w3-input w3-border" [(ngModel)]="model.diagnosis" #diagnosis="ngModel" placeholder="Enter diagnosis"></textarea></td>
+                    <td><textarea rows="4" cols="50" type="text" name="invAdvised" id="invAdvised" class="w3-input w3-border" [(ngModel)]="model.invAdvised" #invAdvised="ngModel" placeholder="Enter investigation advised"></textarea></td>
+                    <td><textarea rows="4" cols="50" type="text" name="notes" id="notes" class="w3-input w3-border" [(ngModel)]="model.notes" #notes="ngModel" placeholder="Any special notes"></textarea></td>
+                    <td><input type="date" name="followUp" id="followUp" class="w3-input w3-border" [(ngModel)]="model.followUp" #followUp="ngModel" placeholder="Follow up date" /><label>Keep blank if not required</label></td>
+                </tr>
+            </table>
+
+            <div class="w3-container">
+                <button type="submit" class="w3-button w3-block w3-theme" [disabled]="recordForm.invalid || formDisabled"><i class="fa fa-check-circle "></i> Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

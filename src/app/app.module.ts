@@ -23,6 +23,7 @@ import { CenterPanelComponent } from './center/center.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ConnectComponent } from './connect/connect.component';
+import { RecordComponent } from './record/record.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ConnectComponent } from './connect/connect.component';
     CenterPanelComponent,
     DashboardComponent,
     LogoutComponent,
-    ConnectComponent
+    ConnectComponent,
+    RecordComponent
   ],
   imports: [
     BrowserModule,
