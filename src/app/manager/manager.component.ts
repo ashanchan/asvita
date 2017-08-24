@@ -62,24 +62,37 @@ export class ManagerComponent implements OnInit, OnDestroy {
       case 'onLoginSubmit':
         this.submitLoginData(message.data);
         break;
+
+      case 'onAuthenticate':
+        this.createTabs();
+        this.router.navigate(['./dashboard']);
+        this.isAuthenticated = true;
+        break;
+
       case 'onProfileSubmit':
         this.submitProfileData(message.data);
         break;
+
       case 'onImageSubmit':
         this.submitImageData(message.data);
         break;
+
       case 'onImageUploaded':
-        this.getDiskUsage();
+        this.getDiskUsage('imageUpload');
         break;
+
       case 'onSubmitConnection':
         this.onSubmitConnection(message.data);
         break;
+
       case 'onFileList':
         this.getFileList();
         break;
+
       case 'onGetSearchList':
         this.getSearchList(message.data);
         break;
+
       case 'onSendMailRequest':
         this.sendMailRequest(message.data);
         break;
@@ -87,7 +100,6 @@ export class ManagerComponent implements OnInit, OnDestroy {
       case 'onPrescriptionSubmit':
         this.submitPrescription(message.data);
         break;
-
 
       case 'onLogout':
         this.ngOnDestroy();
@@ -196,15 +208,9 @@ export class ManagerComponent implements OnInit, OnDestroy {
           this.dataService.setProfileData(response.response.data);
           this.dataService.setRootPath(SERVER_PATH + 'uploads/');
           this.dataService.setFolderPath(SERVER_PATH + 'uploads/' + userId + '/');
-          this.messageService.sendMessage({ event: 'onProfileUpdate', mode: '', isSuccess: true });
+          // this.messageService.sendMessage({ event: 'onProfileUpdate', mode: '', isSuccess: true });
           if (calledFrom === 'login') {
-            this.getSubsciption();
-            this.getDiskUsage();
-
-            this.createTabs();
-            this.isAuthenticated = true;
-            this.router.navigate(['./dashboard']);
-            this.messageService.sendMessage({ event: 'onAuthenticate', isSuccess: true });
+            this.getSubsciption('login');
           }
         }
         httpServiceSubscription.unsubscribe();
@@ -213,14 +219,26 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private getDiskUsage(): void {
+  private getDiskUsage(calledFrom: string): void {
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/diskSpace', { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
           this.dataService.setDiskSpace(response.response.diskSpace.usedSize);
         }
-        this.messageService.sendMessage({ event: 'onDiskSpaceUpdate', isSuccess: true });
+        if (calledFrom === 'login') {
+          let profData = this.dataService.getProfileData();
+          let userId = profData.userId;
+          let tmp = profData.connection.concat(profData.connectionReq);
+          this.getSearchList({ userId: userId, connection: tmp, reqMode: 'login' });
+        }
+        else {
+          this.messageService.sendMessage({ event: 'onDiskSpaceUpdate', isSuccess: true });
+        }
+
+
+
+
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -240,12 +258,15 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private getSubsciption(): void {
+  private getSubsciption(calledFrom: string) {
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login/subscription', { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
           this.dataService.setSubscription(response.response.data);
+        }
+        if (calledFrom === 'login') {
+          this.getDiskUsage(calledFrom);
         }
         httpServiceSubscription.unsubscribe();
       }
@@ -253,16 +274,20 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private getSearchList(val): void {
+  private getSearchList(val: any): void {
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/getSearchList', val, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
-          if (val.reqMode === 'search') {
+          if (val.reqMode === 'login') {
+            this.dataService.setConnectionList(response.response.data);
+            this.messageService.sendMessage({ event: 'onAuthenticate', isSuccess: true })
+          }
+          else if (val.reqMode === 'search') {
             this.dataService.setSearchList(response.response.data);
             this.messageService.sendMessage({ event: 'onSearchListUpdate' });
           }
           else {
-            this.dataService.setConnectionList(response.response.data);
+            //=== do we need this
             this.messageService.sendMessage({ event: 'onConnectionUpdate' });
           }
         }

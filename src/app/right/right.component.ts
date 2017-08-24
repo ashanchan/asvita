@@ -43,40 +43,30 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   private onMessageReceived(message: any): void {
     switch (message.event) {
       case 'onAuthenticate':
-        this.createConnectionRequest();
-        break;
       case 'onProfileImageUpdate':
-        this.profilePic = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
-        break;
       case 'onProfileUpdate':
-        this.profilePic = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
-        this.profileData = this.dataService.getProfileData();
-        this.locationInfo = Array.isArray(this.profileData.city) ? this.profileData.city[0] + ',' + this.profileData.state[0] : this.profileData.city + ',' + this.profileData.state;
-        this.isAuthenticated = true;
-        break;
       case 'onDiskSpaceUpdate':
-        let sub = this.dataService.getSubscription();
-        this.userSubscription['usedSize'] = this.dataService.getDiskSpace();
-        this.userSubscription['totalSize'] = sub.diskSpace;
-        this.userSubscription['startFrom'] = this.dataService.getConvertedDate(sub.startFrom);
-        this.userSubscription['expiresOn'] = this.dataService.getConvertedDate(sub.expiresOn);
-        this.userSubscription['addOn'] = sub.addOn === '' ? '-' : sub.addOn;
-        break;
       case 'onConnectionUpdate':
-        this.thumbnails = this.dataService.getUserConnectionList();
-        break;
-      case 'onLogout':
-        this.ngOnDestroy();
+        this.updatePanel();
+        this.isAuthenticated = true;
         break;
     }
   }
+  //=======================================
+  //=======================================
+  private updatePanel() {
+    this.profilePic = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
+    let sub = this.dataService.getSubscription();
 
-  //=======================================
-  //=======================================
-  private createConnectionRequest() {
-    let tmp = this.profileData.connection.concat(this.profileData.connectionReq);
-    let userId = this.dataService.getUserId();
-    this.messageService.sendMessage({ event: 'onGetSearchList', data: { userId: userId, connection: tmp, reqMode: 'connection' } });
+    this.profileData = this.dataService.getProfileData();
+    this.locationInfo = Array.isArray(this.profileData.city) ? this.profileData.city[0] + ',' + this.profileData.state[0] : this.profileData.city + ',' + this.profileData.state;
+    this.userSubscription['usedSize'] = this.dataService.getDiskSpace();
+    this.userSubscription['totalSize'] = sub.diskSpace;
+    this.userSubscription['startFrom'] = this.dataService.getConvertedDate(sub.startFrom);
+    this.userSubscription['expiresOn'] = this.dataService.getConvertedDate(sub.expiresOn);
+    this.userSubscription['addOn'] = sub.addOn === '' ? '-' : sub.addOn;
+
+    this.thumbnails = this.dataService.getUserConnectionList();
   }
   //=======================================
   //=======================================
