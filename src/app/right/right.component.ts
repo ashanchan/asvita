@@ -70,6 +70,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         break;
     }
   }
+
   //=======================================
   //=======================================
   private createConnectionRequest() {

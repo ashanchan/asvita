@@ -12,12 +12,11 @@ class Record {
 }
 
 @Component({
-  selector: 'app-image',
-  templateUrl: './image.component.html',
-  styleUrls: ['./image.component.css']
+  selector: 'app-upload',
+  templateUrl: './upload.component.html',
+  styleUrls: ['./upload.component.css']
 })
-
-export class ImageComponent implements OnInit, OnDestroy {
+export class UploadComponent implements OnInit, OnDestroy {
   private model: Record = new Record();
   private subscription: Subscription;
   private userId: string = '';
@@ -132,7 +131,7 @@ export class ImageComponent implements OnInit, OnDestroy {
   //=======================================
   private onMessageReceived(message: any): void {
     switch (message.event) {
-      case 'onImageProcessed':
+      case 'onImageUploaded':
         this.alertTip[6] = '<strong>' + message.data.msg + '</strong>';
         break;
       case 'onFileListUpdate':

@@ -3,6 +3,18 @@
         <div class="w3-panel w3-pale-yellow w3-topbar w3-bottombar w3-border-amber">
             <h2 [innerHTML]="greeting['name']"></h2>
             <p [innerHTML]="greeting['msg']"></p>
+
+        </div>
+
+        <div class="w3-row" *ngIf="thumbnails.length > 0">
+
+            <h4>Following people requested for connection</h4>
+            <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of thumbnails; let i=index">
+                <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right" (click)='onConnected(i)'>
+                <span class="w3-large" [innerHTML]="userTip['iconx'] + userTip['salutationx']+thumb.fullName"></span><br>
+                <span class="small-10-font" [innerHTML]="thumb.address"></span>
+            </div>
         </div>
     </div>
+
 </div>

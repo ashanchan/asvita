@@ -13,10 +13,8 @@ import { DataService } from './services/data.service';
 import { HttpService } from './services/http.service';
 import { MessageService } from './services/message.service';
 
-import { HeaderComponent } from './header/header.component';
 import { DocProfileComponent } from './profile/doc.profile.component';
 import { PatProfileComponent } from './profile/pat.profile.component';
-import { ImageComponent } from './image/image.component';
 import { FooterComponent } from './footer/footer.component';
 import { RightPanelComponent } from './right/right.component';
 import { CenterPanelComponent } from './center/center.component';
@@ -24,22 +22,24 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ConnectComponent } from './connect/connect.component';
 import { RecordComponent } from './record/record.component';
+import { UploadComponent } from './upload/upload.component';
+import { ManagerComponent } from './manager/manager.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HeaderComponent,
     DocProfileComponent,
     PatProfileComponent,
-    ImageComponent,
     FooterComponent,
     RightPanelComponent,
     CenterPanelComponent,
     DashboardComponent,
     LogoutComponent,
     ConnectComponent,
-    RecordComponent
+    RecordComponent,
+    UploadComponent,
+    ManagerComponent
   ],
   imports: [
     BrowserModule,
