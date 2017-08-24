@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
 const SERVER_PATH: string = 'http://localhost:1616/';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  selector: 'app-manager',
+  templateUrl: './manager.component.html',
+  styleUrls: ['./manager.component.css']
 })
 
-export class HeaderComponent implements OnInit, OnDestroy {
+export class ManagerComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private isAuthenticated: boolean = false;
   private tabs: any = [];
@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.tabs.push({ link: "/dashboard", title: "Dashboard", icon: 'fa fa-home', style: '' });
     this.tabs.push({ link: "/profile-" + profile, title: "Profile", icon: 'fa fa-user', style: '' });
     this.tabs.push({ link: "/record", title: "Record", icon: 'fa fa-medkit', style: '' });
-    this.tabs.push({ link: "/image", title: "Upload", icon: 'fa fa-file-archive-o', style: '' });
+    this.tabs.push({ link: "/upload", title: "Upload", icon: 'fa fa-file-archive-o', style: '' });
     this.tabs.push({ link: "/connect", title: "Connect", icon: 'fa fa-handshake-o', style: '' });
     this.tabs.push({ link: "/logout", title: "Logout", icon: 'fa fa-window-close-o', style: 'w3-right' });
   }
@@ -68,7 +68,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       case 'onImageSubmit':
         this.submitImageData(message.data);
         break;
-      case 'onImageUpload':
+      case 'onImageUploaded':
         this.getDiskUsage();
         break;
       case 'onSubmitConnection':
@@ -156,8 +156,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (response.success && val.model.mode === 'profile') {
           this.messageService.sendMessage({ event: 'onProfileImageUpdate', mode: '', isSuccess: true });
         }
-        this.getDiskUsage();
-        this.messageService.sendMessage({ event: 'onImageProcessed', data: response.response, mode: val.mode });
+        this.messageService.sendMessage({ event: 'onImageUploaded', data: response.response, mode: val.mode });
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -200,8 +199,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.messageService.sendMessage({ event: 'onProfileUpdate', mode: '', isSuccess: true });
           if (calledFrom === 'login') {
             this.getSubsciption();
-            this.createTabs();
             this.getDiskUsage();
+
+            this.createTabs();
             this.isAuthenticated = true;
             this.router.navigate(['./dashboard']);
             this.messageService.sendMessage({ event: 'onAuthenticate', isSuccess: true });

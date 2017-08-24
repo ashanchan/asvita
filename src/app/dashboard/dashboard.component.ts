@@ -9,6 +9,9 @@ import { DataService } from './../services/data.service';
 
 export class DashboardComponent implements OnInit {
   private greeting: object = {};
+  private thumbnails: any = [];
+  private userTip: object = {};
+
   //=======================================
   //=======================================
   constructor(private dataService: DataService) { }
@@ -24,6 +27,14 @@ export class DashboardComponent implements OnInit {
       this.greeting['msg'] = 'London is the most populous city in the United Kingdom, with a metropolitan area of over 9 million inhabitants.';
     }
     this.greeting['name'] = 'Hello ' + userTip['salutation'] + fullName;
+    this.userTip = this.dataService.getUserTip();
+
+    if (this.dataService.getUserConnectionList().length !== 0) {
+      this.thumbnails = this.dataService.getUserConnectionReqList();
+    }
+
   }
+  //=======================================
+  //=======================================
 
 }

@@ -142,10 +142,7 @@ export class DataService {
       for (let j = 0; j < uCtr; j++) {
         if (totalConnection[i].userId == profileConnection[j]) {
           totalConnection[i].thumbnail = path + totalConnection[i].userId + '/profile_thumb.jpg';
-          if (Array.isArray(totalConnection[i].address)) {
-            totalConnection[i].address = totalConnection[i].address[0]
-          }
-          totalConnection[i].address = totalConnection[i].address.substr(0, 100);
+          totalConnection[i].address = this.clipText(totalConnection[i].address, 100);
           this.userConnectionList.push(totalConnection[i])
         }
       }
@@ -154,6 +151,7 @@ export class DataService {
       for (let k = 0; k < rCtr; k++) {
         if (totalConnection[i].userId == profileConnectionReq[k]) {
           totalConnection[i].thumbnail = path + totalConnection[i].userId + '/profile_thumb.jpg';
+          totalConnection[i].address = this.clipText(totalConnection[i].address, 100);
           this.userConnectionReqList.push(totalConnection[i]);
         }
       }
@@ -183,5 +181,35 @@ export class DataService {
   //=======================================
   public getUserTip(): any {
     return this.userTip;
+  }
+  //=======================================
+  //=======================================
+  public fillAnimation(elemId, val): void {
+    var elem = document.getElementById(elemId);
+    var width = 1;
+    var id = setInterval(frame, 20);
+    function frame() {
+      if (width >= val) {
+        clearInterval(id);
+      } else {
+        width++;
+        elem.style.width = width + '%';
+      }
+    }
+  }
+  //=======================================
+  //=======================================
+  public clipText(txt: any, val: number): string {
+    try {
+      if (Array.isArray(txt)) {
+        txt = txt[0];
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
+
+    txt = txt.substr(0, val);
+    return txt;
   }
 }
