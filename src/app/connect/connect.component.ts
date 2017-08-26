@@ -37,11 +37,10 @@ export class ConnectComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private profileConnection: any;
   private userId: any;
-  private hideRefreshBtn: boolean = false;
   private hideSearchResults: boolean = true;
   private isModalOpen: boolean = false;
-  private modalContent: object = {};
   private mode: string = '';
+  private hideRefreshBtn: boolean = false;
   @ViewChild('requestForm') form: any;
 
   //=======================================
@@ -54,9 +53,6 @@ export class ConnectComponent implements OnInit, OnDestroy {
     this.userId = this.dataService.getUserId();
     this.reqModel.requestType = 'doc';
 
-    if (this.dataService.getSearchList()) {
-      this.hideRefreshBtn = true;
-    }
     this.subscription = this.messageService.getMessage().subscribe(message => {
       this.onMessageReceived(message);
     });
@@ -120,57 +116,31 @@ export class ConnectComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private checkConnection(userId: string, connection: any, connectionReq: any): string {
-    //=== chk if user and recd data has match
-    let connected = String(this.profileConnection.connection).split(userId).length > 1;
-    let sentReq = String(this.profileConnection.connectionReq).split(userId).length > 1;
-    let recdReq = String(connectionReq).split(this.userId).length > 1;
-    let status = '';
+    //=== chk both user entry found in connection
+    let entryInProfileConnection = String(this.profileConnection.connection).split(userId).length > 1;
+    let entryInProfileConnectionReq = String(this.profileConnection.connectionReq).split(userId).length > 1;
+    let entryInSearchConnection = String(connection).split(this.userId).length > 1;
+    let entryInSearchConnectionReq = String(connectionReq).split(this.userId).length > 1;
+    let status = 'add';
 
-    if (connected) {
-      status = 'connected';
+    if (entryInProfileConnection && entryInSearchConnection) {
+      status = 'connected'
     }
-    else if (sentReq) {
-      status = 'sent';
+    if (entryInProfileConnection && entryInSearchConnectionReq) {
+      status = 'sent'
     }
-    else if (recdReq) {
-      status = 'received';
+    if (entryInSearchConnection && !entryInProfileConnection) {
+      status = 'accept'
     }
-    else {
-      status = 'needed';
-    }
+
 
     return status;
   }
   //=======================================
   //=======================================
-  private onShowModal(conStatus: string, userId: string): void {
-    this.modalContent['conStatus'] = conStatus;
-    this.modalContent['userId'] = userId;
-    switch (conStatus) {
-      case 'needed':
-        this.modalContent['msg'] = 'Your connection request will be sent. Once connection is accepted ' + userId + ' will be able to see your record.';
-        break;
-      case 'sent':
-        this.modalContent['msg'] = 'You have already sent request.' + userId + ' still not accepted it.';
-        break;
-      case 'received':
-        this.modalContent['msg'] = 'By accepting connection ' + userId + ' will be able to see your record.';
-        break;
-      case 'connected':
-        this.modalContent['msg'] = 'You are trying to disconnect from ' + userId;
-        break;
-    }
-
-    document.getElementById('confirmBox').style.display = 'block';
-  }
-  //=======================================
-  //=======================================
-  private onHideModal(conDetail: object, confirm: boolean): void {
-    document.getElementById('confirmBox').style.display = 'none';
-    if (confirm) {
-      let reqData = { reqId: conDetail['userId'], reqMode: conDetail['conStatus'] }
-      this.messageService.sendMessage({ event: 'onSubmitConnection', data: reqData });
-    }
+  private onShowModal(conStatus: string, conId: string): void {
+    let data = { reqType: conStatus, userId: this.userId, reqId: conId, connection: this.profileConnection.connection, connectionReq: this.profileConnection.connectionReq }
+    this.messageService.sendMessage({ event: 'onShowModal', data: data });
   }
   //=======================================
   //=======================================

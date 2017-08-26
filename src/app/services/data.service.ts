@@ -16,7 +16,7 @@ export class DataService {
   private userTip: object = {};
   private userConnectionList: any = [];
   private userConnectionReqList: any = [];
-
+  private userSentReqList: any = [];
   //=======================================
   //=======================================
   public setToken(token): void {
@@ -66,9 +66,13 @@ export class DataService {
         this.userTip['icon'] = '<i class="fa fa-male fa-fw  w3-text-theme"></i>';
         this.userTip['salutation'] = 'Mr.';
       }
-      else {
+      else if (this.profileData.gender === 'f') {
         this.userTip['icon'] = '<i class="fa fa-female fa-fw  w3-text-theme"></i>';
         this.userTip['salutation'] = 'Ms.';
+      }
+      else {
+        this.userTip['icon'] = '';
+        this.userTip['salutation'] = '';
       }
     }
   }
@@ -137,13 +141,23 @@ export class DataService {
     let tCtr = totalConnection.length;
     let path = this.getRootPath();
 
+    this.userConnectionList = [];
+    this.userConnectionReqList = [];
+    this.userSentReqList = [];
+
     for (let i = 0; i < tCtr; i++) {
       let uCtr = profileConnection.length;
       for (let j = 0; j < uCtr; j++) {
         if (totalConnection[i].userId == profileConnection[j]) {
           totalConnection[i].thumbnail = path + totalConnection[i].userId + '/profile_thumb.jpg';
           totalConnection[i].address = this.clipText(totalConnection[i].address, 100);
-          this.userConnectionList.push(totalConnection[i])
+          if (String(val[i].connection).split(this.userId).length > 1) {
+            this.userConnectionList.push(totalConnection[i]);
+            console.log('you connectted');
+          }
+          if (String(val[i].connectionReq).split(this.userId).length > 1) {
+            this.userSentReqList.push(totalConnection[i])
+          }
         }
       }
       //====
@@ -166,6 +180,11 @@ export class DataService {
   //=======================================
   public getUserConnectionReqList(): any {
     return this.userConnectionReqList;
+  }
+  //=======================================
+  //=======================================
+  public getUserSentReqList(): any {
+    return this.userSentReqList;
   }
   //=======================================
   //=======================================
@@ -200,13 +219,8 @@ export class DataService {
   //=======================================
   //=======================================
   public clipText(txt: any, val: number): string {
-    try {
-      if (Array.isArray(txt)) {
-        txt = txt[0];
-      }
-    }
-    catch (e) {
-      console.log(e);
+    if (Array.isArray(txt)) {
+      txt = txt[0];
     }
 
     txt = txt.substr(0, val);

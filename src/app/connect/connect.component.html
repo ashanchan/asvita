@@ -41,9 +41,9 @@
             <tr *ngFor="let search of searchData; let i=index">
                 <td class="w3-center">
                     <img [src]="search.profPic" class="thumbnail" alt="Avatar">
-                    <button *ngIf="search.conStatus == 'needed'" class="w3-button w3-theme w3-tiny w3-block" (click)="onShowModal(search.conStatus, search.userId)"><i class="fa fa-hand-paper-o"></i> send request</button>
-                    <button *ngIf="search.conStatus == 'received'" class="w3-button w3-theme w3-tiny w3-block" (click)="onShowModal(search.conStatus, search.userId)"><i class="fa fa-hand-paper-o"></i> accept request</button>
-                    <button *ngIf="search.conStatus == 'sent'" class="w3-button w3-theme w3-tiny w3-block" (click)="onShowModal(search.conStatus, search.userId)"><i class="fa fa-hand-o-right"></i> waiting</button>
+                    <button *ngIf="search.conStatus == 'add'" class="w3-button w3-theme w3-tiny w3-block" (click)="onShowModal(search.conStatus, search.userId)"><i class="fa fa-hand-paper-o"></i> send request</button>
+                    <button *ngIf="search.conStatus == 'accept'" class="w3-button w3-yellow w3-tiny w3-block" (click)="onShowModal(search.conStatus, search.userId)"><i class="fa fa-hand-paper-o"></i> accept request</button>
+                    <button *ngIf="search.conStatus == 'sent'" class="w3-button w3-blue w3-tiny w3-block" (click)="onShowModal(search.conStatus, search.userId)"><i class="fa fa-hand-o-right"></i> waiting</button>
                     <button *ngIf="search.conStatus == 'connected'" class="w3-button w3-theme w3-tiny w3-block w3-green w3-disabled w3-hover-green remove-opacity"><i class="fa fa-handshake-o"></i> connected</button>
                     <button *ngIf="search.conStatus == 'connected'" class="w3-button w3-theme w3-tiny w3-block w3-red" (click)="onShowModal(search.conStatus, search.userId)"><i class="fa fa-thumbs-o-down"></i> disconnect</button>
                 </td>
@@ -92,22 +92,3 @@
 </form>
 
 <hr>
-
-<div id="confirmBox" class="w3-modal">
-    <div class="w3-modal-content">
-        <header class="w3-container w3-theme">
-            <div>
-                <h6><i class="fa fa-question-circle-o"></i> Confirm</h6>
-            </div>
-        </header>
-        <div class="w3-container">
-            <p [innerHTML]="this.modalContent['msg']"></p>
-            <p class="required">Updated Connection List will be available on next login.</p>
-        </div>
-
-
-        <footer class="w3-container w3-theme">
-            <button *ngIf="modalContent['conStatus'] !== 'sent'" class="w3-button  w3-small w3-right" (click)="onHideModal(modalContent,true)"><i class="fa fa-check-circle"></i> Ok</button>
-        </footer>
-    </div>
-</div>

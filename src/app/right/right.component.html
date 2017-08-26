@@ -13,7 +13,11 @@
         <div class="w3-container">
             <h4 class="w3-center">My Subscription</h4>
             <p><i class="fa fa-barcode fa-fw w3-text-theme"></i> {{'From '+ userSubscription['startFrom'] +' - '+userSubscription.expiresOn}}</p>
-            <p><i class="fa fa-database fa-fw w3-text-theme"></i> {{'Used '+ userSubscription['usedSize'] +'mb from '+userSubscription['totalSize']+'mb'}}</p>
+            <p><span>
+                <i class="fa fa-database fa-fw w3-text-theme"></i> {{'Used '+ userSubscription['usedSize'] +'mb from '+userSubscription['totalSize']+'mb '}}
+                </span>
+                <span [ngClass]="{'w3-red' : userSubscription['remaining'] < .10}" [innerHTML]="userSubscription['remaining']"></span>
+            </p>
             <p><i class="fa fa-bar-chart fa-fw w3-text-theme"></i> {{userSubscription['addOn']}}</p>
         </div>
     </div>
@@ -21,8 +25,8 @@
     <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
             <h4 class="w3-center">My Connection</h4>
-            <div *ngFor="let thumb of thumbnails">
-                <img class="thumbnail" [src]="thumb.thumbnail" alt="ashtra">
+            <div *ngFor="let thumb of thumbnails; let i = index;">
+                <img class="thumbnail" [src]="thumb.thumbnail" alt="ashtra" (click)='onRequestConnection(i)'>
             </div>
 
         </div>

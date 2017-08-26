@@ -62,11 +62,19 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.locationInfo = Array.isArray(this.profileData.city) ? this.profileData.city[0] + ',' + this.profileData.state[0] : this.profileData.city + ',' + this.profileData.state;
     this.userSubscription['usedSize'] = this.dataService.getDiskSpace();
     this.userSubscription['totalSize'] = sub.diskSpace;
+    let remaining = ' [' + (this.userSubscription['totalSize'] - this.userSubscription['usedSize']).toFixed(2) + ']';
+    this.userSubscription['remaining'] = remaining;
     this.userSubscription['startFrom'] = this.dataService.getConvertedDate(sub.startFrom);
     this.userSubscription['expiresOn'] = this.dataService.getConvertedDate(sub.expiresOn);
     this.userSubscription['addOn'] = sub.addOn === '' ? '-' : sub.addOn;
 
     this.thumbnails = this.dataService.getUserConnectionList();
+  }
+  //=======================================
+  //=======================================
+  private onRequestConnection(i): void {
+    let info = "<b>User Id : </b>" + this.thumbnails[i].userId + "<br><b>Name : </b>" + this.thumbnails[i].fullName + "<br><b>Address : </b>" + this.thumbnails[i].address;
+    this.messageService.sendMessage({ event: 'onShowModal', data: { reqType: 'info', info: info } });
   }
   //=======================================
   //=======================================
