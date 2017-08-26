@@ -12,6 +12,6 @@ export class RecordModel {
         public invAdvised: string = '',
         public followUp: string = '',
         public notes: string = '',
-        public medicine: any = []
+        public medName: any = []
     ) { }
 }
