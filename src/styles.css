@@ -76,6 +76,7 @@ hr {
     width: 75px !important;
     height: 75px !important;
     float: left;
+    cursor: pointer;
 }
 
 .thumbnail:hover {
@@ -89,4 +90,12 @@ hr {
 
 .small-10-margin-bottom {
     margin-bottom: 10px;
+}
+
+.height-25px {
+    height: 25px;
+}
+
+.min-height-25px {
+    min-height: 50px;
 }

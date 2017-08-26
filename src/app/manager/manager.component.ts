@@ -20,6 +20,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   private isNavOpen: boolean = true;
   private activeUrl: string = '';
   private routerSubscription;
+  private modalContent: object = {};
   //=======================================
   //=======================================
   constructor(private messageService: MessageService, private router: Router, private httpService: HttpService, private dataService: DataService) { }
@@ -81,10 +82,6 @@ export class ManagerComponent implements OnInit, OnDestroy {
         this.getDiskUsage('imageUpload');
         break;
 
-      case 'onSubmitConnection':
-        this.onSubmitConnection(message.data);
-        break;
-
       case 'onFileList':
         this.getFileList();
         break;
@@ -97,8 +94,16 @@ export class ManagerComponent implements OnInit, OnDestroy {
         this.sendMailRequest(message.data);
         break;
 
+      case 'onPrescriptionRequest':
+        this.getPresciption(message.data);
+        break;
+
       case 'onPrescriptionSubmit':
         this.submitPrescription(message.data);
+        break;
+
+      case 'onShowModal':
+        this.showModal(message.data);
         break;
 
       case 'onLogout':
@@ -128,20 +133,29 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   private onSubmitConnection(val: any) {
     val.userId = this.dataService.getUserId();
-    console.log(val.userId, val.reqId, val.reqMode);
-    if (val.reqMode === 'received') {
-      let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/updateProfileConnection', val, true).subscribe(
-        (response: any) => {
-          httpServiceSubscription.unsubscribe();
-        }
-      )
-    }
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/updateProfileConnection', val, true).subscribe(
+      (response: any) => {
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+
   }
   //=======================================
   //=======================================
   private submitPrescription(val: any) {
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/addPrescription', val.model, true).subscribe(
       (response: any) => {
+        this.messageService.sendMessage({ event: 'onPrescriptionSaved', data: response.response.data });
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+  //=======================================
+  //=======================================
+  private getPresciption(val: any) {
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/getPrescription', val.model, true).subscribe(
+      (response: any) => {
+        this.messageService.sendMessage({ event: 'onPrescriptionRecd', data: response.response.data });
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -208,9 +222,11 @@ export class ManagerComponent implements OnInit, OnDestroy {
           this.dataService.setProfileData(response.response.data);
           this.dataService.setRootPath(SERVER_PATH + 'uploads/');
           this.dataService.setFolderPath(SERVER_PATH + 'uploads/' + userId + '/');
-          // this.messageService.sendMessage({ event: 'onProfileUpdate', mode: '', isSuccess: true });
           if (calledFrom === 'login') {
             this.getSubsciption('login');
+          }
+          else {
+            this.messageService.sendMessage({ event: 'onProfileUpdate', mode: '', isSuccess: true });
           }
         }
         httpServiceSubscription.unsubscribe();
@@ -300,6 +316,37 @@ export class ManagerComponent implements OnInit, OnDestroy {
   private openNav(): void {
     this.isNavOpen = !this.isNavOpen;
   }
+  //=======================================
+  //=======================================
+  private showModal(val): void {
+    this.modalContent = val;
+    this.modalContent['userId'] = val.userId;
+    switch (val.reqType) {
+      case 'info':
+        this.modalContent['msg'] = val.info;
+        break;
+      case 'accept':
+        this.modalContent['msg'] = 'By accepting connection, ' + val.reqId + ' will be able to see your medical record.';
+        break;
+      case 'add':
+        this.modalContent['msg'] = 'Your request to add connection is sent to ' + val.reqId + '. Once they accept, you will be connected.';
+        break;
+      case 'sent':
+        this.modalContent['msg'] = 'You have already requested connection with  ' + val.reqId + '. Once they accept, you will be connected.';
+        break;
+    }
+    val.reqType = val.reqType === 'sent' ? val.reqType = 'info' : val.reqType;
+    document.getElementById('confirmBox').style.display = 'block';
+  }
+  //=======================================
+  //=======================================
+  private onHideModal(val): void {
+    if (val) {
+      this.onSubmitConnection(this.modalContent);
+    }
+    document.getElementById('confirmBox').style.display = 'none';
+  }
+
   //=======================================
   //=======================================
 }

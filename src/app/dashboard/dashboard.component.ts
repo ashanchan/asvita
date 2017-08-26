@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './../services/data.service';
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,12 +10,13 @@ import { DataService } from './../services/data.service';
 
 export class DashboardComponent implements OnInit {
   private greeting: object = {};
-  private thumbnails: any = [];
+  private connectedThumbnails: any = [];
+  private requestedThumbnails: any = [];
   private userTip: object = {};
 
   //=======================================
   //=======================================
-  constructor(private dataService: DataService) { }
+  constructor(private messageService: MessageService, private dataService: DataService) { }
   //=======================================
   //=======================================
   public ngOnInit() {
@@ -29,10 +31,15 @@ export class DashboardComponent implements OnInit {
     this.greeting['name'] = 'Hello ' + userTip['salutation'] + fullName;
     this.userTip = this.dataService.getUserTip();
 
-    if (this.dataService.getUserConnectionList().length !== 0) {
-      this.thumbnails = this.dataService.getUserConnectionReqList();
-    }
-
+    this.connectedThumbnails = this.dataService.getUserConnectionReqList();
+    this.requestedThumbnails = this.dataService.getUserSentReqList();
+  }
+  //=======================================
+  //=======================================
+  private onRequestConnection(conId: string): void {
+    let profileData = this.dataService.getProfileData();
+    let data = { reqType: 'accept', userId: profileData, reqId: conId, connection: profileData.connection, connectionReq: profileData.connectionReq }
+    this.messageService.sendMessage({ event: 'onShowModal', data: data });
   }
   //=======================================
   //=======================================

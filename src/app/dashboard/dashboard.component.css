@@ -1,3 +1,8 @@
-.height-25px {
-    height: 25px;
+.request .thumbnail {
+    cursor: not-allowed;
+}
+
+.request .thumbnail:hover {
+    border: 1px solid teal;
+    box-shadow: none;
 }
