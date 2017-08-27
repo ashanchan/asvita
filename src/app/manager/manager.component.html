@@ -47,6 +47,52 @@
     </div>
 </div>
 
+<div id="fileListBox" class="w3-modal">
+    <div class="w3-modal-content">
+        <div class="w3-container w3-block">
+            <div class="w3-container" [hidden]="viewImage">
+                <table class="w3-table w3-bordered w3-border">
+                    <tr class="w3-theme">
+                        <th>#</th>
+                        <th>File Name</th>
+                        <th>
+                            <span class="w3-right">View</span>
+                        </th>
+                        <th>
+                            <span class="w3-right">Delete</span>
+                        </th>
+                    </tr>
+                    <tr *ngFor="let file of folderList; let i=index">
+                        <td [innerHTML]="i+1"></td>
+                        <td [innerHTML]="file"></td>
+                        <td>
+                            <button class="w3-button w3-theme w3-tiny w3-right" (click)="showImage(file, true)"><i class="fa fa-eye"></i> View</button>
+                        </td>
+                        <td>
+                            <button class="w3-button w3-theme w3-tiny w3-right" (click)="deleteImage(file)"><i class="fa fa-trash-o"></i> Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="w3-container" [hidden]="!viewImage">
+                <table class="w3-table w3-bordered w3-border">
+                    <tr class="w3-theme">
+                        <th>File Name</th>
+                        <th> <button class="w3-button w3-theme w3-tiny w3-right" (click)="showImage(file, false)"><i class="fa fa-eye-slash"></i> Hide</button></th>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <img [src]="viewImageUrl" style="max-width:100%" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <footer class="w3-container w3-theme">
+            <button class="w3-button  w3-small w3-right" (click)="hideFolder()"><i class="fa fa-check-circle"></i> Ok</button>
+        </footer>
+    </div>
+</div>
+
 <div id="uploadBox" class="w3-modal">
 
     <div class="w3-modal-content">
