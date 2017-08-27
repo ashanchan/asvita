@@ -53,26 +53,28 @@ export class DataService {
   //=======================================
   public setProfileData(val): void {
     this.profileData = val;
-    if (this.userMode === 'DOC') {
-      this.userTip['icon'] = '<i class="fa fa-stethoscope fa-fw  w3-text-theme"></i>';
-      this.userTip['salutation'] = "Dr."
-      this.userTip['iconx'] = '<i class="fa fa-user fa-fw  w3-text-theme"></i>';
-      this.userTip['salutationx'] = ""
-    }
-    else {
-      this.userTip['iconx'] = '<i class="fa fa-stethoscope fa-fw w3-text-theme"></i>';
-      this.userTip['salutationx'] = "Dr."
-      if (this.profileData.gender === 'm') {
-        this.userTip['icon'] = '<i class="fa fa-male fa-fw  w3-text-theme"></i>';
-        this.userTip['salutation'] = 'Mr.';
-      }
-      else if (this.profileData.gender === 'f') {
-        this.userTip['icon'] = '<i class="fa fa-female fa-fw  w3-text-theme"></i>';
-        this.userTip['salutation'] = 'Ms.';
+    if (this.profileData) {
+      if (this.userMode === 'DOC') {
+        this.userTip['icon'] = '<i class="fa fa-stethoscope fa-fw  w3-text-theme"></i>';
+        this.userTip['salutation'] = "Dr."
+        this.userTip['iconx'] = '<i class="fa fa-user fa-fw  w3-text-theme"></i>';
+        this.userTip['salutationx'] = ""
       }
       else {
-        this.userTip['icon'] = '';
-        this.userTip['salutation'] = '';
+        this.userTip['iconx'] = '<i class="fa fa-stethoscope fa-fw w3-text-theme"></i>';
+        this.userTip['salutationx'] = "Dr."
+        if (this.profileData.gender === 'm') {
+          this.userTip['icon'] = '<i class="fa fa-male fa-fw  w3-text-theme"></i>';
+          this.userTip['salutation'] = 'Mr.';
+        }
+        else if (this.profileData.gender === 'f') {
+          this.userTip['icon'] = '<i class="fa fa-female fa-fw  w3-text-theme"></i>';
+          this.userTip['salutation'] = 'Ms.';
+        }
+        else {
+          this.userTip['icon'] = '';
+          this.userTip['salutation'] = '';
+        }
       }
     }
   }

@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
 
   public ngOnInit(): void {
     this.subscription = this.messageService.getMessage().subscribe(message => {
-      //this.onMessageReceived(message);
+      this.onMessageReceived(message);
     });
     this.profileMode = this.dataService.getUserMode();
     this.model = this.profileMode === 'DOC' ? new DoctorProfileModel() : new PatientProfileModel();
