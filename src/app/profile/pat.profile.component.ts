@@ -109,9 +109,17 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private onMessageReceived(message: any): void {
-    if (message.event === 'onProfileUpdate' && message.mode === 'updateProfile') {
-      this.alertTip = message.data.msg;
+    switch (message.event) {
+      case 'onProfileUpdate':
+        if (message.mode === 'updateProfile') {
+          this.alertTip = message.data.msg;
+        }
+        break;
+      case 'onProfileImageUpdate':
+        this.profileUrl = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
+        break;
     }
+
   }
   //=======================================
   //=======================================
@@ -120,6 +128,12 @@ export class PatProfileComponent implements OnInit {
       this.formDisabled = false;
     }
   }
+  //=======================================
+  //=======================================
+  private uploadImage() {
+    this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'profile', fileName: 'profile' } });
+  }
+
   //=======================================
   //=======================================
 }

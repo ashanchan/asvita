@@ -163,5 +163,11 @@ export class RecordComponent implements OnInit {
       //   this.messageService.sendMessage({ event: 'onPrescriptionSubmit', component: 'record', data: { model: this.model } });
     }
   }
+  //=======================================
+  //=======================================
+  private uploadImage() {
+    this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'records-xxx' } });
+  }
+
 }
 

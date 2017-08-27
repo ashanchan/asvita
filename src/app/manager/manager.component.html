@@ -46,3 +46,43 @@
         </footer>
     </div>
 </div>
+
+<div id="uploadBox" class="w3-modal">
+
+    <div class="w3-modal-content">
+        <header class="w3-container w3-theme">
+            <div>
+                <h6><i class="fa fa-question-circle-o"></i> Confirm</h6>
+            </div>
+        </header>
+
+        <form novalidate (ngSubmit)="submitImageData()" #imageForm="ngForm">
+            <div class="w3-container">
+                <div class="w3-container">
+                    <img [src]="profilePic" alt="Avatar" class="w3-border img-thumbnail" />
+                    <input id="filetoupload" name="filetoupload" type="file" (change)="checkPhoto($event)" accept="image/*.jpg">
+                </div>
+                <div class="w3-container">
+                    <div class="w3-panel w3-red">
+                        <ul>
+                            <li *ngFor="let tip of alertTip;" [innerHTML]="tip"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="w3-container">
+                    <button type="submit" class="w3-button w3-block w3-theme" [disabled]="imageForm.invalid || formDisabled"><i class="fa fa-check-circle "></i> Submit</button>
+                </div>
+
+            </div>
+        </form>
+
+        <footer class="w3-container w3-theme">
+            <button class="w3-button  w3-small w3-right" (click)="closeUploadBox()"><i class="fa fa-window-close "></i> Close</button>
+        </footer>
+    </div>
+
+    <div class="preview" id="preview">
+        <img [src]="previewImg" class="previewImg" />
+    </div>
+</div>

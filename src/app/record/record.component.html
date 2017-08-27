@@ -1,137 +1,141 @@
-<div class="viewMode" *ngIf="!isConnected">
-    <div class="w3-container">
-        <div class="w3-panel w3-pale-yellow w3-topbar w3-bottombar w3-border-amber">
-            <h2 [innerHTML]="greeting['name']"></h2>
-            <p [innerHTML]="greeting['msg']"></p>
-        </div>
-
-        <div class="w3-row">
-            <div class="w3-round w3-theme">
-                <p>&nbsp;&nbsp;Your connections </p>
+<div class="w3-container">
+    <div class="viewMode" *ngIf="!isConnected">
+        <div class="w3-container">
+            <div class="w3-panel w3-pale-yellow w3-topbar w3-bottombar w3-border-amber">
+                <h2 [innerHTML]="greeting['name']"></h2>
+                <p [innerHTML]="greeting['msg']"></p>
             </div>
 
-            <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of thumbnails; let i=index">
-                <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right" (click)='connectProfile(i)'>
-                <span class="w3-large" [innerHTML]="userTip['iconx'] + userTip['salutationx']+thumb.fullName"></span><br>
-                <span class="small-10-font" [innerHTML]="thumb.address"></span>
+            <div class="w3-row">
+                <div class="w3-round w3-theme">
+                    <p>&nbsp;&nbsp;Your connections </p>
+                </div>
+
+                <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of thumbnails; let i=index">
+                    <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right" (click)='connectProfile(i)'>
+                    <span class="w3-large" [innerHTML]="userTip['iconx'] + userTip['salutationx']+thumb.fullName"></span><br>
+                    <span class="small-10-font" [innerHTML]="thumb.address"></span>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="viewMode" *ngIf="isConnected">
-    <div *ngIf="recordModel.length > 0">
+    <div class="viewMode" *ngIf="isConnected">
+        <div *ngIf="recordModel.length > 0">
+            <div class="w3-container w3-block">
+                <button class="w3-bar-item w3-button w3-half w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
+            </div>
+
+            <div class="w3-container  w3-right" [hidden]="recordMode === 'add'">
+                <div class="w3-bar w3-border w3-round">
+                    <a *ngFor="let records of  recordModel; let i=index" role="presentation" class="w3-button" [ngClass]="{'active-tab' : recordIdx === i }" (click)="onRecordClicked(i)">{{i+1}}</a>
+                </div>
+            </div>
+        </div>
+
         <div class="w3-container w3-block">
-            <button class="w3-bar-item w3-button w3-half w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
-        </div>
-
-        <div class="w3-container  w3-right" [hidden]="recordMode === 'add'">
-            <div class="w3-bar w3-border w3-round">
-                <a *ngFor="let records of  recordModel; let i=index" role="presentation" class="w3-button" [ngClass]="{'active-tab' : recordIdx === i }" (click)="onRecordClicked(i)">{{i+1}}</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="w3-container w3-block">
-        <table class="w3-table w3-bordered w3-border ">
-            <tr class="w3-theme">
-                <th class="width-20">Medical Histroy</th>
-                <th class="width-20">Other Med Histroy</th>
-                <th class="width-20">Allergies</th>
-                <th class="width-20">Life Style</th>
-                <th class="width-20">Notes</th>
-            </tr>
-            <tr>
-                <td class="w3-border" [innerHTML]="readOnlyData['medicalHistory']"></td>
-                <td class="w3-border" [innerHTML]="readOnlyData['medicalHistoryOther']"></td>
-                <td class="w3-border" [innerHTML]="readOnlyData['allergy']"></td>
-                <td class="w3-border" [innerHTML]="readOnlyData['lifeStyle']"></td>
-                <td class="w3-border" [innerHTML]="readOnlyData['notes']"></td>
-            </tr>
-        </table>
-
-        Garmi Hai dosht {{recordModel.temprature}}
-        <form novalidate (ngSubmit)="onSubmit()" #recordForm="ngForm">
             <table class="w3-table w3-bordered w3-border ">
                 <tr class="w3-theme">
-                    <th class="width-20"><i class="fa fa-user-md"></i> Doctor</th>
-                    <th class="width-20"><i class="fa fa-user-circle-o"></i> Patient</th>
-                    <th class="width-20"><i class="fa fa-birthday-cake"></i> Age</th>
-                    <th class="width-20" [innerHTML]="userTip['icon'] +'Gender'"></th>
-                    <th class="width-20"><i class="fa fa-calendar"></i> Date</th>
+                    <th class="width-20">Medical Histroy</th>
+                    <th class="width-20">Other Histroy</th>
+                    <th class="width-20">Allergies</th>
+                    <th class="width-20">Life Style</th>
+                    <th class="width-20">Notes</th>
                 </tr>
-
                 <tr>
-                    <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['doctorName']" disabled/></td>
-                    <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['patientName']" disabled/></td>
-                    <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['age']" disabled/></td>
-                    <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['gender']" disabled/></td>
-                    <td><input type="date" name="recordDate" id="recordDate" class="w3-input w3-border" [(ngModel)]="recordModel.recordDate" #recordDate="ngModel" [disabled]="isDisabled" /></td>
-                </tr>
-
-                <tr class="w3-theme">
-                    <th><i class="fa fa-smile-o"></i> Referred by</th>
-                    <th><i class="fa fa-balance-scale"></i> Weight</th>
-                    <th><i class="fa fa-thermometer-full"></i> Temperature</th>
-                    <th><i class="fa fa-heartbeat"></i> Blood Pressure</th>
-                    <th><i class="fa fa-heart"></i> Pulse</th>
-                </tr>
-
-                <tr>
-                    <td><input type="text" name="temprature" id="temprature" class="w3-input w3-border" [(ngModel)]="recordModel.temprature" #temprature="ngModel" [disabled]="isDisabled" placeholder="Enter temprature" /></td>
-                    <td> <input type="text" name="sosMobile" id="sosMobile" class="w3-input w3-border" [(ngModel)]="recordModel.temprature" #sosMobile="ngModel" placeholder="Enter Person's Name to contact" (keydown)="enableform($event)" /></td>
+                    <td class="w3-border width-20" [innerHTML]="readOnlyData['medicalHistory']"></td>
+                    <td class="w3-border width-20" [innerHTML]="readOnlyData['medicalHistoryOther']"></td>
+                    <td class="w3-border width-20" [innerHTML]="readOnlyData['allergy']"></td>
+                    <td class="w3-border width-20" [innerHTML]="readOnlyData['lifeStyle']"></td>
+                    <td class="w3-border width-20" [innerHTML]="readOnlyData['notes']"></td>
                 </tr>
             </table>
 
-            <hr>
+            <form novalidate (ngSubmit)="onSubmit()" #recordForm="ngForm">
+                <table class="w3-table w3-bordered w3-border ">
+                    <tr class="w3-theme">
+                        <th class="width-20"><i class="fa fa-user-md"></i> Doctor</th>
+                        <th class="width-20"><i class="fa fa-user-circle-o"></i> Patient</th>
+                        <th class="width-20"><i class="fa fa-birthday-cake"></i> Age</th>
+                        <th class="width-20" [innerHTML]="userTip['icon'] +'Gender'"></th>
+                        <th class="width-20"><i class="fa fa-calendar"></i> Date</th>
+                    </tr>
 
-            <table class="w3-table-all w3-hoverable	medicine">
-                <tr class="w3-theme">
-                    <td></td>
-                    <td><span><i class="fa fa-medkit"></i> Medicine</span></td>
-                    <td>BB</td>
-                    <td>AB</td>
-                    <td>BL</td>
-                    <td>AL</td>
-                    <td>Eve</td>
-                    <td>BD</td>
-                    <td>AD</td>
-                    <td>Days</td>
-                </tr>
+                    <tr>
+                        <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['doctorName']" disabled/></td>
+                        <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['patientName']" disabled/></td>
+                        <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['age']" disabled/></td>
+                        <td><input type="text" class="w3-input w3-border" [value]="readOnlyData['gender']" disabled/></td>
+                        <td><input type="date" name="recordDate" id="recordDate" class="w3-input w3-border" [(ngModel)]="recordModel.recordDate" #recordDate="ngModel" [disabled]="isDisabled" /></td>
+                    </tr>
 
-                <tr *ngFor="let medicine of  prescriptionModel; let i=index">
-                    <td [innerHTML]="i+1"></td>
-                    <td><input type="text" name="medName" id="medName" class="w3-input w3-border" [(ngModel)]="medicine.medName" #medName="ngModel" placeholder="Enter medicine Name" /></td>
-                    <td><input type="text" name="bbf" id="bbf" class="w3-input w3-border" [(ngModel)]="medicine.bbf" #bbf="ngModel" maxlength="3" /></td>
-                    <td><input type="text" name="abf" id="abf" class="w3-input w3-border" [(ngModel)]="medicine.abf" #abf="ngModel" maxlength="3" /></td>
+                    <tr class="w3-theme">
+                        <th><i class="fa fa-smile-o"></i> Referred by</th>
+                        <th><i class="fa fa-balance-scale"></i> Weight</th>
+                        <th><i class="fa fa-thermometer-full"></i> Temperature</th>
+                        <th><i class="fa fa-heartbeat"></i> Blood Pressure</th>
+                        <th><i class="fa fa-heart"></i> Pulse</th>
+                    </tr>
 
-                </tr>
-            </table>
+                    <tr>
+                        <td><input type="text" name="temprature" id="temprature" class="w3-input w3-border" [(ngModel)]="recordModel.temprature" #temprature="ngModel" [disabled]="isDisabled" placeholder="Enter temprature" /></td>
+                        <td> <input type="text" name="sosMobile" id="sosMobile" class="w3-input w3-border" [(ngModel)]="recordModel.temprature" #sosMobile="ngModel" placeholder="Enter Person's Name to contact" (keydown)="enableform($event)" /></td>
+                    </tr>
+                </table>
 
-            <hr>
+                <hr>
+
+                <table class="w3-table-all w3-hoverable	medicine">
+                    <tr class="w3-theme">
+                        <td></td>
+                        <td><span><i class="fa fa-medkit"></i> Medicine</span></td>
+                        <td>BB</td>
+                        <td>AB</td>
+                        <td>BL</td>
+                        <td>AL</td>
+                        <td>Eve</td>
+                        <td>BD</td>
+                        <td>AD</td>
+                        <td>Days</td>
+                    </tr>
+
+                    <tr *ngFor="let medicine of  prescriptionModel; let i=index">
+                        <td [innerHTML]="i+1"></td>
+                        <td><input type="text" name="medName" id="medName" class="w3-input w3-border" [(ngModel)]="medicine.medName" #medName="ngModel" placeholder="Enter medicine Name" /></td>
+                        <td><input type="text" name="bbf" id="bbf" class="w3-input w3-border" [(ngModel)]="medicine.bbf" #bbf="ngModel" maxlength="3" /></td>
+                        <td><input type="text" name="abf" id="abf" class="w3-input w3-border" [(ngModel)]="medicine.abf" #abf="ngModel" maxlength="3" /></td>
+
+                    </tr>
+                </table>
+
+                <hr>
 
 
-            <hr>
+                <hr>
 
-            <table class="w3-table w3-bordered w3-border">
-                <tr class="w3-theme">
-                    <th class="width-20"><i class="fa fa-question-circle"></i> Diagnosis</th>
-                    <th class="width-20"><i class="fa fa-search"></i> Inv Advised</th>
-                    <th class="width-20"><i class="fa fa-sticky-note-o"></i> Notes</th>
-                    <th class="width-20"><i class="fa fa-calendar-check-o"></i> Next Followup</th>
-                </tr>
-                <tr>
-                    <td><textarea rows="4" cols="50" type="text" name="diagnosis" id="diagnosis" class="w3-input w3-border" [(ngModel)]="recordModel.diagnosis" #diagnosis="ngModel" [disabled]="isDisabled" placeholder="Enter diagnosis"></textarea></td>
-                    <td><textarea rows="4" cols="50" type="text" name="invAdvised" id="invAdvised" class="w3-input w3-border" [(ngModel)]="recordModel.invAdvised" #invAdvised="ngModel" [disabled]="isDisabled" placeholder="Enter investigation advised"></textarea></td>
-                    <td><textarea rows="4" cols="50" type="text" name="notes" id="notes" class="w3-input w3-border" [(ngModel)]="recordModel.notes" #notes="ngModel" [disabled]="isDisabled" placeholder="Any special notes"></textarea></td>
-                    <td><input type="date" name="followUp" id="followUp" class="w3-input w3-border" [(ngModel)]="recordModel.followUp" #followUp="ngModel" placeholder="Follow up date" [disabled]="isDisabled" /><label>Keep blank if not required</label></td>
-                </tr>
-            </table>
-            <hr>
-            <div class="w3-container">
-                <button type="submit" class="w3-button w3-block w3-theme" [disabled]="recordForm.invalid || formDisabled">Submit</button>
-            </div>
-        </form>
+                <table class="w3-table w3-bordered w3-border">
+                    <tr class="w3-theme">
+                        <th class="width-20"><i class="fa fa-question-circle"></i> Diagnosis</th>
+                        <th class="width-20"><i class="fa fa-search"></i> Inv Advised</th>
+                        <th class="width-20"><i class="fa fa-sticky-note-o"></i> Notes</th>
+                        <th class="width-20"><i class="fa fa-calendar-check-o"></i> Next Followup</th>
+                    </tr>
+                    <tr>
+                        <td><textarea rows="4" cols="50" type="text" name="diagnosis" id="diagnosis" class="w3-input w3-border" [(ngModel)]="recordModel.diagnosis" #diagnosis="ngModel" [disabled]="isDisabled" placeholder="Enter diagnosis"></textarea></td>
+                        <td><textarea rows="4" cols="50" type="text" name="invAdvised" id="invAdvised" class="w3-input w3-border" [(ngModel)]="recordModel.invAdvised" #invAdvised="ngModel" [disabled]="isDisabled" placeholder="Enter investigation advised"></textarea></td>
+                        <td><textarea rows="4" cols="50" type="text" name="notes" id="notes" class="w3-input w3-border" [(ngModel)]="recordModel.notes" #notes="ngModel" [disabled]="isDisabled" placeholder="Any special notes"></textarea></td>
+                        <td><input type="date" name="followUp" id="followUp" class="w3-input w3-border" [(ngModel)]="recordModel.followUp" #followUp="ngModel" placeholder="Follow up date" [disabled]="isDisabled" />
 
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <div class="w3-container">
+                    <button type="submit" class="w3-button w3-block w3-theme" [disabled]="recordForm.invalid || formDisabled">Submit</button>
+                </div>
+            </form>
+
+            <button class="w3-button w3-theme w3-small w3-right" (click)="uploadImage()"><i class="fa fa-search"></i> Upload Reports</button>
+        </div>
     </div>
 </div>

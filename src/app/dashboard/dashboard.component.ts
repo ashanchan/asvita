@@ -42,6 +42,5 @@ export class DashboardComponent implements OnInit {
     this.messageService.sendMessage({ event: 'onShowModal', data: data });
   }
   //=======================================
-  //=======================================
 
 }

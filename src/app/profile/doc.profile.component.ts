@@ -149,16 +149,28 @@ export class DocProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private onMessageReceived(message: any): void {
-    if (message.event === 'onProfileUpdate' && message.mode === 'updateProfile') {
-      this.alertTip = message.data.msg;
+    switch (message.event) {
+      case 'onProfileUpdate':
+        if (message.mode === 'updateProfile') {
+          this.alertTip = message.data.msg;
+        }
+        break;
+      case 'onProfileImageUpdate':
+        this.profileUrl = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
+        break;
     }
   }
   //=======================================
   //=======================================
   private enableform(event) {
-    if (event.key.length === 1 || event.key === 'Backspace' || event.key === 'Delete') {
+    if ((event.type === 'change') || (event.key.length === 1 || event.key === 'Backspace' || event.key === 'Delete')) {
       this.formDisabled = false;
     }
+  }
+  //=======================================
+  //=======================================
+  private uploadImage() {
+    this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'profile' } });
   }
   //=======================================
   //=======================================

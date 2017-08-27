@@ -21,6 +21,12 @@ export class ManagerComponent implements OnInit, OnDestroy {
   private activeUrl: string = '';
   private routerSubscription;
   private modalContent: object = {};
+  private alertTip: any = [];
+  private profilePic: string = '';
+  private imgSpec: object = {};
+  private previewImg: string = '';
+  private formDisabled: boolean = true;
+  private uploadFileMode: string = '';
   //=======================================
   //=======================================
   constructor(private messageService: MessageService, private router: Router, private httpService: HttpService, private dataService: DataService) { }
@@ -52,7 +58,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
     this.tabs.push({ link: "/dashboard", title: "Dashboard", icon: 'fa fa-home', style: '' });
     this.tabs.push({ link: "/profile-" + profile, title: "Profile", icon: 'fa fa-user', style: '' });
     this.tabs.push({ link: "/record", title: "Record", icon: 'fa fa-medkit', style: '' });
-    this.tabs.push({ link: "/upload", title: "Upload", icon: 'fa fa-file-archive-o', style: '' });
+    // this.tabs.push({ link: "/upload", title: "Upload", icon: 'fa fa-file-archive-o', style: '' });
     this.tabs.push({ link: "/connect", title: "Connect", icon: 'fa fa-handshake-o', style: '' });
     this.tabs.push({ link: "/logout", title: "Logout", icon: 'fa fa-window-close-o', style: 'w3-right' });
   }
@@ -74,12 +80,8 @@ export class ManagerComponent implements OnInit, OnDestroy {
         this.submitProfileData(message.data);
         break;
 
-      case 'onImageSubmit':
-        this.submitImageData(message.data);
-        break;
-
-      case 'onImageUploaded':
-        this.getDiskUsage('imageUpload');
+      case 'onImageloadRequest':
+        this.imageUploadRequest(message.data);
         break;
 
       case 'onFileList':
@@ -175,14 +177,16 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private submitImageData(val: any): void {
-    val.model.userId = this.dataService.getUserId();
-    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/uploadImg', val.model, true).subscribe(
+  private submitImageData(): void {
+    this.formDisabled = true;
+    let model = { filePath: this.profilePic, mode: this.uploadFileMode, userId: this.dataService.getUserId() };
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/uploadImg', model, true).subscribe(
       (response: any) => {
-        if (response.success && val.model.mode === 'profile') {
+        if (response.success && this.uploadFileMode === 'profile') {
           this.messageService.sendMessage({ event: 'onProfileImageUpdate', mode: '', isSuccess: true });
         }
-        this.messageService.sendMessage({ event: 'onImageUploaded', data: response.response, mode: val.mode });
+        this.messageService.sendMessage({ event: 'onImageUploaded', data: response.response, mode: this.uploadFileMode });
+        this.getDiskUsage('imageUpload');
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -190,7 +194,6 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private sendMailRequest(val: any): void {
-    console.log(val.userId, val.fullName, val.requestName, val.requestNumber, val.requestType);
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/sendRequestMail', val, true).subscribe(
       (response: any) => {
         if (response.success && val.model.mode === 'profile') {
@@ -251,10 +254,6 @@ export class ManagerComponent implements OnInit, OnDestroy {
         else {
           this.messageService.sendMessage({ event: 'onDiskSpaceUpdate', isSuccess: true });
         }
-
-
-
-
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -346,7 +345,58 @@ export class ManagerComponent implements OnInit, OnDestroy {
     }
     document.getElementById('confirmBox').style.display = 'none';
   }
-
+  //=======================================
+  //=======================================
+  private imageUploadRequest(val): void {
+    this.uploadFileMode = val.mode;
+    if (this.uploadFileMode === 'profile') {
+      this.imgSpec = { height: 225, width: 225, size: 25 };
+      this.profilePic = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
+    }
+    else {
+      this.imgSpec = { height: 768, width: 1024, size: 100 };
+      this.profilePic = '../../../assets/img/blank-user.jpg?' + this.dataService.getRandomExt();
+    }
+    this.alertTip = [];
+    this.alertTip[0] = `Allowed Height ${this.imgSpec['height']}px. Allowed Width ${this.imgSpec['width']}px. Allowed Size ${this.imgSpec['size']}kb`;
+    document.getElementById('uploadBox').style.display = 'block';
+  }
+  //=======================================
+  //=======================================
+  private closeUploadBox(): void {
+    document.getElementById('uploadBox').style.display = 'none';
+  }
+  //=======================================
+  //=======================================
+  private checkPhoto(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.profilePic = event.target.result;
+        this.previewImg = event.target.result;
+        let size = event.total;
+        setTimeout(() => {
+          this.checkImageValidaty(Math.round(size / 1024));
+          this.previewImg = '';
+        }, 250);
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+  //=======================================
+  //=======================================
+  private checkImageValidaty(size: number): void {
+    let img: any = document.getElementsByClassName('previewImg')[0];
+    this.alertTip[1] = `Selected Height ${img['height']}px. Selected Width ${img['width']}px. Selected Size ${size}kb`;
+    if (img.height <= this.imgSpec['height'] && img.width <= this.imgSpec['width'] && size <= this.imgSpec['size']) {
+      this.alertTip[2] = 'Click on Submit to Upload  file';
+      this.formDisabled = false;
+    }
+    else {
+      this.alertTip[2] = 'Cannot Upload this file';
+      this.formDisabled = true;
+    }
+  }
   //=======================================
   //=======================================
 }
