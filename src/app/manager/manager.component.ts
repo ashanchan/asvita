@@ -27,6 +27,9 @@ export class ManagerComponent implements OnInit, OnDestroy {
   private previewImg: string = '';
   private formDisabled: boolean = true;
   private uploadFileMode: string = '';
+  private folderList: any;
+  private viewImage: boolean = false;
+  private viewImageUrl: string = '';
   //=======================================
   //=======================================
   constructor(private messageService: MessageService, private router: Router, private httpService: HttpService, private dataService: DataService) { }
@@ -56,9 +59,8 @@ export class ManagerComponent implements OnInit, OnDestroy {
   private createTabs(): void {
     let profile = this.dataService.getUserMode().toLowerCase();
     this.tabs.push({ link: "/dashboard", title: "Dashboard", icon: 'fa fa-home', style: '' });
-    this.tabs.push({ link: "/profile-" + profile, title: "Profile", icon: 'fa fa-user', style: '' });
+    this.tabs.push({ link: "/profile", title: "Profile", icon: 'fa fa-user', style: '' });
     this.tabs.push({ link: "/record", title: "Record", icon: 'fa fa-medkit', style: '' });
-    // this.tabs.push({ link: "/upload", title: "Upload", icon: 'fa fa-file-archive-o', style: '' });
     this.tabs.push({ link: "/connect", title: "Connect", icon: 'fa fa-handshake-o', style: '' });
     this.tabs.push({ link: "/logout", title: "Logout", icon: 'fa fa-window-close-o', style: 'w3-right' });
   }
@@ -84,7 +86,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
         this.imageUploadRequest(message.data);
         break;
 
-      case 'onFileList':
+      case 'onFileListxxx':
         this.getFileList();
         break;
 
@@ -106,6 +108,10 @@ export class ManagerComponent implements OnInit, OnDestroy {
 
       case 'onShowModal':
         this.showModal(message.data);
+        break;
+
+      case 'onShowFolder':
+        this.getFileList();
         break;
 
       case 'onLogout':
@@ -265,7 +271,8 @@ export class ManagerComponent implements OnInit, OnDestroy {
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/fileList', { userId: userId }, true).subscribe(
       (response: any) => {
         if (response.response.isSuccess) {
-          this.messageService.sendMessage({ event: 'onFileListUpdate', data: response.response });
+          this.folderList = response.response.fileList;
+          this.showFolder();
         }
         httpServiceSubscription.unsubscribe();
       }
@@ -399,4 +406,26 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
+  private showFolder(): void {
+    this.viewImage = false;
+    document.getElementById('fileListBox').style.display = 'block';
+  }
+  //=======================================
+  //=======================================
+  private hideFolder(folderList): void {
+    document.getElementById('fileListBox').style.display = 'none';
+  }
+  //=======================================
+  //=======================================
+  private showImage(fileName, toggle): void {
+    this.viewImage = toggle;
+    this.viewImageUrl = this.dataService.getFolderPath() + fileName + '?' + this.dataService.getRandomExt();
+  }
+  //=======================================
+  //=======================================
+  private deleteImage(fileName): void {
+    document.getElementById('fileListBox').style.display = 'none';
+  }
+
+
 }

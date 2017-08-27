@@ -1,0 +1,215 @@
+<div class="w3-container">
+    <div class="w3-container">
+        <button class="w3-bar-item w3-button w3-third w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
+    </div>
+
+    <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">
+        <div class="w3-container w3-center">
+            <img [src]="profileUrl" alt="Avatar" class="w3-border  img-thumbnail" />
+            <button class="w3-button w3-theme w3-small w3-right" (click)="uploadImage()"><i class="fa fa-search"></i> Upload</button>
+        </div>
+    </div>
+
+    <form novalidate (ngSubmit)="onSubmit()" #profileForm="ngForm">
+        <input type="hidden" name="mode" [value]="model.mode">
+
+        <div *ngIf="profileMode === 'PAT'">
+            <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" name="fullName" id="fullName" class="w3-input w3-border" [(ngModel)]="model.fullName" required #fullName="ngModel" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
+
+                <label>Contact Number</label>
+                <input type="text" name="mobile" id="mobile" class="w3-input w3-border" [(ngModel)]="model.mobile" #mobile="ngModel" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
+            </div>
+
+            <div class="w3-container" [hidden]="tabs[tabId] !=='General'">
+
+                <div class="w3-row-padding no-padding">
+                    <div class="w3-quarter no-padding">
+                        <label class="vertical-align">Salutation</label>
+                    </div>
+
+                    <div class="w3-quarter no-padding">
+                        <label class="vertical-align">&nbsp; Mr</label>
+                        <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="mr" (change)="enableform($event)">
+                    </div>
+                    <div class="w3-quarter no-padding">
+                        <label class="vertical-align">&nbsp; Ms</label>
+                        <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="ms" (change)="enableform($event)">
+                    </div>
+                    <div class="w3-quarter no-padding">
+                        <label class="vertical-align">&nbsp; None</label>
+                        <input type="radio" id="salutation" name="salutation" class="w3-radio w3-half" [(ngModel)]="model.salutation" value="np" (change)="enableform($event)">
+                    </div>
+                </div>
+
+                <div class="w3-row-padding no-padding">
+                    <div class="w3-quarter no-padding">
+                        <label class="vertical-align">Gender</label>
+                    </div>
+
+                    <div class="w3-quarter no-padding">
+                        <label class="vertical-align">&nbsp; Male</label>
+                        <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="m" (change)="enableform($event)">
+                    </div>
+                    <div class="w3-quarter no-padding">
+                        <label class="vertical-align">&nbsp; Female</label>
+                        <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="f" (change)="enableform($event)">
+                    </div>
+                    <div class="w3-quarter no-padding">
+                        <label class="vertical-align">&nbsp; Other</label>
+                        <input type="radio" id="gender" name="gender" class="w3-radio w3-half" [(ngModel)]="model.gender" value="o" (change)="enableform($event)">
+                    </div>
+                </div>
+                <hr>
+                <label>Address <span class="required">*</span></label>
+                <textarea rows="3" cols="50" type="text" name="address" id="address" class="w3-input w3-border" [(ngModel)]="model.address" required #address="ngModel" placeholder="Enter your address" (keydown)="enableform($event)"></textarea>
+
+                <div class="w3-row no-padding">
+                    <div class="w3-twothird">
+                        <label>City <span class="required">*</span></label>
+                        <input type="text" name="city" id="city" class="w3-input w3-border" [(ngModel)]="model.city" required #city="ngModel" placeholder="Enter city" (keydown)="enableform($event)" />
+                    </div>
+                    <div class="w3-third">
+                        <label>Pin <span class="required">*</span></label>
+                        <input type="text" name="pin" id="pin" class="w3-input w3-border" [(ngModel)]="model.pin" required #pin="ngModel" placeholder="Enter pin" (keydown)="enableform($event)" />
+                    </div>
+                </div>
+
+                <label>State <span class="required">*</span></label>
+                <input type="text" name="state" id="state" class="w3-input w3-border" [(ngModel)]="model.state" required #state="ngModel" placeholder="Enter your State" (keydown)="enableform($event)" />
+                <hr>
+                <label>Emergency, Contact Person</label>
+                <input type="text" name="sosPerson" id="sosPerson" class="w3-input w3-border" [(ngModel)]="model.sosPerson" #sosPerson="ngModel" placeholder="Enter Person's Name to contact" (keydown)="enableform($event)" />
+
+                <label>Emergency, Contact Number</label>
+                <input type="text" name="sosMobile" id="sosMobile" class="w3-input w3-border" [(ngModel)]="model.sosMobile" #sosMobile="ngModel" placeholder="Enter Person's Name to contact" (keydown)="enableform($event)" />
+            </div>
+
+            <div class="w3-container" [hidden]="tabs[tabId] !=='Medical'">
+                <label>Date of Birth [mm/dd/yyyy]</label>
+                <input type="date" name="dob" id="dob" class="w3-input w3-border" [(ngModel)]="model.dob" #dob="ngModel" (keydown)="enableform($event)" />
+
+                <div class="w3-row no-padding">
+                    <div class="w3-half">
+                        <label>Height in cms<span class="required">*</span></label>
+                        <input type="text" name="height" id="height" class="w3-input w3-border" [(ngModel)]="model.height" required #height="ngModel" maxlength="3" placeholder="Enter height in cms" (keydown)="enableform($event)" />
+                    </div>
+                    <div class="w3-half">
+                        <label>Weight in kgs <span class="required">*</span></label>
+                        <input type="text" name="weight" id="weight" class="w3-input w3-border" [(ngModel)]="model.weight" required #weight="ngModel" maxlength="3" placeholder="Enter weight in kgs" (keydown)="enableform($event)" />
+                    </div>
+                </div>
+                <hr>
+                <label>Medical History</label>
+                <div class="w3-row no-padding">
+                    <div class="w3-third" *ngFor="let history of medicalHistory;">
+                        <input type="checkbox" name="history" id="history" class="w3-check" [value]="history.label" [checked]='history.checked' (change)="setCheckedItems('history', 'medicalHistory')" /> <label [innerHTML]="history.label"></label>
+                    </div>
+                </div>
+                <hr>
+                <label>Other History</label>
+                <input type="text" name="medicalHistoryOther" id="medicalHistoryOther" class="w3-input w3-border" [(ngModel)]="model.medicalHistoryOther" #medicalHistoryOther="ngModel" placeholder="Any other medical history" (keydown)="enableform($event)" />
+
+                <hr>
+                <label>Allergy</label>
+                <textarea rows="2" cols="50" type="text" name="allergy" id="allergy" class="w3-input w3-border" [(ngModel)]="model.allergy" #allergy="ngModel" placeholder="Allergies, if any" (keydown)="enableform($event)"></textarea>
+
+                <hr>
+                <label>Special Notes</label>
+                <textarea rows="2" cols="50" type="text" name="notes" id="notes" class="w3-input w3-border" [(ngModel)]="model.notes" #notes="ngModel" placeholder="Notes, if any" (keydown)="enableform($event)"></textarea>
+
+                <hr>
+                <label>Life Style</label>
+                <textarea rows="2" cols="50" type="text" name="lifeStyle" id="lifeStyle" class="w3-input w3-border" [(ngModel)]="model.lifeStyle" #notes="ngModel" placeholder="Life Style details" (keydown)="enableform($event)"></textarea>
+            </div>
+        </div>
+
+        <div *ngIf="profileMode === 'DOC'">
+            <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" name="fullName" id="fullName" class="w3-input w3-border" [(ngModel)]="model.fullName" required #fullName="ngModel" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
+
+                <label>Contact Number</label>
+                <input type="text" name="mobile" id="mobile" class="w3-input w3-border" [(ngModel)]="model.mobile" #mobile="ngModel" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
+            </div>
+
+            <div class="w3-container" [hidden]="tabs[tabId] !=='Clinic'">
+                <div class="w3-right">
+                    <div class="w3-bar w3-border w3-round">
+                        <a *ngFor="let clinic of  [0,1,2,3,4,5]; let i=index" role="presentation" class="w3-button" [ngClass]="{'active-tab' : clinicId === i }" (click)="onClinicClicked(i)">{{i+1}}</a>
+                    </div>
+
+                </div>
+                <div class="w3-container">
+                    <label>Clinic Name <span class="required">*</span></label>
+                    <input type="text" name="clinic" id="clinic" class="w3-input w3-border" [(ngModel)]="model.clinic[clinicId]" required #clinic="ngModel" placeholder="Enter your Full Name" (keydown)="enableform($event)" />
+
+                    <label>Clinic Address <span class="required">*</span></label>
+                    <textarea rows="4" cols="50" type="text" name="address" id="address" class="w3-input w3-border" [(ngModel)]="model.address[clinicId]" required #address="ngModel" placeholder="Enter clinic address" (keydown)="enableform($event)"></textarea>
+
+                    <div class="w3-row no-padding">
+                        <div class="w3-twothird">
+                            <label>City <span class="required">*</span></label>
+                            <input type="text" name="city" id="city" class="w3-input w3-border" [(ngModel)]="model.city[clinicId]" required #city="ngModel" placeholder="Enter city" (keydown)="enableform($event)" />
+                        </div>
+                        <div class="w3-third">
+                            <label>Pin <span class="required">*</span></label>
+                            <input type="text" name="pin" id="pin" class="w3-input w3-border" [(ngModel)]="model.pin[clinicId]" required #pin="ngModel" placeholder="Enter pin" (keydown)="enableform($event)" />
+                        </div>
+                    </div>
+
+                    <label>State <span class="required">*</span></label>
+                    <input type="text" name="state" id="state" class="w3-input w3-border" [(ngModel)]="model.state[clinicId]" required #state="ngModel" placeholder="Enter your State" (keydown)="enableform($event)" />
+
+                    <label>Contact Number <span class="required">*</span></label>
+                    <input type="text" name="contact" id="contact" class="w3-input w3-border" [(ngModel)]="model.contact[clinicId]" required #contact="ngModel" placeholder="Enter Clinic Number" (keydown)="enableform($event)" />
+
+                    <div class="w3-row no-padding">
+                        <div class="w3-half">
+                            <label>Time From <span class="required">*</span></label>
+                            <input type="text" name="openTime" id="openTime" class="w3-input w3-border" [(ngModel)]="model.openTime[clinicId]" required #openTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="Enter Open Time" (keydown)="enableform($event)" />
+                        </div>
+                        <div class="w3-half">
+                            <label>Time To <span class="required">*</span></label>
+                            <input type="text" name="endTime" id="endTime" class="w3-input w3-border" [(ngModel)]="model.endTime[clinicId]" required #endTime="ngModel" maxlength="2" pattern="[0-9]{2}" placeholder="Enter Close Time" (keydown)="enableform($event)" />
+                        </div>
+                    </div>
+
+                    <label>Available On <span class="required">*</span></label>
+
+                    <div class="w3-row no-padding">
+                        <div class="w3-third" *ngFor="let day of openDay">
+                            <input type="checkbox" name="day" id="day" class="w3-check" [value]="day.label" [checked]='day.checked' (change)="setCheckedItems('day', 'openDay')" /> <label [innerHTML]="day.label"></label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="w3-container" [hidden]="tabs[tabId] !=='Specialization'">
+                <label>Qualification <span class="required">*</span></label>
+                <textarea rows="4" cols="50" type="text" name="qualification" id="qualification" class="w3-input w3-border" [(ngModel)]="model.qualification" required #qualification="ngModel" placeholder="Enter Your Qualification" (keydown)="enableform($event)"></textarea>
+                <hr>
+                <label>Specialization </label>
+                <div class="w3-row no-padding">
+                    <div class="w3-half" *ngFor="let specialization of specialization">
+                        <input type="checkbox" name="specialization" id="specialization" class="w3-check" [value]="specialization.label" [checked]='specialization.checked' (change)="setCheckedItems('specialization', 'specialization')" /> <label [innerHTML]="specialization.label"></label>
+                    </div>
+                </div>
+                <hr>
+                <label>Other Specialization </label>
+                <input type="text" name="specializationOther" id="specializationOther" class="w3-input w3-border" [(ngModel)]="model.specializationOther" #specializationOther="ngModel" placeholder="Other specialization, if any" (keydown)="enableform($event)" />
+            </div>
+        </div>
+
+        <div class="w3-container">
+            <div class="w3-panel w3-round w3-red" *ngIf="tabId === 2">
+                <div role="alert" [innerHTML]="alertTip"></div>
+            </div>
+
+            <button type="button" *ngIf="tabId !== 2" class="w3-button w3-block w3-theme" (click)="onNext()">Next</button>
+            <button type="submit" *ngIf="tabId === 2" class="w3-button w3-block w3-theme" [disabled]="profileForm.invalid || formDisabled">Submit</button>
+        </div>
+    </form>
+</div>
