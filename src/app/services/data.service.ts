@@ -153,7 +153,6 @@ export class DataService {
           totalConnection[i].address = this.clipText(totalConnection[i].address, 100);
           if (String(val[i].connection).split(this.userId).length > 1) {
             this.userConnectionList.push(totalConnection[i]);
-            console.log('you connectted');
           }
           if (String(val[i].connectionReq).split(this.userId).length > 1) {
             this.userSentReqList.push(totalConnection[i])

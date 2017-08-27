@@ -3,7 +3,6 @@
         <div class="w3-panel w3-pale-yellow w3-topbar w3-bottombar w3-border-amber">
             <h2 [innerHTML]="greeting['name']"></h2>
             <p [innerHTML]="greeting['msg']"></p>
-
         </div>
 
         <div class="w3-row" *ngIf="connectedThumbnails.length > 0">
@@ -27,6 +26,7 @@
                 <span class="small-10-font" [innerHTML]="thumb.address"></span>
             </div>
         </div>
+
     </div>
 
 </div>

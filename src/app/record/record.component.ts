@@ -25,8 +25,8 @@ export class PrescriptionModel {
 })
 
 export class RecordComponent implements OnInit {
-  private recordModel: RecordModel = new RecordModel();
-  private prescriptionModel: PrescriptionModel = new PrescriptionModel();
+  private recordModel: any;
+  private prescriptionModel: any = [];
   private subscription: Subscription;
   private isConnected: boolean = false;
   private userTip: object = {};
@@ -37,8 +37,9 @@ export class RecordComponent implements OnInit {
   private tabs: Array<string> = ['View Record', 'Add Record'];
   private tabId: number = 0;
   private recordIdx: number = 0;
-  private isDisabled: boolean = true;
-
+  private isDisabled: boolean = false;
+  private userProfileMode: string = '';
+  private userProfileData: any;
   @ViewChild('recordForm') form: any;
 
   constructor(private dataService: DataService, private messageService: MessageService) { }
@@ -48,14 +49,17 @@ export class RecordComponent implements OnInit {
     this.subscription = this.messageService.getMessage().subscribe(message => {
       this.onMessageReceived(message);
     });
+    this.userProfileMode = this.dataService.getUserMode();
+    this.userProfileData = this.dataService.getProfileData();
+    this.userTip = this.dataService.getUserTip();
+    this.thumbnails = this.dataService.getUserConnectionList();
+    //this.recordModel.temprature = '98.6';
     this.createWelcomeCard();
   }
   //=======================================
   //=======================================
   private createWelcomeCard() {
-    this.userTip = this.dataService.getUserTip();
-    this.thumbnails = this.dataService.getUserConnectionList();
-    let fullName = this.dataService.getProfileData().fullName;
+    let fullName = this.userProfileData.fullName;
     this.greeting['name'] = 'Hello ' + this.userTip['salutation'] + fullName + '. ';
     this.greeting['msg'] = 'To add presciption record, first you need to select the connection.';
     if (this.thumbnails.length === 0) {
@@ -65,40 +69,9 @@ export class RecordComponent implements OnInit {
   }
   //=======================================
   //=======================================
-  private onConnected(idx: number): void {
-    let userProfileData = this.dataService.getProfileData();
-    let patientId = '';
-    if (this.dataService.getUserMode() === 'DOC') {
-      this.readOnlyData['doctorName'] = userProfileData.fullName;
-      this.readOnlyData['patientName'] = this.thumbnails[idx].fullName;
-      this.readOnlyData['age'] = this.getAge(this.thumbnails[idx].dob);
-      this.readOnlyData['gender'] = this.thumbnails[idx].gender == 'm' ? 'Male' : 'Female';
-      this.readOnlyData['allergy'] = this.thumbnails[idx].allergy;
-      this.readOnlyData['medicalHistory'] = this.thumbnails[idx].medicalHistory;
-      this.readOnlyData['notes'] = this.thumbnails[idx].medicalHistory;
-      this.readOnlyData['lifeStyle'] = this.thumbnails[idx].lifeStyle;
-      this.recordModel.patientId = this.thumbnails[idx].userId;
-      this.recordModel.doctorId = userProfileData.userId;
-    }
-    else {
-      this.readOnlyData['doctorName'] = this.thumbnails[idx].fullName;
-      this.readOnlyData['patientName'] = userProfileData.fullName;
-      this.readOnlyData['age'] = this.getAge(userProfileData.dob);
-      this.readOnlyData['gender'] = userProfileData.gender == 'm' ? 'Male' : 'Female';
-      this.readOnlyData['allergy'] = userProfileData.allergy;
-      this.readOnlyData['medicalHistory'] = userProfileData.medicalHistory;
-      this.readOnlyData['notes'] = userProfileData.medicalHistory;
-      this.readOnlyData['lifeStyle'] = userProfileData.lifeStyle;
-      this.recordModel.patientId = userProfileData.userId;
-      this.recordModel.doctorId = this.thumbnails[idx].userId;
-    }
-    let tDay = new Date();
-    let tMon = tDay.getMonth() + 1 > 9 ? String(tDay.getMonth() + 1) : String('0' + (tDay.getMonth() + 1));
-    this.recordModel.recordDate = String(tDay.getFullYear() + '-' + tMon + '-' + tDay.getDate());
-    this.recordModel.bp = '70/120';
-    this.recordModel.pulse = '72';
-    this.recordModel.temprature = '98.6';
-    let model = { patientId: this.recordModel.patientId };
+  private connectProfile(idx: number): void {
+    this.createReadOnlyData(idx);
+    let model = { patientId: this.readOnlyData['patientId'] };
     this.messageService.sendMessage({ event: 'onPrescriptionRequest', component: 'record', data: { model: model } });
   }
   //=======================================
@@ -115,45 +88,11 @@ export class RecordComponent implements OnInit {
   }
   //=======================================
   //=======================================
-  private getAge(dob) {
-    var dobYY = Number(dob.split('-')[0]);
-    var cDay = new Date().getFullYear();
-    return cDay - dobYY;
-  }
-  //=======================================
-  //=======================================
-  private onTabClicked(idx: number) {
-    this.recordMode = idx === 0 ? 'view' : 'add';
-    this.tabId = idx;
-    this.isDisabled = true;
-    if (this.recordMode === 'add') {
-      this.createPresciptionForm();
-      this.isDisabled = false;
-      this.recordIdx = 0;
-    }
-    else {
-      this.findDoctorName();
-    }
-
-  }
-  //=======================================
-  //=======================================
-  private onRecordClicked(idx: number) {
-    this.recordIdx = idx;
-    this.findDoctorName();
-    this.prescriptionModel = this.recordModel[idx].medicine;
-  }
-  //=======================================
-  //=======================================
   private onMessageReceived(message: any): void {
     switch (message.event) {
       case 'onPrescriptionRecd':
         this.recordModel = message.data;
-        this.prescriptionModel = this.recordModel[0].medicine;
-        this.recordIdx = 0;
-        this.findDoctorName();
         this.createPresciptionForm();
-        this.isConnected = true;
         break;
       case 'onPrescriptionSaved':
         this.form.reset();
@@ -163,8 +102,71 @@ export class RecordComponent implements OnInit {
   //=======================================
   //=======================================
   private createPresciptionForm() {
+    if (this.recordModel[0]) {
+      this.prescriptionModel = this.recordModel[0].medicine;
+      this.recordIdx = 0;
+      this.findDoctorName();
+    }
+    else {
 
+    }
+    this.isConnected = true;
+  }
+  //=======================================
+  //=======================================
+  createReadOnlyData(idx: number): void {
+    let isDoc: boolean = this.userProfileMode === "DOC";
+    this.recordModel = {};
+    this.readOnlyData['doctorName'] = isDoc ? this.userProfileData.fullName : this.thumbnails[idx].fullName;
+    this.readOnlyData['doctorId'] = isDoc ? this.userProfileData.userId : this.thumbnails[idx].userId;
+    this.readOnlyData['patientName'] = isDoc ? this.thumbnails[idx].fullName : this.userProfileData.fullName;
+    this.readOnlyData['patientId'] = isDoc ? this.thumbnails[idx].userId : this.userProfileData.userId;
+    this.readOnlyData['age'] = this.getAge(isDoc ? this.thumbnails[idx].dob : this.userProfileData.dob);
+    this.readOnlyData['gender'] = (isDoc ? this.thumbnails[idx].gender : this.userProfileData.gender) === 'm' ? 'Gentle Man' : 'Lady';
+    this.readOnlyData['allergy'] = isDoc ? this.thumbnails[idx].allergy : this.userProfileData.allergy;
+    this.readOnlyData['medicalHistory'] = isDoc ? this.thumbnails[idx].medicalHistory : this.userProfileData.medicalHistory;
+    this.readOnlyData['medicalHistoryOther'] = isDoc ? this.thumbnails[idx].medicalHistoryOther : this.userProfileData.medicalHistoryOther;
+    this.readOnlyData['lifeStyle'] = isDoc ? this.thumbnails[idx].lifeStyle : this.userProfileData.lifeStyle;
+    this.readOnlyData['notes'] = isDoc ? this.thumbnails[idx].notes : this.userProfileData.notes;
+    this.recordModel.patientId = this.readOnlyData['patientId'];
+    this.recordModel.doctorId = this.readOnlyData['doctorId'];
 
+    //================
+    let tDay = new Date();
+    let tMon = tDay.getMonth() + 1 > 9 ? String(tDay.getMonth() + 1) : String('0' + (tDay.getMonth() + 1));
+    this.recordModel.recordDate = String(tDay.getFullYear() + '-' + tMon + '-' + tDay.getDate());
+    this.recordModel.bp = '70/120';
+    this.recordModel.pulse = '72';
+    this.recordModel.temprature = '98.6';
+    for (let i = 0; i < 10; i++) {
+      this.prescriptionModel[i] = ({ "medName": '', "bbf": '', "abf": '', "bl": '', "al": '', "eve": '', "bd": '', "ad": '', "day": '' });
+    }
+  }
+
+  //=======================================
+  //=======================================
+  private getAge(dob) {
+    var dobYY = Number(dob.split('-')[0]);
+    var cDay = new Date().getFullYear();
+    return cDay - dobYY;
+  }
+  //=======================================
+  //=======================================
+  private onSubmit() {
+    if (this.form.valid) {
+      //this.recordModel.
+      let record = { "medName": 'Asparin2', "bbf": '1', "abf": '1', "bl": '', "al": '', "eve": '', "bd": '', "ad": '', "day": '1' };
+      let record2 = { "medName": 'Parcetamol2', "bbf": '1', "abf": '1', "bl": '', "al": '', "eve": '', "bd": '1', "ad": '1', "day": '2' };
+      //  this.model.medicine.push(record)
+      //  this.model.medicine.push(record2)
+      console.log('what am I');
+      //   this.messageService.sendMessage({ event: 'onPrescriptionSubmit', component: 'record', data: { model: this.model } });
+    }
+  }
+  //=======================================
+  //=======================================
+  private uploadImage() {
+    this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'records-xxx' } });
   }
 
 }
