@@ -50,6 +50,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.updatePanel();
         this.isAuthenticated = true;
         break;
+      case 'onLogout':
+        this.ngOnDestroy();
+        break;
     }
   }
   //=======================================

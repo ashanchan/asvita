@@ -185,10 +185,16 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   private submitImageData(): void {
     this.formDisabled = true;
+    if (this.uploadFileMode !== 'profile') {
+      let fname = document.getElementById('filetoupload')['value'].toString();
+      let lidx = fname.lastIndexOf('\\');
+      let cName = fname.substring(lidx + 1, fname.length).split('.')[0];
+      this.uploadFileMode += '-' + cName;
+    }
     let model = { filePath: this.profilePic, mode: this.uploadFileMode, userId: this.dataService.getUserId() };
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/uploadImg', model, true).subscribe(
       (response: any) => {
-        if (response.success && this.uploadFileMode === 'profile') {
+        if (this.uploadFileMode === 'profile') {
           this.messageService.sendMessage({ event: 'onProfileImageUpdate', mode: '', isSuccess: true });
         }
         this.messageService.sendMessage({ event: 'onImageUploaded', data: response.response, mode: this.uploadFileMode });
@@ -424,7 +430,17 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private deleteImage(fileName): void {
-    document.getElementById('fileListBox').style.display = 'none';
+    let userId = this.dataService.getUserId();
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/deleteImg', { userId: userId, mode: fileName }, true).subscribe(
+      (response: any) => {
+        if (response.response.isSuccess) {
+          this.folderList = response.response.fileList;
+          this.getFileList();
+          this.getDiskUsage('manager');
+        }
+        httpServiceSubscription.unsubscribe();
+      }
+    )
   }
 
 

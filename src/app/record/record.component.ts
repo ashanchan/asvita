@@ -166,7 +166,7 @@ export class RecordComponent implements OnInit {
   //=======================================
   //=======================================
   private uploadImage() {
-    this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'records-xxx' } });
+    this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'record' } });
   }
 
 }
