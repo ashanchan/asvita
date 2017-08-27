@@ -56,7 +56,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   private createTabs(): void {
     let profile = this.dataService.getUserMode().toLowerCase();
     this.tabs.push({ link: "/dashboard", title: "Dashboard", icon: 'fa fa-home', style: '' });
-    this.tabs.push({ link: "/profile-" + profile, title: "Profile", icon: 'fa fa-user', style: '' });
+    this.tabs.push({ link: "/profile", title: "Profile", icon: 'fa fa-user', style: '' });
     this.tabs.push({ link: "/record", title: "Record", icon: 'fa fa-medkit', style: '' });
     // this.tabs.push({ link: "/upload", title: "Upload", icon: 'fa fa-file-archive-o', style: '' });
     this.tabs.push({ link: "/connect", title: "Connect", icon: 'fa fa-handshake-o', style: '' });

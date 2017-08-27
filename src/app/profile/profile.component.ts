@@ -3,34 +3,39 @@ import { FormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from './../services/data.service';
 import { MessageService } from './../services/message.service';
 import { Subscription } from 'rxjs/Subscription';
+import { DoctorProfileModel } from './../model/doctor.profile.model';
 import { PatientProfileModel } from './../model/patient.profile.model'
 
 @Component({
-  selector: 'app-pat-profile',
-  templateUrl: './pat.profile.component.html',
-  styleUrls: ['./profile.component.css'],
-  providers: []
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
 
-export class PatProfileComponent implements OnInit {
-  private model: PatientProfileModel = new PatientProfileModel();
+export class ProfileComponent implements OnInit {
+  private model: any;
   private profileUrl: string = '';
   private subscription: Subscription;
   private tabs: Array<string> = [];
   private tabId: number = 0;
   private alertTip: string;
   private medicalHistory = [];
+  private specialization = [];
+  private openDay = [];
+  private clinicId: number = 0;
   private formDisabled: boolean = true;
+  private profileMode: string;
+
   @ViewChild('profileForm') form: any;
 
   constructor(private dataService: DataService, private messageService: MessageService) { }
 
-  //=======================================
-  //=======================================
   public ngOnInit(): void {
     this.subscription = this.messageService.getMessage().subscribe(message => {
-      this.onMessageReceived(message);
+      //this.onMessageReceived(message);
     });
+    this.profileMode = this.dataService.getUserMode();
+    this.model = this.profileMode === 'DOC' ? new DoctorProfileModel() : new PatientProfileModel();
     this.getData();
   }
   //=======================================
@@ -48,9 +53,50 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private createFormElements() {
-    this.tabs = ['Profile', 'General', 'Medical'];
     this.profileUrl = this.dataService.getFolderPath() + 'profile.jpg?' + this.dataService.getRandomExt();
-    this.createMedicalHistory()
+
+    if (this.profileMode === 'DOC') {
+      this.tabs = ['Profile', 'Clinic', 'Specialization'];
+      this.createDays();
+      this.createDoctorSpecialization();
+    }
+    else {
+      this.tabs = ['Profile', 'General', 'Medical'];
+      this.createMedicalHistory()
+    }
+  }
+  //=======================================
+  //=======================================
+  private createDoctorSpecialization(): void {
+    let specializationLabel = ["Anesthesiologist", "Cardiologist", "Dentist", "Dermatologist", "Endocrinologist", "ENT Doctor", "Gastrologist", "Gen Physician", "Gen Surgeon", "Gynecologist", "Nephrologist", "Neurologist", "Oncologist", "Ophthalmologist", "Orthopedic", "Pathologist", "Pediatrician", "Physio Therapist", "Radiologists", "Urologist"];
+    let labelCtr = specializationLabel.length;
+    let modelCtr = this.model.specialization.length;
+    let checked: boolean;
+    this.specialization = [];
+    for (var i = 0; i < labelCtr; i++) {
+      checked = false;
+      for (var j = 0; j < modelCtr; j++) {
+        if (specializationLabel[i].toLowerCase() === this.model.specialization[j].toLowerCase()) checked = true;
+      }
+      this.specialization.push({ label: specializationLabel[i], checked: checked });
+    }
+  }
+  //=======================================
+  //=======================================
+  private createDays(): void {
+    let dayLabel = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Holiday"];
+    let labelCtr = dayLabel.length;
+    let clinicDays = this.model.openDay[this.clinicId] ? this.model.openDay[this.clinicId].split(',') : '';
+    let modelCtr = clinicDays.length;
+    let checked: boolean;
+    this.openDay = [];
+    for (var i = 0; i < labelCtr; i++) {
+      checked = false;
+      for (var j = 0; j < modelCtr; j++) {
+        if (dayLabel[i].toLowerCase() === clinicDays[j].toLowerCase()) checked = true;
+      }
+      this.openDay.push({ label: dayLabel[i], checked: checked });
+    }
   }
   //=======================================
   //=======================================
@@ -83,8 +129,20 @@ export class PatProfileComponent implements OnInit {
   //=======================================
   private setCheckedItems(checkBoxName: string, modelName: string): void {
     this.formDisabled = false;
-    this.model[modelName] = this.getCheckedItems(checkBoxName);
-    this.createMedicalHistory();
+    switch (checkBoxName) {
+      case 'day':
+        this.model[modelName][this.clinicId] = this.getCheckedItems(checkBoxName).toString();
+        this.createDays();
+        break;
+      case 'specialization':
+        this.model[modelName] = this.getCheckedItems(checkBoxName);
+        this.createDoctorSpecialization();
+        break;
+      case 'medicalHistory':
+        this.model[modelName] = this.getCheckedItems(checkBoxName);
+        this.createMedicalHistory();
+        break;
+    }
   }
   //=======================================
   //=======================================
@@ -99,8 +157,24 @@ export class PatProfileComponent implements OnInit {
   }
   //=======================================
   //=======================================
+  private onClinicClicked(id: number): void {
+    this.clinicId = id;
+    this.createDays();
+  }
+  //=======================================
+  //=======================================
+  private chkValidation(): boolean {
+    if (this.profileMode === 'DOC') {
+      return (this.model.specialization.length > 0 || this.model.specializationOther.length > 0) && this.model.openDay.length > 0;
+    }
+    else {
+      return true;
+    }
+  }
+  //=======================================
+  //=======================================
   private onSubmit(): void {
-    if (this.form.valid) {
+    if (this.form.valid && this.chkValidation()) {
       this.model.mode = "updateProfile";
       this.formDisabled = true;
       this.messageService.sendMessage({ event: 'onProfileSubmit', component: 'profile', data: { model: this.model } });
@@ -133,7 +207,6 @@ export class PatProfileComponent implements OnInit {
   private uploadImage() {
     this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'profile', fileName: 'profile' } });
   }
-
   //=======================================
   //=======================================
 }
