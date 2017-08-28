@@ -24,16 +24,17 @@ class Signup {
 })
 
 export class LoginComponent implements OnInit, OnDestroy {
-  private model: Signup = new Signup();
-  private subscription: Subscription;
-  private title: string = "Login";
-  private emailTip: string = "Enter your registered Email";
-  private alertTip: string = '';
-  private formDisabled: boolean = false;
+  public model: Signup = new Signup();
+  public subscription: Subscription;
+  public title: string = 'Login';
+  public emailTip: string = 'Enter your registered Email';
+  public alertTip: string = '';
+  public formDisabled: boolean = false;
   @ViewChild('loginForm') form: any;
 
+  //=======================================
+  //=======================================
   constructor(private dataService: DataService, private messageService: MessageService) { }
-
   //=======================================
   //=======================================
   public ngOnInit() {
@@ -44,8 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.model.mode = 'login';
     this.model.email = 'ashanchan@yahoo.com';
     this.model.password = 'Ashtra123';
-    this.model.type = "pat";
-    this.title = "Login";
+    this.model.type = 'pat';
+    this.title = 'Login';
   }
   //=======================================
   //=======================================
@@ -53,34 +54,34 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private changeMode(mode: string): void {
+  public changeMode(mode: string): void {
     this.alertTip = '';
     this.formDisabled = false;
-    this.emailTip = "Enter Your Registered Email";
+    this.emailTip = 'Enter Your Registered Email';
     this.model.mode = mode;
     this.model.password = '';
     this.model.oldPassword = '';
     this.model.newPassword = '';
     this.model.conPassword = '';
-    if (mode === "login") this.title = "Login";
-    if (mode === "fyp") this.title = "Forgot Your Password";
-    if (mode === "register") {
-      this.title = "Register";
-      this.emailTip = "Enter Your Valid Email To Register";
+    if (mode === 'login') this.title = 'Login';
+    if (mode === 'fyp') this.title = 'Forgot Your Password';
+    if (mode === 'register') {
+      this.title = 'Register';
+      this.emailTip = 'Enter Your Valid Email To Register';
     }
 
-    if (mode === "reset") this.title = "Reset Your Password";
+    if (mode === 'reset') this.title = 'Reset Your Password';
   }
   //=======================================
   //=======================================
   private chkValidation(): boolean {
     if (this.model.mode === 'reset') {
       if (this.model.newPassword === this.model.oldPassword) {
-        this.alertTip = "New Password should not be same as Existing Password";
+        this.alertTip = 'New Password should not be same as Existing Password';
         return false;
       }
       if (this.model.newPassword !== this.model.conPassword) {
-        this.alertTip = "New Password and Confirm Password must be same";
+        this.alertTip = 'New Password and Confirm Password must be same';
         return false;
       }
       this.model.password = this.model.oldPassword;
@@ -90,7 +91,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private onSubmit(): void {
+  public onSubmit(): void {
     this.alertTip = '';
     if (this.chkValidation() && this.form.valid) {
       this.messageService.sendMessage({ event: 'onLoginSubmit', component: 'login', data: { mode: this.model.mode, model: this.model } });

@@ -9,11 +9,10 @@ import { MessageService } from '../services/message.service';
 })
 
 export class DashboardComponent implements OnInit {
-  private greeting: object = {};
-  private connectedThumbnails: any = [];
-  private requestedThumbnails: any = [];
-  private userTip: object = {};
-
+  public greeting: object = {};
+  public connectedThumbnails: any = [];
+  public requestedThumbnails: any = [];
+  public userTip: object = {};
   //=======================================
   //=======================================
   constructor(private messageService: MessageService, private dataService: DataService) { }
@@ -41,6 +40,7 @@ export class DashboardComponent implements OnInit {
     let data = { reqType: 'accept', userId: profileData, reqId: conId, connection: profileData.connection, connectionReq: profileData.connectionReq }
     this.messageService.sendMessage({ event: 'onShowModal', data: data });
   }
+  //=======================================
   //=======================================
 
 }

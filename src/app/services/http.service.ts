@@ -10,9 +10,9 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class HttpService {
 
-  constructor(private http: Http, private dataService: DataService) { }
+  constructor(public http: Http, public dataService: DataService) { }
 
-  private handleError(error: Response) {
+  public handleError(error: Response) {
     console.error(error);
     return 'Server Error ' + error;
   }

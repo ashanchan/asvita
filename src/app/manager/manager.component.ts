@@ -14,22 +14,23 @@ const SERVER_PATH: string = 'http://localhost:1616/';
 })
 
 export class ManagerComponent implements OnInit, OnDestroy {
-  private subscription: Subscription;
-  private isAuthenticated: boolean = false;
-  private tabs: any = [];
-  private isNavOpen: boolean = true;
-  private activeUrl: string = '';
-  private routerSubscription;
-  private modalContent: object = {};
-  private alertTip: any = [];
-  private profilePic: string = '';
-  private imgSpec: object = {};
-  private previewImg: string = '';
-  private formDisabled: boolean = true;
-  private uploadFileMode: string = '';
-  private folderList: any;
-  private viewImage: boolean = false;
-  private viewImageUrl: string = '';
+  public subscription: Subscription;
+  public isAuthenticated: boolean = false;
+  public tabs: any = [];
+  public isNavOpen: boolean = true;
+  public activeUrl: string = '';
+  public routerSubscription;
+  public modalContent: object = {};
+  public alertTip: any = [];
+  public profilePic: string = '';
+  public imgSpec: object = {};
+  public previewImg: string = '';
+  public formDisabled: boolean = true;
+  public uploadFileMode: string = '';
+  public folderList: any;
+  public viewImage: boolean = false;
+  public viewImageUrl: string = '';
+  public file: any;
   //=======================================
   //=======================================
   constructor(private messageService: MessageService, private router: Router, private httpService: HttpService, private dataService: DataService) { }
@@ -58,11 +59,11 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   private createTabs(): void {
     let profile = this.dataService.getUserMode().toLowerCase();
-    this.tabs.push({ link: "/dashboard", title: "Dashboard", icon: 'fa fa-home', style: '' });
-    this.tabs.push({ link: "/profile", title: "Profile", icon: 'fa fa-user', style: '' });
-    this.tabs.push({ link: "/record", title: "Record", icon: 'fa fa-medkit', style: '' });
-    this.tabs.push({ link: "/connect", title: "Connect", icon: 'fa fa-handshake-o', style: '' });
-    this.tabs.push({ link: "/logout", title: "Logout", icon: 'fa fa-window-close-o', style: 'w3-right' });
+    this.tabs.push({ link: '/dashboard', title: 'Dashboard', icon: 'fa fa-home', style: '' });
+    this.tabs.push({ link: '/profile', title: 'Profile', icon: 'fa fa-user', style: '' });
+    this.tabs.push({ link: '/record', title: 'Record', icon: 'fa fa-medkit', style: '' });
+    this.tabs.push({ link: '/connect', title: 'Connect', icon: 'fa fa-handshake-o', style: '' });
+    this.tabs.push({ link: '/logout', title: 'Logout', icon: 'fa fa-window-close-o', style: 'w3-right' });
   }
   //=======================================
   //=======================================
@@ -183,7 +184,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private submitImageData(): void {
+  public submitImageData(): void {
     this.formDisabled = true;
     if (this.uploadFileMode !== 'profile') {
       let fname = document.getElementById('filetoupload')['value'].toString();
@@ -214,8 +215,8 @@ export class ManagerComponent implements OnInit, OnDestroy {
         httpServiceSubscription.unsubscribe();
       }
     )
-  }
 
+  }
   //=======================================
   //=======================================
   private getProfileData(calledFrom): void {
@@ -325,12 +326,12 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private openNav(): void {
+  public openNav(): void {
     this.isNavOpen = !this.isNavOpen;
   }
   //=======================================
   //=======================================
-  private showModal(val): void {
+  public showModal(val): void {
     this.modalContent = val;
     this.modalContent['userId'] = val.userId;
     switch (val.reqType) {
@@ -352,7 +353,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private onHideModal(val): void {
+  public onHideModal(val): void {
     if (val) {
       this.onSubmitConnection(this.modalContent);
     }
@@ -376,12 +377,12 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private closeUploadBox(): void {
+  public closeUploadBox(): void {
     document.getElementById('uploadBox').style.display = 'none';
   }
   //=======================================
   //=======================================
-  private checkPhoto(event: any): void {
+  public checkPhoto(event: any): void {
     if (event.target.files && event.target.files[0]) {
       let reader = new FileReader();
       reader.onload = (event: any) => {
@@ -412,24 +413,24 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private showFolder(): void {
+  public showFolder(): void {
     this.viewImage = false;
     document.getElementById('fileListBox').style.display = 'block';
   }
   //=======================================
   //=======================================
-  private hideFolder(folderList): void {
+  public hideFolder(): void {
     document.getElementById('fileListBox').style.display = 'none';
   }
   //=======================================
   //=======================================
-  private showImage(fileName, toggle): void {
+  public showImage(fileName, toggle): void {
     this.viewImage = toggle;
     this.viewImageUrl = this.dataService.getFolderPath() + fileName + '?' + this.dataService.getRandomExt();
   }
   //=======================================
   //=======================================
-  private deleteImage(fileName): void {
+  public deleteImage(fileName): void {
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/deleteImg', { userId: userId, mode: fileName }, true).subscribe(
       (response: any) => {
@@ -442,6 +443,6 @@ export class ManagerComponent implements OnInit, OnDestroy {
       }
     )
   }
-
-
+  //=======================================
+  //=======================================
 }

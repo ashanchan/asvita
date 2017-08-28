@@ -3,20 +3,20 @@ import { Injectable } from '@angular/core';
 @Injectable()
 
 export class DataService {
-  private isAuthenticated: boolean = false;
-  private jwtToken: string = '';
-  private userId: string = '';
-  private profileData: any;
-  private diskSpace: any = '0';
-  private folderPath: string;
-  private rootPath: string;
-  private subscription: any;
-  private searchList: any;
-  private userMode: string;
-  private userTip: object = {};
-  private userConnectionList: any = [];
-  private userConnectionReqList: any = [];
-  private userSentReqList: any = [];
+  public isAuthenticated: boolean = false;
+  public jwtToken: string = '';
+  public userId: string = '';
+  public profileData: any;
+  public diskSpace: any = '0';
+  public folderPath: string;
+  public rootPath: string;
+  public subscription: any;
+  public searchList: any;
+  public userMode: string;
+  public userTip: object = {};
+  public userConnectionList: any = [];
+  public userConnectionReqList: any = [];
+  public userSentReqList: any = [];
   //=======================================
   //=======================================
   public setToken(token): void {
@@ -113,7 +113,6 @@ export class DataService {
   public getRootPath(): any {
     return this.rootPath;
   }
-
   //=======================================
   //=======================================
   public setSubscription(val): any {

@@ -31,16 +31,16 @@ class Request {
 })
 
 export class ConnectComponent implements OnInit, OnDestroy {
-  private model: Search = new Search();
-  private reqModel: Request = new Request();
-  private searchData: any;
-  private subscription: Subscription;
-  private profileConnection: any;
-  private userId: any;
-  private hideSearchResults: boolean = true;
-  private isModalOpen: boolean = false;
-  private mode: string = '';
-  private hideRefreshBtn: boolean = false;
+  public model: Search = new Search();
+  public reqModel: Request = new Request();
+  public searchData: any;
+  public subscription: Subscription;
+  public profileConnection: any;
+  public userId: any;
+  public hideSearchResults: boolean = true;
+  public isModalOpen: boolean = false;
+  public mode: string = '';
+  public hideRefreshBtn: boolean = false;
   @ViewChild('requestForm') form: any;
 
   //=======================================
@@ -144,7 +144,7 @@ export class ConnectComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private sendMailRequest(): void {
+  public sendMailRequest(): void {
     this.reqModel.userId = this.userId;
     this.reqModel.fullName = this.dataService.getProfileData().fullName;
     this.messageService.sendMessage({ event: 'onSendMailRequest', data: this.reqModel });

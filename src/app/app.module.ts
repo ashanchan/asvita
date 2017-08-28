@@ -12,7 +12,6 @@ import { LoginComponent } from './login/login.component';
 import { DataService } from './services/data.service';
 import { HttpService } from './services/http.service';
 import { MessageService } from './services/message.service';
-
 import { FooterComponent } from './footer/footer.component';
 import { RightPanelComponent } from './right/right.component';
 import { CenterPanelComponent } from './center/center.component';
