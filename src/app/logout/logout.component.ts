@@ -10,7 +10,7 @@ import { MessageService } from './../services/message.service';
 })
 
 export class LogoutComponent implements OnInit {
-  private greeting: string;
+  public greeting: string;
   constructor(private dataService: DataService, private messageService: MessageService) { }
   //=======================================
   //=======================================
@@ -23,5 +23,6 @@ export class LogoutComponent implements OnInit {
     this.dataService.setUserId(null);
     this.messageService.sendMessage({ event: 'onLogout', component: 'onLogout', success: true });
   }
-
+  //=======================================
+  //=======================================
 }

@@ -13,18 +13,18 @@ import { PatientProfileModel } from './../model/patient.profile.model'
 })
 
 export class ProfileComponent implements OnInit {
-  private model: any;
-  private profileUrl: string = '';
-  private subscription: Subscription;
-  private tabs: Array<string> = [];
-  private tabId: number = 0;
-  private alertTip: string;
-  private medicalHistory = [];
-  private specialization = [];
-  private openDay = [];
-  private clinicId: number = 0;
-  private formDisabled: boolean = true;
-  private profileMode: string;
+  public model: any;
+  public profileUrl: string = '';
+  public subscription: Subscription;
+  public tabs: Array<string> = [];
+  public tabId: number = 0;
+  public alertTip: string;
+  public medicalHistory = [];
+  public specialization = [];
+  public openDay = [];
+  public clinicId: number = 0;
+  public formDisabled: boolean = true;
+  public profileMode: string;
 
   @ViewChild('profileForm') form: any;
 
@@ -41,8 +41,8 @@ export class ProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private getData(): void {
-    this.model.mode = "getProfile";
-    this.alertTip = "Before Submit, Fill All Fields with *";
+    this.model.mode = 'getProfile';
+    this.alertTip = 'Before Submit, Fill All Fields with *';
     let profileData = this.dataService.getProfileData();
     for (let i in profileData) {
       let id: string = i;
@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private createDoctorSpecialization(): void {
-    let specializationLabel = ["Anesthesiologist", "Cardiologist", "Dentist", "Dermatologist", "Endocrinologist", "ENT Doctor", "Gastrologist", "Gen Physician", "Gen Surgeon", "Gynecologist", "Nephrologist", "Neurologist", "Oncologist", "Ophthalmologist", "Orthopedic", "Pathologist", "Pediatrician", "Physio Therapist", "Radiologists", "Urologist"];
+    let specializationLabel = ['Anesthesiologist', 'Cardiologist', 'Dentist', 'Dermatologist', 'Endocrinologist', 'ENT Doctor', 'Gastrologist', 'Gen Physician', 'Gen Surgeon', 'Gynecologist', 'Nephrologist', 'Neurologist', 'Oncologist', 'Ophthalmologist', 'Orthopedic', 'Pathologist', 'Pediatrician', 'Physio Therapist', 'Radiologists', 'Urologist'];
     let labelCtr = specializationLabel.length;
     let modelCtr = this.model.specialization.length;
     let checked: boolean;
@@ -84,7 +84,7 @@ export class ProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private createDays(): void {
-    let dayLabel = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Holiday"];
+    let dayLabel = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Holiday'];
     let labelCtr = dayLabel.length;
     let clinicDays = this.model.openDay[this.clinicId] ? this.model.openDay[this.clinicId].split(',') : '';
     let modelCtr = clinicDays.length;
@@ -101,7 +101,7 @@ export class ProfileComponent implements OnInit {
   //=======================================
   //=======================================
   private createMedicalHistory(): void {
-    let medicalHistoryLabel = ["LBP", "HBP", "Diabetic", "Heart", "Liver", "Kidney", "Brain", "Psycho", "Lungs"];
+    let medicalHistoryLabel = ['LBP', 'HBP', 'Diabetic', 'Heart', 'Liver', 'Kidney', 'Brain', 'Psycho', 'Lungs'];
     let labelCtr = medicalHistoryLabel.length;
     let modelCtr = this.model.medicalHistory.length;
     let checked: boolean;
@@ -116,18 +116,18 @@ export class ProfileComponent implements OnInit {
   }
   //=======================================
   //=======================================
-  private onTabClicked(id: number): void {
+  public onTabClicked(id: number): void {
     this.tabId = id;
-    this.alertTip = "Before Submit, Fill All Fields with *";
+    this.alertTip = 'Before Submit, Fill All Fields with *';
   }
   //=======================================
   //=======================================
-  private onNext(): void {
+  public onNext(): void {
     this.onTabClicked(this.tabId + 1)
   }
   //=======================================
   //=======================================
-  private setCheckedItems(checkBoxName: string, modelName: string): void {
+  public setCheckedItems(checkBoxName: string, modelName: string): void {
     this.formDisabled = false;
     switch (checkBoxName) {
       case 'day':
@@ -157,7 +157,7 @@ export class ProfileComponent implements OnInit {
   }
   //=======================================
   //=======================================
-  private onClinicClicked(id: number): void {
+  public onClinicClicked(id: number): void {
     this.clinicId = id;
     this.createDays();
   }
@@ -173,9 +173,9 @@ export class ProfileComponent implements OnInit {
   }
   //=======================================
   //=======================================
-  private onSubmit(): void {
+  public onSubmit(): void {
     if (this.form.valid && this.chkValidation()) {
-      this.model.mode = "updateProfile";
+      this.model.mode = 'updateProfile';
       this.formDisabled = true;
       this.messageService.sendMessage({ event: 'onProfileSubmit', component: 'profile', data: { model: this.model } });
     }
@@ -197,14 +197,14 @@ export class ProfileComponent implements OnInit {
   }
   //=======================================
   //=======================================
-  private enableform(event) {
+  public enableform(event) {
     if ((event.type === 'change') || (event.key.length === 1 || event.key === 'Backspace' || event.key === 'Delete')) {
       this.formDisabled = false;
     }
   }
   //=======================================
   //=======================================
-  private uploadImage() {
+  public uploadImage() {
     this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'profile', fileName: 'profile' } });
   }
   //=======================================

@@ -10,14 +10,14 @@ import { DataService } from './../services/data.service';
 })
 
 export class RightPanelComponent implements OnInit, OnDestroy {
-  private profilePic: string = '../../assets/img/blank-user.jpg';
-  private profileData: any;
-  private userSubscription: object = {};
-  private locationInfo: string = '';
-  private subscription: Subscription;
-  private isAuthenticated: boolean = false;
-  private thumbnails: any = [];
-  private userTip: any = {};
+  public profilePic: string = '../../assets/img/blank-user.jpg';
+  public profileData: any;
+  public userSubscription: object = {};
+  public locationInfo: string = '';
+  public subscription: Subscription;
+  public isAuthenticated: boolean = false;
+  public thumbnails: any = [];
+  public userTip: any = {};
   //=======================================
   //=======================================
   constructor(private messageService: MessageService, private dataService: DataService) { }
@@ -76,12 +76,12 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private onRequestConnection(i): void {
-    let info = "<b>User Id : </b>" + this.thumbnails[i].userId + "<br><b>Name : </b>" + this.thumbnails[i].fullName + "<br><b>Address : </b>" + this.thumbnails[i].address;
+    let info = '<b>User Id : </b>' + this.thumbnails[i].userId + '<br><b>Name : </b>' + this.thumbnails[i].fullName + '<br><b>Address : </b>' + this.thumbnails[i].address;
     this.messageService.sendMessage({ event: 'onShowModal', data: { reqType: 'info', info: info } });
   }
   //=======================================
   //=======================================
-  private showFolder(): void {
+  public showFolder(): void {
     this.messageService.sendMessage({ event: 'onShowFolder' });
   }
   //=======================================
