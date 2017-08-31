@@ -40,6 +40,7 @@ export class RecordComponent implements OnInit {
   public isDisabled: boolean = false;
   public userProfileMode: string = '';
   public userProfileData: any;
+  public msg: string = '';
   @ViewChild('recordForm') form: any;
   //=======================================
   //=======================================
@@ -152,21 +153,54 @@ export class RecordComponent implements OnInit {
   //=======================================
   //=======================================
   public onSubmit() {
-    if (this.form.valid) {
+    if (this.form.valid && this.validate()) {
       //this.recordModel.
       let record = { 'medName': 'Asparin2', 'bbf': '1', 'abf': '1', 'bl': '', 'al': '', 'eve': '', 'bd': '', 'ad': '', 'day': '1' };
       let record2 = { 'medName': 'Parcetamol2', 'bbf': '1', 'abf': '1', 'bl': '', 'al': '', 'eve': '', 'bd': '1', 'ad': '1', 'day': '2' };
       //  this.model.medicine.push(record)
       //  this.model.medicine.push(record2)
-      console.log('what am I');
+      console.log('what am I ', this.msg);
       //   this.messageService.sendMessage({ event: 'onPrescriptionSubmit', component: 'record', data: { model: this.model } });
     }
+  }
+  //=======================================
+  //=======================================
+  private validate(): boolean {
+    let isValid = true;
+    let ctr = this.prescriptionModel.length;
+    let isEntryValid: boolean = true
+    this.msg = '';
+    for (let i = 0; i < ctr; i++) {
+      isEntryValid = this.isValidEntry(this.prescriptionModel[i], i);
+    }
+    return isValid;
+  }
+  //=======================================
+  //=======================================
+  private isValidEntry(entry, idx) {
+    let isValid: boolean = true;
+    let val = Number(entry.bbf) + Number(entry.abf) + Number(entry.bl) + Number(entry.al) + Number(entry.eve) + Number(entry.bd) + Number(entry.ad);
+    if (isNaN(val)) {
+      this.msg += 'Record ' + (idx + 1) + ' dosage should be in number.<br>';
+      isValid = false;
+    }
+    else if (val > 0 && entry.medName.trim() === '') {
+      this.msg += 'Record ' + (idx + 1) + ' Mention medicine name.<br>';
+      isValid = false;
+    }
+    else if (val === 0 && entry.medName.trim() !== '') {
+      this.msg += 'Record ' + (idx + 1) + ' Enter dosage.<br>';
+      isValid = false;
+    }
+    return isValid = false;;
   }
   //=======================================
   //=======================================
   private uploadImage() {
     this.messageService.sendMessage({ event: 'onImageloadRequest', data: { mode: 'record' } });
   }
+  //=======================================
+  //=======================================
 
 }
 

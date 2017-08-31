@@ -20,7 +20,8 @@
         </div>
     </div>
 
-    <div class="viewMode" *ngIf="isConnected">
+    <div *ngIf="isConnected" class="w3-responsive w3-block">
+
         <div *ngIf="recordModel.length > 0">
             <div class="w3-container w3-block">
                 <button class="w3-bar-item w3-button w3-half w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
@@ -34,26 +35,23 @@
         </div>
 
         <div class="w3-container w3-block">
-            <table class="w3-table w3-bordered w3-border ">
-                <tr class="w3-theme">
-                    <th class="width-20">Medical Histroy</th>
-                    <th class="width-20">Other Histroy</th>
-                    <th class="width-20">Allergies</th>
-                    <th class="width-20">Life Style</th>
-                    <th class="width-20">Notes</th>
-                </tr>
-                <tr>
-                    <td class="w3-border width-20" [innerHTML]="readOnlyData['medicalHistory']"></td>
-                    <td class="w3-border width-20" [innerHTML]="readOnlyData['medicalHistoryOther']"></td>
-                    <td class="w3-border width-20" [innerHTML]="readOnlyData['allergy']"></td>
-                    <td class="w3-border width-20" [innerHTML]="readOnlyData['lifeStyle']"></td>
-                    <td class="w3-border width-20" [innerHTML]="readOnlyData['notes']"></td>
-                </tr>
-            </table>
-
             <form novalidate (ngSubmit)="onSubmit()" #recordForm="ngForm">
-                Record Date = {{recordModel.recordDate}}
+
                 <table class="w3-table w3-bordered w3-border ">
+                    <tr class="w3-theme">
+                        <th class="width-20">Medical Histroy</th>
+                        <th class="width-20">Other Histroy</th>
+                        <th class="width-20">Allergies</th>
+                        <th class="width-20">Life Style</th>
+                        <th class="width-20">Notes</th>
+                    </tr>
+                    <tr>
+                        <td class="w3-border width-20" [innerHTML]="readOnlyData['medicalHistory']"></td>
+                        <td class="w3-border width-20" [innerHTML]="readOnlyData['medicalHistoryOther']"></td>
+                        <td class="w3-border width-20" [innerHTML]="readOnlyData['allergy']"></td>
+                        <td class="w3-border width-20" [innerHTML]="readOnlyData['lifeStyle']"></td>
+                        <td class="w3-border width-20" [innerHTML]="readOnlyData['notes']"></td>
+                    </tr>
                     <tr class="w3-theme">
                         <th class="width-20"><i class="fa fa-user-md"></i> Doctor</th>
                         <th class="width-20"><i class="fa fa-user-circle-o"></i> Patient</th>
@@ -79,8 +77,11 @@
                     </tr>
 
                     <tr>
+                        <td><input type="text" name="referred" id="referred" class="w3-input w3-border" [(ngModel)]="recordModel.referred" #referred="ngModel" [disabled]="isDisabled" placeholder="Enter Referring Doctor" /></td>
+                        <td><input type="text" name="weight" id="weight" class="w3-input w3-border" [(ngModel)]="recordModel.weight" #weight="ngModel" [disabled]="isDisabled" placeholder="Enter weight" /></td>
                         <td><input type="text" name="temprature" id="temprature" class="w3-input w3-border" [(ngModel)]="recordModel.temprature" #temprature="ngModel" [disabled]="isDisabled" placeholder="Enter temprature" /></td>
-                        <td> <input type="text" name="sosMobile" id="sosMobile" class="w3-input w3-border" [(ngModel)]="recordModel.temprature" #sosMobile="ngModel" placeholder="Enter Person's Name to contact" (keydown)="enableform($event)" /></td>
+                        <td><input type="text" name="bp" id="bp" class="w3-input w3-border" [(ngModel)]="recordModel.bp" #bp="ngModel" [disabled]="isDisabled" placeholder="Enter temprature" /></td>
+                        <td><input type="text" name="pulse" id="pulse" class="w3-input w3-border" [(ngModel)]="recordModel.pulse" #pulse="ngModel" [disabled]="isDisabled" placeholder="Enter temprature" /></td>
                     </tr>
                 </table>
 
@@ -88,7 +89,7 @@
 
                 <table class="w3-table-all w3-hoverable	medicine">
                     <tr class="w3-theme">
-                        <td></td>
+                        <td>#</td>
                         <td><span><i class="fa fa-medkit"></i> Medicine</span></td>
                         <td>BB</td>
                         <td>AB</td>
@@ -105,7 +106,12 @@
                         <td><input type="text" name="medName" id="medName" class="w3-input w3-border" [(ngModel)]="medicine.medName" #medName="ngModel" placeholder="Enter medicine Name" /></td>
                         <td><input type="text" name="bbf" id="bbf" class="w3-input w3-border" [(ngModel)]="medicine.bbf" #bbf="ngModel" maxlength="3" /></td>
                         <td><input type="text" name="abf" id="abf" class="w3-input w3-border" [(ngModel)]="medicine.abf" #abf="ngModel" maxlength="3" /></td>
-
+                        <td><input type="text" name="bl" id="bl" class="w3-input w3-border" [(ngModel)]="medicine.bl" #bl="ngModel" maxlength="3" /></td>
+                        <td><input type="text" name="al" id="al" class="w3-input w3-border" [(ngModel)]="medicine.al" #al="ngModel" maxlength="3" /></td>
+                        <td><input type="text" name="eve" id="eve" class="w3-input w3-border" [(ngModel)]="medicine.eve" #eve="ngModel" maxlength="3" /></td>
+                        <td><input type="text" name="bd" id="bd" class="w3-input w3-border" [(ngModel)]="medicine.bd" #bd="ngModel" maxlength="3" /></td>
+                        <td><input type="text" name="ad" id="ad" class="w3-input w3-border" [(ngModel)]="medicine.ad" #ad="ngModel" maxlength="3" /></td>
+                        <td><input type="text" name="day" id="day" class="w3-input w3-border" [(ngModel)]="medicine.day" #day="ngModel" maxlength="3" /></td>
                     </tr>
                 </table>
 

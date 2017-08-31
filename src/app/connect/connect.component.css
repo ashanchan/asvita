@@ -3,10 +3,6 @@ td {
     padding: 5px;
 }
 
-.restrict-size {
-    max-height: 400px;
-}
-
 .thumbnail {
     width: 125px !important;
     height: auto !important;
