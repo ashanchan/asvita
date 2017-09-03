@@ -17,3 +17,11 @@ td {
 .search-list td:nth-child(2) {
     width: 175px;
 }
+
+.thumbnail {
+    cursor: default;
+}
+
+.thumbnail:hover {
+    border: 1px solid black;
+}
