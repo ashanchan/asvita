@@ -1,5 +1,6 @@
 export class RecordModel {
     constructor(
+        public prescriptionId: string = '',
         public patientId: string = '',
         public doctorId: string = '',
         public recordDate: string = '',

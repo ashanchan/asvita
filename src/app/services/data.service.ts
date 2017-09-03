@@ -223,7 +223,12 @@ export class DataService {
       txt = txt[0];
     }
 
-    txt = txt.substr(0, val);
+    if (txt !== undefined) {
+      txt = txt.substr(0, val);
+    }
+    else {
+      txt = '-';
+    }
     return txt;
   }
 }

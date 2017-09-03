@@ -99,3 +99,7 @@ hr {
 .min-height-25px {
     min-height: 50px;
 }
+
+.restrict-size {
+    max-height: 500px;
+}

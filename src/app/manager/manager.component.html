@@ -50,31 +50,32 @@
 <div id="fileListBox" class="w3-modal">
     <div class="w3-modal-content">
         <div class="w3-container w3-block">
-            <div class="w3-container" [hidden]="viewImage">
-                <table class="w3-table w3-bordered w3-border">
-                    <tr class="w3-theme">
-                        <th>#</th>
-                        <th>File Name</th>
-                        <th>
-                            <span class="w3-right">View</span>
-                        </th>
-                        <th>
-                            <span class="w3-right">Delete</span>
-                        </th>
-                    </tr>
-                    <tr *ngFor="let file of folderList; let i=index">
-                        <td [innerHTML]="i+1"></td>
-                        <td [innerHTML]="file"></td>
-                        <td>
-                            <button class="w3-button w3-theme w3-tiny w3-right" (click)="showImage(file, true)"><i class="fa fa-eye"></i> View</button>
-                        </td>
-                        <td>
-                            <button class="w3-button w3-theme w3-tiny w3-right" (click)="deleteImage(file)"><i class="fa fa-trash-o"></i> Delete</button>
-                        </td>
-                    </tr>
-                </table>
+            <div class="w3-responsive w3-block restrict-size">
+                <div class="w3-container" [hidden]="viewImage">
+                    <table class="w3-table w3-bordered w3-border">
+                        <tr class="w3-theme">
+                            <th>#</th>
+                            <th>File Name</th>
+                            <th>
+                                <span class="w3-right">View</span>
+                            </th>
+                            <th>
+                                <span class="w3-right">Delete</span>
+                            </th>
+                        </tr>
+                        <tr *ngFor="let file of folderList; let i=index">
+                            <td [innerHTML]="i+1"></td>
+                            <td [innerHTML]="file"></td>
+                            <td>
+                                <button class="w3-button w3-theme w3-tiny w3-right" (click)="showImage(file, true)"><i class="fa fa-eye"></i> View</button>
+                            </td>
+                            <td>
+                                <button class="w3-button w3-theme w3-tiny w3-right" (click)="deleteImage(file)"><i class="fa fa-trash-o"></i> Delete</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-
             <div class="w3-container" [hidden]="!viewImage">
                 <table class="w3-table w3-bordered w3-border">
                     <tr class="w3-theme">
@@ -94,7 +95,6 @@
 </div>
 
 <div id="uploadBox" class="w3-modal">
-
     <div class="w3-modal-content">
         <header class="w3-container w3-theme">
             <div>
@@ -130,5 +130,11 @@
 
     <div class="preview" id="preview">
         <img [src]="previewImg" class="previewImg" />
+    </div>
+</div>
+
+<div id="loader" class="w3-modal">
+    <div class="w3-modal-content w3-center w3-green">
+        <span><i class="fa fa-spinner" aria-hidden="true"></i> Connecting</span>
     </div>
 </div>

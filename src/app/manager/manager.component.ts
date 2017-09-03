@@ -123,8 +123,10 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private submitLoginData(val: any): void {
+    this.toggleLoader('show');
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login', val.model, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (val.mode === 'login' && response.success) {
           this.dataService.setToken(response.response.token);
           this.dataService.setUserId(response.response.userId);
@@ -141,19 +143,22 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private onSubmitConnection(val: any) {
+    //  this.toggleLoader('show');
     val.userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/updateProfileConnection', val, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         httpServiceSubscription.unsubscribe();
       }
     )
-
   }
   //=======================================
   //=======================================
   private submitPrescription(val: any) {
+    this.toggleLoader('show');
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/addPrescription', val.model, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         this.messageService.sendMessage({ event: 'onPrescriptionSaved', data: response.response.data });
         httpServiceSubscription.unsubscribe();
       }
@@ -162,8 +167,10 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private getPresciption(val: any) {
+    this.toggleLoader('show');
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/getPrescription', val.model, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         this.messageService.sendMessage({ event: 'onPrescriptionRecd', data: response.response.data });
         httpServiceSubscription.unsubscribe();
       }
@@ -172,8 +179,10 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private submitProfileData(val: any): void {
+    this.toggleLoader('show');
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile', val.model, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (response.success && val.model.mode === 'updateProfile') {
           this.getProfileData('profile');
         }
@@ -185,6 +194,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   public submitImageData(): void {
+    this.toggleLoader('show');
     this.formDisabled = true;
     if (this.uploadFileMode !== 'profile') {
       let fname = document.getElementById('filetoupload')['value'].toString();
@@ -195,6 +205,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
     let model = { filePath: this.profilePic, mode: this.uploadFileMode, userId: this.dataService.getUserId() };
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/uploadImg', model, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (this.uploadFileMode === 'profile') {
           this.messageService.sendMessage({ event: 'onProfileImageUpdate', mode: '', isSuccess: true });
         }
@@ -207,22 +218,25 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private sendMailRequest(val: any): void {
+    this.toggleLoader('show');
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/sendRequestMail', val, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (response.success && val.model.mode === 'profile') {
           this.messageService.sendMessage({ event: 'onProfileImageUpdate', mode: '', isSuccess: true });
         }
         httpServiceSubscription.unsubscribe();
       }
     )
-
   }
   //=======================================
   //=======================================
   private getProfileData(calledFrom): void {
+    this.toggleLoader('show');
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile', { userId: userId }, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (response.response.isSuccess) {
           if (!response.response.data.fullName) {
             response.response.data.fullName = '';
@@ -252,9 +266,11 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private getDiskUsage(calledFrom: string): void {
+    this.toggleLoader('show');
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/diskSpace', { userId: userId }, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (response.response.isSuccess) {
           this.dataService.setDiskSpace(response.response.diskSpace.usedSize);
         }
@@ -274,9 +290,11 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private getFileList(): void {
+    this.toggleLoader('show');
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/fileList', { userId: userId }, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (response.response.isSuccess) {
           this.folderList = response.response.fileList;
           this.showFolder();
@@ -288,9 +306,11 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private getSubsciption(calledFrom: string) {
+    this.toggleLoader('show');
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login/subscription', { userId: userId }, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (response.response.isSuccess) {
           this.dataService.setSubscription(response.response.data);
         }
@@ -304,8 +324,10 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private getSearchList(val: any): void {
+    this.toggleLoader('show');
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/getSearchList', val, true).subscribe(
       (response: any) => {
+        this.toggleLoader('hide');
         if (response.response.isSuccess) {
           if (val.reqMode === 'login') {
             this.dataService.setConnectionList(response.response.data);
@@ -421,6 +443,11 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   public hideFolder(): void {
     document.getElementById('fileListBox').style.display = 'none';
+  }
+  //=======================================
+  //=======================================
+  private toggleLoader(mode): void {
+    document.getElementById('loader').style.display = mode === 'show' ? 'block' : 'none';
   }
   //=======================================
   //=======================================
