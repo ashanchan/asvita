@@ -17,6 +17,7 @@ export class DataService {
   public userConnectionList: any = [];
   public userConnectionReqList: any = [];
   public userSentReqList: any = [];
+  public medicineList: Array<string> = [];
   //=======================================
   //=======================================
   public setToken(token): void {
@@ -132,6 +133,16 @@ export class DataService {
   //=======================================
   public getSearchList(): any {
     return this.searchList;
+  }
+  //=======================================
+  //=======================================
+  public setMedicineList(val): any {
+    this.medicineList = val;
+  }
+  //=======================================
+  //=======================================
+  public getMedicineList(): any {
+    return this.medicineList;
   }
   //=======================================
   //=======================================

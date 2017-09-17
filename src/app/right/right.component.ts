@@ -48,7 +48,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       case 'onDiskSpaceUpdate':
       case 'onConnectionUpdate':
         this.updatePanel();
-        this.isAuthenticated = true;
+        this.isAuthenticated = this.dataService.isAuthenticated;
         break;
       case 'onLogout':
         this.ngOnDestroy();

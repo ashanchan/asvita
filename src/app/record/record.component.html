@@ -35,7 +35,7 @@
         <div class="w3-container w3-block">
             <form novalidate (ngSubmit)="onSubmit()" #recordForm="ngForm">
 
-                <div class="w3-responsive w3-block restrict-size">
+                <div class="w3-responsive w3-block restrict-size" id="record-holder">
                     <table class="w3-table w3-bordered w3-border ">
                         <tr class="w3-theme">
                             <th class="width-20">Medical Histroy</th>
@@ -140,7 +140,10 @@
 
                             <tr *ngFor="let medicine of  prescriptionModel; let i=index">
                                 <td [innerHTML]="i+1"></td>
-                                <td><input type="text" class="w3-input w3-border" name="medName" id="medName" [(ngModel)]="medicine.medName" #medName="ngModel" placeholder="Enter medicine Name" /></td>
+                                <td>
+                                    <app-search [idx]='i' (ratingClicked)='onRatingClicked($event)'></app-search>
+                                </td>
+                                <!--<td><input type="text" class="w3-input w3-border" name="medName" id="medName" [(ngModel)]="medicine.medName" #medName="ngModel" placeholder="Enter medicine Name" /></td>!-->
                                 <td><input type="text" class="w3-input w3-border w3-right-align" name="bbf" id="bbf" [(ngModel)]="medicine.bbf" #bbf="ngModel" maxlength="3" /></td>
                                 <td><input type="text" class="w3-input w3-border w3-right-align" name="abf" id="abf" [(ngModel)]="medicine.abf" #abf="ngModel" maxlength="3" /></td>
                                 <td><input type="text" class="w3-input w3-border w3-right-align" name="bl" id="bl" [(ngModel)]="medicine.bl" #bl="ngModel" maxlength="3" /></td>

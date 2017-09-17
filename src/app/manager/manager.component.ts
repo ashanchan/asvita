@@ -76,7 +76,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
       case 'onAuthenticate':
         this.createTabs();
         this.router.navigate(['./dashboard']);
-        this.isAuthenticated = true;
+        this.isAuthenticated = this.dataService.isAuthenticated;
         break;
 
       case 'onProfileSubmit':
@@ -88,7 +88,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
         break;
 
       case 'onFileListxxx':
-        this.getFileList();
+        this.getFileList(message.data);
         break;
 
       case 'onGetSearchList':
@@ -112,7 +112,11 @@ export class ManagerComponent implements OnInit, OnDestroy {
         break;
 
       case 'onShowFolder':
-        this.getFileList();
+        this.getFileList(message.data);
+        break;
+
+      case 'onGetMedicineList':
+        this.getMedicineList();
         break;
 
       case 'onLogout':
@@ -124,7 +128,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   private submitLoginData(val: any): void {
     this.toggleLoader('show');
-    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login', val.model, true).subscribe(
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login', val.model, false).subscribe(
       (response: any) => {
         this.toggleLoader('hide');
         if (val.mode === 'login' && response.success) {
@@ -172,6 +176,19 @@ export class ManagerComponent implements OnInit, OnDestroy {
       (response: any) => {
         this.toggleLoader('hide');
         this.messageService.sendMessage({ event: 'onPrescriptionRecd', data: response.response.data });
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+  //=======================================
+  //=======================================
+  private getMedicineList(): void {
+    this.toggleLoader('show');
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/getMedicine', null, true).subscribe(
+      (response: any) => {
+        this.dataService.setMedicineList(response.response.data);
+        this.messageService.sendMessage({ event: 'onMedicineListRecd' });
+        this.toggleLoader('hide');
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -289,19 +306,38 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private getFileList(): void {
+  private getFileList(filter): void {
+    console.log('filter kya hai ', filter);
     this.toggleLoader('show');
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/fileList', { userId: userId }, true).subscribe(
       (response: any) => {
         this.toggleLoader('hide');
         if (response.response.isSuccess) {
-          this.folderList = response.response.fileList;
+          this.folderList = this.filterFile(response.response.fileList, filter)
           this.showFolder();
         }
         httpServiceSubscription.unsubscribe();
       }
     )
+  }
+  //=======================================
+  //=======================================
+  private filterFile(list: any[], filter) {
+    if (filter) {
+      let filteredList = list.filter(function (fileName) {
+        return fileName.includes(filter);
+      })
+      return filteredList;
+    }
+    else {
+      let filteredList = list.filter(function (fileName) {
+        return fileName.indexOf('profile') === -1;
+
+      })
+      return filteredList;
+
+    }
   }
   //=======================================
   //=======================================
@@ -463,7 +499,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
       (response: any) => {
         if (response.response.isSuccess) {
           this.folderList = response.response.fileList;
-          this.getFileList();
+          this.getFileList(null);
           this.getDiskUsage('manager');
         }
         httpServiceSubscription.unsubscribe();
