@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { HttpService } from './../services/http.service';
 import { DataService } from './../services/data.service';
 import { Router } from '@angular/router';
+import { WindowService } from './../services/window.service';
 
 const SERVER_PATH: string = 'http://localhost:1616/';
 
@@ -31,9 +32,10 @@ export class ManagerComponent implements OnInit, OnDestroy {
   public viewImage: boolean = false;
   public viewImageUrl: string = '';
   public file: any;
+  public themes: Array<object>;
   //=======================================
   //=======================================
-  constructor(private messageService: MessageService, private router: Router, private httpService: HttpService, private dataService: DataService) { }
+  constructor(private messageService: MessageService, private router: Router, private httpService: HttpService, private dataService: DataService, private windowService: WindowService) { }
   //=======================================
   //=======================================
   public ngOnInit(): void {
@@ -44,7 +46,31 @@ export class ManagerComponent implements OnInit, OnDestroy {
       this.activeUrl = val.url;
       this.isNavOpen = true;
       window.scrollTo(0, 0);
-    })
+    });
+    this.themes = [{ theme: "w3-theme-red", color: "w3-red", name: "Red" },
+    { theme: "w3-theme-pink", color: "w3-pink", name: "Pink" },
+    { theme: "w3-theme-purple", color: "w3-purple", name: "Purple" },
+    { theme: "w3-theme-deep-purple", color: "w3-deep-purple", name: "Deep Purple" },
+    { theme: "w3-theme-indigo", color: "w3-indigo", name: "Indigo" },
+    { theme: "w3-theme-blue", color: "w3-blue", name: "Blue" },
+    { theme: "w3-theme-light-blue", color: "w3-light-blue", name: "Light Blue" },
+    { theme: "w3-theme-cyan", color: "w3-cyan", name: "Cyan" },
+    { theme: "w3-theme-teal", color: "w3-teal", name: "Teal" },
+    { theme: "w3-theme-green", color: "w3-green", name: "Green" },
+    { theme: "w3-theme-light-green", color: "w3-light-green", name: "Light Green" },
+    { theme: "w3-theme-lime", color: "w3-lime", name: "Lime" },
+    { theme: "w3-theme-khaki", color: "w3-khaki", name: "Khaki" },
+    { theme: "w3-theme-yellow", color: "w3-yellow", name: "Yellow" },
+    { theme: "w3-theme-amber", color: "w3-amber", name: "Amber" },
+    { theme: "w3-theme-orange", color: "w3-orange", name: "Orange" },
+    { theme: "w3-theme-deep-orange", color: "w3-deep-orange", name: "Deep Orange" },
+    { theme: "w3-theme-blue-grey", color: "w3-blue-grey", name: "Blue Grey" },
+    { theme: "w3-theme-brown", color: "w3-brown", name: "Brown" },
+    { theme: "w3-theme-grey", color: "w3-grey", name: "Grey" },
+    { theme: "w3-theme-dark-grey", color: "w3-dark-grey", name: "Dark Grey" },
+    { theme: "w3-theme-black", color: "w3-black", name: "Black" },
+    { theme: "w3-theme-w3schools", color: "w3-theme", name: "current" }
+    ]
   }
   //=======================================
   //=======================================
@@ -76,7 +102,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
       case 'onAuthenticate':
         this.createTabs();
         this.router.navigate(['./dashboard']);
-        this.isAuthenticated = true;
+        this.isAuthenticated = this.dataService.isAuthenticated;
         break;
 
       case 'onProfileSubmit':
@@ -88,7 +114,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
         break;
 
       case 'onFileListxxx':
-        this.getFileList();
+        this.getFileList(message.data);
         break;
 
       case 'onGetSearchList':
@@ -112,7 +138,15 @@ export class ManagerComponent implements OnInit, OnDestroy {
         break;
 
       case 'onShowFolder':
-        this.getFileList();
+        this.getFileList(message.data);
+        break;
+
+      case 'onShowTheme':
+        this.showTheme();
+        break;
+
+      case 'onGetMedicineList':
+        this.getMedicineList();
         break;
 
       case 'onLogout':
@@ -124,7 +158,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   private submitLoginData(val: any): void {
     this.toggleLoader('show');
-    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login', val.model, true).subscribe(
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login', val.model, false).subscribe(
       (response: any) => {
         this.toggleLoader('hide');
         if (val.mode === 'login' && response.success) {
@@ -172,6 +206,19 @@ export class ManagerComponent implements OnInit, OnDestroy {
       (response: any) => {
         this.toggleLoader('hide');
         this.messageService.sendMessage({ event: 'onPrescriptionRecd', data: response.response.data });
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+  //=======================================
+  //=======================================
+  private getMedicineList(): void {
+    this.toggleLoader('show');
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/getMedicine', null, true).subscribe(
+      (response: any) => {
+        this.dataService.setMedicineList(response.response.data);
+        this.messageService.sendMessage({ event: 'onMedicineListRecd' });
+        this.toggleLoader('hide');
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -289,19 +336,38 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
-  private getFileList(): void {
+  private getFileList(filter): void {
+    console.log('filter kya hai ', filter);
     this.toggleLoader('show');
     let userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'util/fileList', { userId: userId }, true).subscribe(
       (response: any) => {
         this.toggleLoader('hide');
         if (response.response.isSuccess) {
-          this.folderList = response.response.fileList;
+          this.folderList = this.filterFile(response.response.fileList, filter)
           this.showFolder();
         }
         httpServiceSubscription.unsubscribe();
       }
     )
+  }
+  //=======================================
+  //=======================================
+  private filterFile(list: any[], filter) {
+    if (filter) {
+      let filteredList = list.filter(function (fileName) {
+        return fileName.includes(filter);
+      })
+      return filteredList;
+    }
+    else {
+      let filteredList = list.filter(function (fileName) {
+        return fileName.indexOf('profile') === -1;
+
+      })
+      return filteredList;
+
+    }
   }
   //=======================================
   //=======================================
@@ -446,6 +512,28 @@ export class ManagerComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
+  public showTheme(): void {
+    document.getElementById('themeBox').style.display = 'block';
+  }
+  //=======================================
+  //=======================================
+  public hideTheme(hasSelected: boolean): void {
+    if (hasSelected) {
+      let ctr = this.themes.length;
+      localStorage.setItem('theme', this.themes[ctr - 1]['theme']);
+      this.windowService.nativeWindow.setDefaultTheme();
+    }
+    document.getElementById('themeBox').style.display = 'none';
+  }
+  //=======================================
+  //=======================================
+  public setTheme(idx: number): void {
+    let ctr = this.themes.length;
+    this.themes[ctr - 1]['color'] = this.themes[idx]['color'];
+    this.themes[ctr - 1]['theme'] = this.themes[idx]['theme'];
+  }
+  //=======================================
+  //=======================================
   private toggleLoader(mode): void {
     document.getElementById('loader').style.display = mode === 'show' ? 'block' : 'none';
   }
@@ -463,7 +551,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
       (response: any) => {
         if (response.response.isSuccess) {
           this.folderList = response.response.fileList;
-          this.getFileList();
+          this.getFileList(null);
           this.getDiskUsage('manager');
         }
         httpServiceSubscription.unsubscribe();

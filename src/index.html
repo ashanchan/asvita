@@ -7,8 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/styles/w3-theme-blue-grey.css">
-
+    <script>
+        function setDefaultTheme() {
+            var cssId = ''; // you could encode the css path itself to generate id..
+            var theme = localStorage.getItem('theme'); //'w3-theme-blue';
+            theme = theme ? theme : 'w3-theme-grey';
+            if (!document.getElementById(cssId)) {
+                var head = document.getElementsByTagName('head')[0];
+                var link = document.createElement('link');
+                link.id = cssId;
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = 'https://www.w3schools.com/lib/' + theme + '.css';
+                link.media = 'all';
+                head.appendChild(link);
+            }
+        }
+        setDefaultTheme();
+    </script>
     <base href="/">
 </head>
 

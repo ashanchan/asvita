@@ -38,6 +38,7 @@ export class RecordComponent implements OnInit, OnDestroy {
   public recordIdx: number = 0;
   public isDisabled: boolean = false;
   public alertTip: string = '';
+  public medicineList: Array<string> = [];
 
   private userProfileMode: string = '';
   private userProfileData: any;
@@ -60,7 +61,7 @@ export class RecordComponent implements OnInit, OnDestroy {
     this.userProfileData = this.dataService.getProfileData();
     this.isDoc = this.userProfileMode === 'DOC';
     this.userTip = this.dataService.getUserTip();
-    this.userTip['icon'] = this.userTip['icon'].replace('w3-text-theme', 'w3-text-white');
+    // this.userTip['iconY'] = this.userTip['icon'].replace('w3-text-theme', 'w3-text-white');
     this.thumbnails = this.dataService.getUserConnectionList();
     this.prescriptionModel = [];
     for (let i = 0; i < 10; i++) {
@@ -115,6 +116,9 @@ export class RecordComponent implements OnInit, OnDestroy {
         this.form.reset();
         this.connectProfile(this.connectedIdx);
         this.onTabClicked(0);
+        break;
+      case 'onMedicineListRecd':
+        this.medicineList = this.dataService.getMedicineList();
         break;
     }
   }
@@ -219,8 +223,11 @@ export class RecordComponent implements OnInit, OnDestroy {
   private validate(): boolean {
     let ctr = this.prescriptionModel.length;
     let isEntryValid: boolean = true;
+    let val: any = '';
     this.alertTip = '';
     for (let i = 0; i < ctr; i++) {
+      val = document.getElementsByClassName('medName')[i];
+      this.prescriptionModel[i].medName = val.value;
       isEntryValid = this.isValidEntry(this.prescriptionModel[i], i);
       if (!isEntryValid) {
         break;
@@ -269,6 +276,10 @@ export class RecordComponent implements OnInit, OnDestroy {
       this.onRecordClicked(0);
     }
     if (!this.isRecordAdded && this.viewMode === 'add') {
+      this.medicineList = this.dataService.getMedicineList();
+      if (this.medicineList.length === 0) {
+        this.messageService.sendMessage({ event: 'onGetMedicineList' });
+      }
       this.populatePatientData();
       let tDay = new Date();
       let tMon = tDay.getMonth() + 1 > 9 ? String(tDay.getMonth() + 1) : String('0' + (tDay.getMonth() + 1));
@@ -289,5 +300,9 @@ export class RecordComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
+  public onRatingClicked(msg: string): void {
+    let abc = 'Product List : ' + msg;
+    console.log(abc);
+  }
 }
 

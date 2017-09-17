@@ -1,0 +1,18 @@
+ul {
+    background: brown;
+    border: solid 1px;
+    list-style: none;
+    padding: 8px;
+}
+
+.medName {
+    width: 95%;
+    float: left;
+}
+
+.dummy {
+    width: 1px;
+    height: 1px;
+    float: left;
+    border: none;
+}

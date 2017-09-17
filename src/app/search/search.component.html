@@ -1,0 +1,7 @@
+<input type="text" class="w3-input w3-border medName" (keyup)="searchTerm$.next($event.target.value)" placeholder="Enter medicine Name" />
+<ul *ngIf="results">
+    <li *ngFor="let result of results | slice:0:4">
+        <span [innerHTML]="result.name" class="w3-button w3-theme w3-block" (click)="onSelected(result.name)"></span>
+    </li>
+</ul>
+<input type="text" class="dummy" id="dummy" (focus)="results=null" />

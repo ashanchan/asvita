@@ -48,7 +48,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       case 'onDiskSpaceUpdate':
       case 'onConnectionUpdate':
         this.updatePanel();
-        this.isAuthenticated = true;
+        this.isAuthenticated = this.dataService.isAuthenticated;
         break;
       case 'onLogout':
         this.ngOnDestroy();
@@ -83,6 +83,11 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   //=======================================
   public showFolder(): void {
     this.messageService.sendMessage({ event: 'onShowFolder' });
+  }
+  //=======================================
+  //=======================================
+  public showTheme(): void {
+    this.messageService.sendMessage({ event: 'onShowTheme' });
   }
   //=======================================
   //=======================================

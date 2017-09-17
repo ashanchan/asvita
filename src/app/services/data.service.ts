@@ -17,6 +17,7 @@ export class DataService {
   public userConnectionList: any = [];
   public userConnectionReqList: any = [];
   public userSentReqList: any = [];
+  public medicineList: Array<string> = [];
   //=======================================
   //=======================================
   public setToken(token): void {
@@ -57,18 +58,23 @@ export class DataService {
       if (this.userMode === 'DOC') {
         this.userTip['icon'] = '<i class="fa fa-stethoscope fa-fw  w3-text-theme"></i>';
         this.userTip['salutation'] = "Dr."
-        this.userTip['iconx'] = '<i class="fa fa-user fa-fw  w3-text-theme"></i>';
+        this.userTip['iconX'] = '<i class="fa fa-user fa-fw  w3-text-theme"></i>';
+        this.userTip['iconY'] = '<i class="fa fa-user fa-fw"></i>';
         this.userTip['salutationx'] = ""
       }
       else {
-        this.userTip['iconx'] = '<i class="fa fa-stethoscope fa-fw w3-text-theme"></i>';
+        this.userTip['iconX'] = '<i class="fa fa-stethoscope fa-fw w3-text-theme"></i>';
+
         this.userTip['salutationx'] = "Dr."
         if (this.profileData.gender === 'm') {
-          this.userTip['icon'] = '<i class="fa fa-male fa-fw  w3-text-theme"></i>';
+          this.userTip['icon'] = '<i class="fa fa-male fa-fw w3-text-theme"></i>';
+          this.userTip['iconY'] = '<i class="fa fa-male fa-fw"></i>';
+
           this.userTip['salutation'] = 'Mr.';
         }
         else if (this.profileData.gender === 'f') {
-          this.userTip['icon'] = '<i class="fa fa-female fa-fw  w3-text-theme"></i>';
+          this.userTip['icon'] = '<i class="fa fa-female fa-fw w3-text-theme"></i>';
+          this.userTip['iconY'] = '<i class="fa fa-female fa-fw"></i>';
           this.userTip['salutation'] = 'Ms.';
         }
         else {
@@ -132,6 +138,16 @@ export class DataService {
   //=======================================
   public getSearchList(): any {
     return this.searchList;
+  }
+  //=======================================
+  //=======================================
+  public setMedicineList(val): any {
+    this.medicineList = val;
+  }
+  //=======================================
+  //=======================================
+  public getMedicineList(): any {
+    return this.medicineList;
   }
   //=======================================
   //=======================================

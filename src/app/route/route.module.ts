@@ -7,14 +7,16 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { ConnectComponent } from '../connect/connect.component';
 import { RecordComponent } from '../record/record.component';
 import { LogoutComponent } from '../logout/logout.component';
+import { AuthGuard } from './../services/auth.guard.service';
+
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'record', component: RecordComponent },
-  { path: 'connect', component: ConnectComponent },
-  { path: 'logout', component: LogoutComponent }
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'record', component: RecordComponent, canActivate: [AuthGuard] },
+  { path: 'connect', component: ConnectComponent, canActivate: [AuthGuard] },
+  { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
