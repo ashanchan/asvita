@@ -86,5 +86,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   }
   //=======================================
   //=======================================
+  public showTheme(): void {
+    this.messageService.sendMessage({ event: 'onShowTheme' });
+  }
+  //=======================================
+  //=======================================
 
 }

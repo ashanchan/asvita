@@ -12,6 +12,7 @@ import { HttpService } from './services/http.service';
 import { MessageService } from './services/message.service';
 import { SearchService } from './services/search.service';
 import { AuthGuard } from './services/auth.guard.service';
+import { WindowService } from './services/window.service';
 //==================================================
 import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './footer/footer.component';
@@ -49,7 +50,7 @@ import { SearchComponent } from './search/search.component';
     RouteModule
   ],
 
-  providers: [DataService, HttpService, MessageService, SearchService, AuthGuard],
+  providers: [DataService, HttpService, MessageService, SearchService, AuthGuard, WindowService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

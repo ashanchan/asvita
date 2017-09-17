@@ -1,6 +1,6 @@
 <div class="w3-container">
-    <div class="w3-container">
-        <button class="w3-bar-item w3-button w3-third w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
+    <div class="w3-container w3-theme">
+        <button class="w3-bar-item  w3-button w3-third " *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
     </div>
 
     <div class="w3-container" [hidden]="tabs[tabId] !=='Profile'">

@@ -13,7 +13,7 @@
 
                 <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of thumbnails; let i=index">
                     <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right" (click)='connectProfile(i)'>
-                    <span class="w3-large" [innerHTML]="userTip['iconx'] + userTip['salutationx']+thumb.fullName"></span><br>
+                    <span class="w3-large" [innerHTML]="userTip['iconX'] + userTip['salutationx']+thumb.fullName"></span><br>
                     <span class="small-10-font" [innerHTML]="thumb.address"></span>
                 </div>
             </div>
@@ -22,8 +22,8 @@
 
     <div *ngIf="isConnected">
         <div *ngIf="recordModel.length >= 1">
-            <div class="w3-container w3-block">
-                <button class="w3-bar-item w3-button w3-half w3-theme" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
+            <div class="w3-container w3-block w3-theme">
+                <button class="w3-bar-item w3-button w3-half" *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
             </div>
             <div class="w3-container  w3-right" [hidden]="viewMode === 'add'">
                 <div class="w3-bar w3-border w3-round">
@@ -55,7 +55,7 @@
                             <th class="width-20"><i class="fa fa-user-md"></i> Doctor</th>
                             <th class="width-20"><i class="fa fa-user-circle-o"></i> Patient</th>
                             <th class="width-20"><i class="fa fa-birthday-cake"></i> Age</th>
-                            <th class="width-20" [innerHTML]="userTip['icon'] +'Gender'"></th>
+                            <th class="width-20" [innerHTML]="userTip['iconY'] +'Gender'"></th>
                             <th class="width-20"><i class="fa fa-calendar"></i> Date</th>
                         </tr>
 

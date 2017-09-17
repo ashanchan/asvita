@@ -6,6 +6,7 @@
             <p><i class="fa fa-id-card fa-fw w3-text-theme"></i> {{profileData.userId}}</p>
             <p [innerHTML]="userTip.icon + ' '+ userTip.salutation+profileData.fullName"></p>
             <p><i class="fa fa-home fa-fw w3-text-theme"></i> {{locationInfo}}</p>
+            <button class="w3-button w3-theme w3-tiny w3-left" (click)="showTheme()"><i class="fa fa-cogs"></i> My Theme</button>
             <button class="w3-button w3-theme w3-tiny w3-right" (click)="showFolder()"><i class="fa fa-folder-open"></i> My Folder</button>
         </div>
     </div>

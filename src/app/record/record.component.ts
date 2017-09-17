@@ -61,7 +61,7 @@ export class RecordComponent implements OnInit, OnDestroy {
     this.userProfileData = this.dataService.getProfileData();
     this.isDoc = this.userProfileMode === 'DOC';
     this.userTip = this.dataService.getUserTip();
-    this.userTip['icon'] = this.userTip['icon'].replace('w3-text-theme', 'w3-text-white');
+    // this.userTip['iconY'] = this.userTip['icon'].replace('w3-text-theme', 'w3-text-white');
     this.thumbnails = this.dataService.getUserConnectionList();
     this.prescriptionModel = [];
     for (let i = 0; i < 10; i++) {

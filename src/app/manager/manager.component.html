@@ -133,6 +133,33 @@
     </div>
 </div>
 
+<div id="themeBox" class="w3-modal">
+    <div class="w3-modal-content">
+        <header class="w3-container w3-theme">
+            <div>
+                <h6><i class="fa fa-cogs"></i> Set Your Theme</h6>
+            </div>
+        </header>
+        <div class="w3-container">
+            <div class="w3-row">
+                <div *ngFor="let theme of themes; let i=index">
+                    <div *ngIf="theme.name !== 'current'" class="w3-button w3-border w3-border-white w3-col s3 w3-center" [ngClass]="theme.color" (click)="setTheme(i)">
+                        <p [innerHTML]="theme.name"></p>
+                    </div>
+                    <div *ngIf="theme.name === 'current'" class="w3-button w3-border w3-col s3 w3-center" [ngClass]="theme.color" style="cursor:not-allowed">
+                        <p [innerHTML]="theme.name"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="w3-container w3-theme">
+            <button class="w3-button  w3-small w3-right" (click)="hideTheme(true)"><i class="fa fa-check-circle"></i> Ok</button>
+            <button class="w3-button  w3-small w3-right" style="margin-right:10px;" (click)="hideTheme(false)"><i class="fa fa-window-close "></i> Cancel</button>
+        </footer>
+    </div>
+</div>
+
 <div id="loader" class="w3-modal">
     <div class="w3-modal-content w3-center w3-green">
         <span><i class="fa fa-spinner" aria-hidden="true"></i> Connecting</span>
