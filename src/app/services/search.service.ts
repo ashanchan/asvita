@@ -8,7 +8,6 @@ import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class SearchService {
-
   constructor(private httpService: HttpService) { }
 
   search(terms: Observable<string>) {

@@ -13,6 +13,7 @@ import { MessageService } from './services/message.service';
 import { SearchService } from './services/search.service';
 import { AuthGuard } from './services/auth.guard.service';
 import { WindowService } from './services/window.service';
+import { GraphService } from './services/graph.service';
 //==================================================
 import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './footer/footer.component';
@@ -25,6 +26,7 @@ import { RecordComponent } from './record/record.component';
 import { ManagerComponent } from './manager/manager.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
+import { GraphComponent } from './graph/graph.component';
 //==================================================
 
 @NgModule({
@@ -40,7 +42,8 @@ import { SearchComponent } from './search/search.component';
     RecordComponent,
     ManagerComponent,
     ProfileComponent,
-    SearchComponent
+    SearchComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,7 @@ import { SearchComponent } from './search/search.component';
     RouteModule
   ],
 
-  providers: [DataService, HttpService, MessageService, SearchService, AuthGuard, WindowService],
+  providers: [DataService, HttpService, MessageService, SearchService, AuthGuard, WindowService, GraphService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

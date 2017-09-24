@@ -53,11 +53,13 @@ textarea:focus {
 }
 
 .active-tab {
-    background-color: tomato !important;
+    background: tomato !important;
+    text-shadow: 1px 1px 0 #444;
+    color: white !important;
 }
 
 .active-page {
-    background-color: lightgray !important;
+    background: lightgray !important;
 }
 
 hr {

@@ -158,6 +158,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   private submitLoginData(val: any): void {
     this.toggleLoader('show');
+	val.model.freeEntry = true;
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login', val.model, false).subscribe(
       (response: any) => {
         this.toggleLoader('hide');
@@ -177,7 +178,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   //=======================================
   private onSubmitConnection(val: any) {
-    //  this.toggleLoader('show');
+    this.toggleLoader('show');
     val.userId = this.dataService.getUserId();
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'profile/updateProfileConnection', val, true).subscribe(
       (response: any) => {
@@ -521,7 +522,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
     if (hasSelected) {
       let ctr = this.themes.length;
       localStorage.setItem('theme', this.themes[ctr - 1]['theme']);
-      this.windowService.nativeWindow.setDefaultTheme();
+      this.windowService.setThemeStyle();
     }
     document.getElementById('themeBox').style.display = 'none';
   }

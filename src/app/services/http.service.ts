@@ -24,17 +24,14 @@ export class HttpService {
   }
   public getApiData(url, data, validation) {
     let headers = new Headers();
-    // let token = this.dataService.getToken();
-    // let sToken = token === '' ? '@$V!TA-#~ANMACH' : String(token);
-    // headers.append('x-access-token', '@$V!TA-#~ANMACH');
 
-    headers.append('x-access-token', '@$V!TA-#~ANMACH');
     if (validation) {
-      //  headers.append('Authorization', 'Bearer ' + this.dataService.getToken());
+      headers.append('x-access-token', this.dataService.getToken());
+    }
+    else {
+      headers.append('x-access-token', '@$V!TA-#~ANMACH');
     }
 
-
-    console.log(this.dataService.getToken());
     let requestOptions = new RequestOptions({
       method: 'post',
       url: url,

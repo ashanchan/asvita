@@ -28,3 +28,8 @@
 .width-20 {
     width: 20%;
 }
+
+.graphDiv {
+    width: 100%;
+    height: 100%;
+}
