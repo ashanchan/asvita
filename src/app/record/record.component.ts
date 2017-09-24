@@ -33,7 +33,7 @@ export class RecordComponent implements OnInit, OnDestroy {
   public thumbnails: Array<any>;
   public readOnlyData: Array<string> = [];
   public viewMode: string = 'view';
-  public tabs: Array<string> = ['View Record', 'Add Record'];
+  public tabs: Array<string> = ['View Record', 'Add Record', 'View Graph'];
   public tabId: number = 0;
   public recordIdx: number = 0;
   public isDisabled: boolean = false;
@@ -46,6 +46,96 @@ export class RecordComponent implements OnInit, OnDestroy {
   private connectedIdx: number = 0;
   private isDoc: boolean = true;
   private isRecordAdded: boolean = false;
+
+  public graphs = [
+    [{
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      y: [130, 160, 170, 150, 125, 180, 120, 125, 130, 135, 125, 120],
+      name: 'Systolic',
+      type: 'scatter',
+      mode: "candlestick"
+    },
+    {
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      y: [85, 90, 95, 120, 120, 130, 100, 110, 110, 90, 85, 72],
+      name: 'Diastolic',
+      type: 'timeline',
+      mode: "candlestick"
+    },
+    {
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      y: [60, 70, 95, 80, 100, 80, 90, 70, 70, 90, 85, 62],
+      name: 'Pulse',
+      type: "scatter",
+      mode: "candlestick"
+    }
+    ]
+  ];
+
+  public oldgraphs = [
+    [{
+      x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+      y: [1, 3, 6],
+      name: 'Time Line',
+      type: 'scatter',
+      mode: "lines",
+      animate: false,
+      autoRange: true
+    }],
+    [{
+      x: [14, 21, 25],
+      y: ['giraffes', 'orangutans', 'monkeys'],
+      name: 'Zoo',
+      orientation: 'h',
+      animate: false,
+      autoRange: true,
+      marker: {
+        color: 'rgba(55,128,191,0.6)',
+        width: 1
+      },
+      type: 'bar'
+    },
+    {
+      x: [12, 18, 29],
+      y: ['giraffes', 'orangutans', 'monkeys'],
+      name: 'LA Zoo',
+      orientation: 'h',
+      type: 'bar',
+      marker: {
+        color: 'rgba(255,153,51,0.6)',
+        width: 1
+      }
+    }
+    ],
+    [{
+      values: [27, 11, 25, 8, 1, 3, 25],
+      labels: ['US', 'China', 'European Union', 'Russian Federation', 'Brazil', 'India', 'Rest of World'],
+      text: 'CO2',
+      textposition: 'inside',
+      name: 'CO2 Emissions',
+      hoverinfo: 'label+percent+name',
+      hole: .4,
+      type: 'pie'
+    }],
+    [{
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      y: [80, 160, 170, 72, 72, 52, 92, 72, 70, 62, 52, 72],
+      name: 'Diastolic',
+      type: 'timeline',
+      marker: {
+        color: 'rgba(0,255,0,0.6)',
+        width: 1
+      }
+
+    },
+    {
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      y: [72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72],
+      name: 'Systolic',
+      type: 'timeline'
+    }
+    ],
+  ];
 
   @ViewChild('recordForm') form: any;
   //=======================================
@@ -271,7 +361,13 @@ export class RecordComponent implements OnInit, OnDestroy {
   //=======================================
   private onTabClicked(idx: number) {
     this.tabId = idx;
-    this.viewMode = idx === 0 ? 'view' : 'add';
+    if (idx == 2) {
+      this.viewMode = 'graph';
+    }
+    else {
+      this.viewMode = idx === 0 ? 'view' : 'add';
+    }
+
     if (this.recordModel.length > 1) {
       this.onRecordClicked(0);
     }

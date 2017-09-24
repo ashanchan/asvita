@@ -12,7 +12,7 @@ export class SearchComponent implements OnInit {
   @Input() idx: number;
   @Output() ratingClicked: EventEmitter<string> = new EventEmitter<string>();
   results: Object;
-  searchTerm$ = new Subject<string>();
+  searchTerm$: any = new Subject<string>();
 
   constructor(private searchService: SearchService) {
     this.searchService.search(this.searchTerm$)

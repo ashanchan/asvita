@@ -1,30 +1,28 @@
 <div class="w3-container">
-    <div class="w3-container">
-        <div class="w3-panel w3-pale-yellow w3-topbar w3-bottombar w3-border-amber">
-            <h2 [innerHTML]="greeting['name']"></h2>
-            <p [innerHTML]="greeting['msg']"></p>
-        </div>
+    <div class="w3-panel w3-theme w3-topbar w3-bottombar w3-border-amber">
+        <h2 [innerHTML]="greeting['name']"></h2>
+        <p [innerHTML]="greeting['msg']"></p>
+    </div>
 
-        <div class="w3-row" *ngIf="connectedThumbnails.length > 0">
-            <div class="w3-round w3-theme">
-                <p>&nbsp;&nbsp;You have receive connection request from </p>
-            </div>
-            <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of connectedThumbnails; let i=index">
-                <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right" (click)='onRequestConnection(thumb.userId)'>
-                <span class="w3-large" [innerHTML]="userTip['iconx'] + userTip['salutationx']+thumb.fullName"></span><br>
-                <span class="small-10-font" [innerHTML]="thumb.address"></span>
-            </div>
+    <div class="w3-row" *ngIf="connectedThumbnails.length > 0">
+        <div class="w3-round w3-theme">
+            <p>&nbsp;&nbsp;You have received connection request from </p>
         </div>
+        <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of connectedThumbnails; let i=index">
+            <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right" (click)='onRequestConnection(thumb.userId)'>
+            <span class="w3-large" [innerHTML]="userTip['iconX'] + userTip['salutationx']+thumb.fullName"></span><br>
+            <span class="small-10-font" [innerHTML]="thumb.address"></span>
+        </div>
+    </div>
 
-        <div class="w3-row request" *ngIf="requestedThumbnails.length > 0">
-            <div class="w3-round w3-theme">
-                <p>&nbsp;&nbsp;You have requested connection from </p>
-            </div>
-            <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of requestedThumbnails; let i=index">
-                <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right w3-sepia">
-                <span class="w3-large" [innerHTML]="userTip['iconx'] + userTip['salutationx']+thumb.fullName"></span><br>
-                <span class="small-10-font" [innerHTML]="thumb.address"></span>
-            </div>
+    <div class="w3-row request" *ngIf="requestedThumbnails.length > 0">
+        <div class="w3-round w3-theme">
+            <p>&nbsp;&nbsp;You have requested connection from </p>
+        </div>
+        <div class="w3-half w3-container w3-card-4 small-10-margin-bottom" *ngFor="let thumb of requestedThumbnails; let i=index">
+            <img [src]="thumb.thumbnail" class="thumbnail w3-left w3-margin-right w3-sepia">
+            <span class="w3-large" [innerHTML]="userTip['iconX'] + userTip['salutationx']+thumb.fullName"></span><br>
+            <span class="small-10-font" [innerHTML]="thumb.address"></span>
         </div>
     </div>
 
