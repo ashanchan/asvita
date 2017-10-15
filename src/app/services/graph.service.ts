@@ -1,5 +1,6 @@
 import * as Plotly from 'plotly.js/src/core';
 import { Injectable } from '@angular/core';
+
 declare let require: any;
 Plotly.register([
   require('plotly.js/lib/pie'),
@@ -18,26 +19,22 @@ export class GraphService {
   }
   //=======================================
   //=======================================
-  public plotGraph(graphDiv, graphData) {
-    var layout = {
-      autosize: true,
-      showlegend: true,
-      xaxis: {
-        autorange: true
-      },
-      yaxis: {
-        autorange: true,
-        type: 'linear'
-      },
-      font: {
-        color: '#000',
-        size: 12
+  public plotGraph(graphDiv, graphData, graphLayout) {
+    let data = [];
+    if (graphData.data) {
+      data.push(graphData.data);
+    }
+    else {
+      var ctr = graphData.length;
+      for (let i = 0; i < ctr; i++) {
+        data[i] = graphData[i].data;
       }
-    };
-
-    Plotly.plot(graphDiv, graphData, layout);
+    }
+    Plotly.plot(graphDiv, data, graphLayout);
   }
   //=======================================
   //=======================================
-
+  public deleteGraph(graphDiv) {
+    Plotly.purge(graphDiv);
+  }
 }

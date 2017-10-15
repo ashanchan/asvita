@@ -94,6 +94,10 @@ hr {
     margin-bottom: 10px;
 }
 
+.min-btn-width {
+    width: 100px;
+}
+
 .height-25px {
     height: 25px;
 }
@@ -104,4 +108,11 @@ hr {
 
 .restrict-size {
     max-height: 500px;
+}
+
+.loader {
+    background: #333 url('assets/img/loader.gif') no-repeat 50% 50%;
+    -webkit-transition: background-color 0;
+    transition: background-color 0;
+    height: 650px;
 }

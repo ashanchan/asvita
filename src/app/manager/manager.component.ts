@@ -88,6 +88,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
     this.tabs.push({ link: '/dashboard', title: 'Dashboard', icon: 'fa fa-home', style: '' });
     this.tabs.push({ link: '/profile', title: 'Profile', icon: 'fa fa-user', style: '' });
     this.tabs.push({ link: '/record', title: 'Record', icon: 'fa fa-medkit', style: '' });
+    this.tabs.push({ link: '/graph', title: 'Graph', icon: 'fa fa-bar-chart', style: '' });
     this.tabs.push({ link: '/connect', title: 'Connect', icon: 'fa fa-handshake-o', style: '' });
     this.tabs.push({ link: '/logout', title: 'Logout', icon: 'fa fa-window-close-o', style: 'w3-right' });
   }
@@ -149,6 +150,18 @@ export class ManagerComponent implements OnInit, OnDestroy {
         this.getMedicineList();
         break;
 
+      case 'onResize':
+        this.onResize();
+        break;
+
+      case 'onGetGraph':
+        this.getGraph(message.data);
+        break;
+
+      case 'onGraphSubmit':
+        this.submitGraph(message.data);
+        break;
+
       case 'onLogout':
         this.ngOnDestroy();
         break;
@@ -158,7 +171,7 @@ export class ManagerComponent implements OnInit, OnDestroy {
   //=======================================
   private submitLoginData(val: any): void {
     this.toggleLoader('show');
-	val.model.freeEntry = true;
+    val.model.freeEntry = true;
     let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'login', val.model, false).subscribe(
       (response: any) => {
         this.toggleLoader('hide');
@@ -171,6 +184,29 @@ export class ManagerComponent implements OnInit, OnDestroy {
         else {
           this.messageService.sendMessage({ event: 'onLoginProcessed', isSuccess: response.success, msg: response.response.msg });
         }
+        httpServiceSubscription.unsubscribe();
+      }
+    )
+  }
+  //=======================================
+  //=======================================
+  private getGraph(val: any): void {
+    this.toggleLoader('show');
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'graph/getData', val.model, true).subscribe(
+      (response: any) => {
+        this.toggleLoader('hide');
+        httpServiceSubscription.unsubscribe();
+        this.messageService.sendMessage({ event: 'onGraphDataRecd', data: response.response });
+      }
+    )
+  }
+  //=======================================
+  //=======================================
+  private submitGraph(val: any): void {
+    this.toggleLoader('show');
+    let httpServiceSubscription = this.httpService.getApiData(SERVER_PATH + 'graph/addData', val.model, true).subscribe(
+      (response: any) => {
+        this.toggleLoader('hide');
         httpServiceSubscription.unsubscribe();
       }
     )
@@ -558,6 +594,11 @@ export class ManagerComponent implements OnInit, OnDestroy {
         httpServiceSubscription.unsubscribe();
       }
     )
+  }
+  //=======================================
+  //=======================================
+  public onResize() {
+    //console.log('resized..');
   }
   //=======================================
   //=======================================
