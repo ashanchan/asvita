@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+import { MessageService } from './../services/message.service';
 
 function _window(): any {
   return window;
@@ -6,6 +8,15 @@ function _window(): any {
 
 @Injectable()
 export class WindowService {
+  constructor(private messageService: MessageService) {
+    Observable.fromEvent(window, 'resize')
+      .debounceTime(500)
+      .subscribe((event) => {
+        this.messageService.sendMessage({ event: 'onResize' });
+      });
+
+  }
+
   get nativeWindow(): any {
     return _window();
   }

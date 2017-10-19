@@ -1,5 +1,3 @@
-.details,
-#plotDiv {
-    width: 100%;
-    height: auto;
+.active-graph {
+    background-color: tomato !important;
 }

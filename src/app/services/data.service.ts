@@ -247,4 +247,30 @@ export class DataService {
     }
     return txt;
   }
+  //=======================================
+  //=======================================
+  public getGraphTrivia(graphTitle): string {
+    let trivia = '';
+    switch (graphTitle) {
+      case 'weight':
+        trivia = `<h4>Body Mass Index</h4><ul><li><b>Below 18.5</b> : Underweight</li><li><b>18.5 - 24.9</b> : Normal</li><li><b>25 - 29.9</b> : Overweight</li><li><b>30 - 34.9</b> : Obese Class I</li><li><b>35 - 40</b> : Obese Class II</li><li><b>Above 40</b> : Obese Class III</li></ul>`;
+
+        break;
+      case 'sugar':
+        break;
+      case 'bp':
+        trivia = `<h4>Blood Pressure Levels</h4><ul><li><b>Normal</b> : systolic: less than 120 mmHg. diastolic: less than 80mmHg</li><li><b>At risk (prehypertension)</b> : systolic: 120–139 mmHg. diastolic: 80–89 mmHg</li><li><b>High</b> : systolic: 140 mmHg or higher. diastolic: 90 mmHg or higher</li></ul>`;
+        break;
+      case 'temperature':
+        trivia = `Not everyone's "normal" body temperature is the same. Yours could be a whole degree different than someone else's. A German doctor in the 19th century set the standard at 98.6 F, but more recent studies say the baseline for most people is closer to 98.2 F.<br><br>For a typical adult, body temperature can be anywhere from 97 F to 99 F. Babies and children have a little higher range: 97.9 F to 100.4 F.<br><br>Your temperature doesn't stay same all day, and it will vary throughout your lifetime, too. Some things that cause your temperature to move around during the day include:<ul><li>How active you are</li><li>What time of day it is</li><li>Your age</li><li>Your sex</li><li>What you've eaten or had to drink</li><li>If you're a woman) where you are in your menstrual cycle</li></ul>`;
+        break;
+    }
+    return trivia;
+  }
+  //=======================================
+  //=======================================
+  public titleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); })
+  }
 }
+

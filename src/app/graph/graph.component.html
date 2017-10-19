@@ -1,24 +1,135 @@
 <div class="w3-container">
-    <div id="plotDiv" name="plotDiv">
+    <div class="w3-container w3-theme">
+        <button class="w3-bar-item  w3-button w3-third " *ngFor="let tab of tabs; let i=index" [ngClass]="{'active-tab' : tabId === i }" (click)="onTabClicked(i)" [innerHTML]="tab"></button>
+        <div class="w3-theme" style="height:45px;"></div>
+        <button class="w3-button w3-theme w3-tiny min-btn-width" *ngFor="let graph of graphs; let j=index" [ngClass]="{'active-graph' : graphId === j }" (click)="onGraphClicked(j)"><i class="{{graph.icon}}"></i> {{graph.title}}</button>
     </div>
 
-    <div class="details">
-        <table class="w3-table-all">
-            <tr>
-                <th colspan="2" class="w3-theme">Blood Pressure Levels</th>
-            </tr>
-            <tr>
-                <th>Normal</th>
-                <td>systolic: less than 120 mmHg<br> diastolic: less than 80mmHg</td>
-            </tr>
-            <tr>
-                <th>At risk (prehypertension)</th>
-                <td>systolic: 120–139 mmHg<br> diastolic: 80–89 mmHg</td>
-            </tr>
-            <tr>
-                <th>High</th>
-                <td>systolic: 140 mmHg or higher<br> diastolic: 90 mmHg or higher</td>
-            </tr>
-        </table>
+    <div class="height-25px"></div>
+
+    <div class="w3-block w3-card-4 small-10-margin-bottom">
+        <h4 class="w3-white w3-center" style="color: tomato; text-shadow:1px 1px 0 #444" [innerHTML]="graphs[graphId].title"></h4>
+        <div class="w3-container">
+            <div *ngIf="tabs[tabId] === 'Add Record' ">
+                <form novalidate (ngSubmit)="onSubmit()" #graphForm="ngForm">
+                    <div class="w3-row">
+                        <div class="w3-col w3-mobile" style="width:25%">
+                            <label><span class='required'>*</span> Date</label>
+                            <input type="datetime-local" name="graphDate" id="graphDate" class="w3-input w3-border" required style="padding:7px; padding-left:2px; padding-right:2px;" />
+                        </div>
+
+                        <div *ngIf="graphs[graphId].title === 'Weight'">
+                            <div class="w3-col w3-mobile" style="width:25%">
+                                <label><span class='required'>*</span> Weight</label>
+                                <input type="text" name="weight" id="weight" class="w3-input w3-border" required placeholder="Enter weight in kgs" />
+                            </div>
+                            <div class="w3-col w3-mobile" style="width:25%">
+                                <label><span class='required'>*</span> Height</label>
+                                <input type="text" name="height" id="height" class="w3-input w3-border" required placeholder="Enter Height in cms" />
+                            </div>
+                        </div>
+
+                        <div *ngIf="graphs[graphId].title === 'Sugar'">
+                            <div class="w3-col w3-mobile" style="width:25%">
+                                <label><span class='required'>*</span> Fasting</label>
+                                <input type="text" name="fasting" id="fasting" class="w3-input w3-border" required placeholder="Enter Fasting" />
+                            </div>
+                            <div class="w3-col w3-mobile" style="width:25%">
+                                <label><span class='required'>*</span> Normal</label>
+                                <input type="text" name="normal" id="normal" class="w3-input w3-border" required placeholder="Enter normal" />
+                            </div>
+                        </div>
+
+                        <div *ngIf="graphs[graphId].title === 'BP'">
+                            <div class="w3-col w3-mobile" style="width:25%">
+                                <label><span class='required'>*</span> Systolic</label>
+                                <input type="text" name="systolic" id="systolic" class="w3-input w3-border" required placeholder="Enter systolic" />
+                            </div>
+                            <div class="w3-col w3-mobile" style="width:25%">
+                                <label><span class='required'>*</span> Diastolic</label>
+                                <input type="text" name="diastolic" id="diastolic" class="w3-input w3-border" required placeholder="Enter diastolic" />
+                            </div>
+                            <div class="w3-col w3-mobile" style="width:25%">
+                                <label><span class='required'>*</span> Pulse</label>
+                                <input type="text" name="pulse" id="pulse" class="w3-input w3-border" required placeholder="Enter pulse" />
+                            </div>
+                        </div>
+
+                        <div *ngIf="graphs[graphId].title === 'Temperature'">
+                            <div class="w3-col w3-mobile" style="width:25%">
+                                <label><span class='required'>*</span> Temperature</label>
+                                <input type="text" name="temperature" id="temperature" class="w3-input w3-border" required placeholder="Enter in Farahnite" />
+                            </div>
+                        </div>
+
+                        <div class="w3-col w3-mobile">
+                            <br>
+                            <div role="alert">Date Formal [mm/dd/yyyy hh:mm am/pm]</div>
+                            <div role="alert" [innerHTML]="alertTip"></div>
+                            <button type="submit" class="w3-button w3-block w3-theme" [disabled]="graphForm.invalid">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div *ngIf="tabs[tabId] === 'View Record'">
+                <div class="w3-responsive w3-block restrict-size" id="record-holder">
+                    <table class="w3-table w3-table-all  w3-tiny w3-hoverable w3-responsive">
+                        <tr class="w3-theme">
+                            <td style="width: 20%" class="w3-center">Record Date</td>
+                            <td *ngIf="graphTitle === 'Weight'" style="width: 20%" class="w3-center w3-border">Weight</td>
+                            <td *ngIf="graphTitle === 'Weight'" style="width: 20%" class="w3-center w3-border">Height</td>
+                            <td *ngIf="graphTitle === 'Weight'" style="width: 20%" class="w3-center w3-border">BMI</td>
+
+                            <td *ngIf="graphTitle === 'Sugar'" style="width: 20%" class="w3-center w3-border">Fasting</td>
+                            <td *ngIf="graphTitle === 'Sugar'" style="width: 20%" class="w3-center w3-border">Normal</td>
+
+                            <td *ngIf="graphTitle === 'BP'" style="width: 20%" class="w3-center w3-border">Systolic</td>
+                            <td *ngIf="graphTitle === 'BP'" style="width: 20%" class="w3-center w3-border">Diastolic</td>
+                            <td *ngIf="graphTitle === 'BP'" style="width: 20%" class="w3-center w3-border">Pulse</td>
+
+                            <td *ngIf="graphTitle === 'Temperature'" style="width: 20%" class="w3-center w3-border">Celsius</td>
+                            <td *ngIf="graphTitle === 'Temperature'" style="width: 20%" class="w3-center w3-border">Fahrenheit</td>
+
+                            <td style="width: 10%" class="w3-center w3-border">Edit</td>
+                            <td style="width: 10%" class="w3-center w3-border">Delete</td>
+                        </tr>
+
+                        <tr *ngFor="let row of tableData; let i=index">
+                            <td style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['recDate']"></td>
+                            <td *ngIf="graphTitle === 'Weight'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['weight']"></td>
+                            <td *ngIf="graphTitle === 'Weight'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['height']"></td>
+                            <td *ngIf="graphTitle === 'Weight'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="(row['weight'] / ( (row['height'] /100) * (row['height'] /100)) )| number : '1.2-2'"></td>
+
+                            <td *ngIf="graphTitle === 'Sugar'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['fasting']"></td>
+                            <td *ngIf="graphTitle === 'Sugar'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['normal']"></td>
+
+                            <td *ngIf="graphTitle === 'BP'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['systolic']"></td>
+                            <td *ngIf="graphTitle === 'BP'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['diastolic']"></td>
+                            <td *ngIf="graphTitle === 'BP'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['pulse']"></td>
+
+
+                            <td *ngIf="graphTitle === 'Temperature'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="row['temperature']"></td>
+                            <td *ngIf="graphTitle === 'Temperature'" style="width: 20%" class="w3-right-align w3-border" [innerHTML]="(row['temperature'] -32)*(5/9) | number : '1.2-2' "></td>
+
+                            <td style="width: 10%" class="w3-center w3-border"> <button class="w3-button w3-theme w3-tiny w3-right" (click)="updateRecord(i, true)"><i class="fa fa-eye"></i> Edit</button></td>
+                            <td style="width: 10%" class="w3-center w3-border"><button class="w3-button w3-theme w3-tiny w3-right" (click)="updateRecord(i, false)"><i class="fa fa-trash-o"></i> Delete</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div *ngIf="tabs[tabId] === 'Plot Record'">
+                <div class="graphDiv" id="graphDiv">
+                    <div id="plotDiv" name="plotDiv">
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="tabs[tabId] !== 'Add Record'">
+                <hr>
+                <p class="w3-tiny" [innerHTML]="trivia"></p>
+            </div>
+        </div>
     </div>
 </div>
