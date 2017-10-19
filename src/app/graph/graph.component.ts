@@ -49,6 +49,7 @@ export class GraphComponent implements OnInit {
     this.graphs.push({ title: 'Sugar', icon: 'fa fa-battery-half' });
     this.graphs.push({ title: 'BP', icon: 'fa fa-heartbeat' });
     this.graphs.push({ title: 'Temperature', icon: 'fa fa-thermometer-half' });
+    this.graphTitle = this.graphs[this.graphId].title;
   }
   //=======================================
   //=======================================
@@ -62,17 +63,6 @@ export class GraphComponent implements OnInit {
   //=======================================
   //=======================================
   private processData(data) {
-    if (data.graphType === 'weight') {
-      let ctr = data.data.length;
-      let htMtr = 0;
-      let bmi: number = 0;
-      for (let i = 0; i < ctr; i++) {
-        htMtr = data.data[i]['height'] / 100;
-        bmi = data.data[i]['weight'] / (htMtr * htMtr);
-        data.data[i]["BMI"] = bmi.toFixed(2);
-      }
-    }
-
     if (this.tabs[this.tabId] === "Plot Record") {
       this.getGraphData(data);
     }
@@ -95,6 +85,7 @@ export class GraphComponent implements OnInit {
   private onGraphClicked(idx: number) {
     this.graphId = idx;
     this.alertTip = '';
+    this.graphTitle = this.graphs[this.graphId].title;
     if (this.tabs[this.tabId] !== "Add Record") {
       this.model = {};
       this.model.graphType = String(this.graphs[this.graphId].title).toLowerCase();
@@ -129,7 +120,7 @@ export class GraphComponent implements OnInit {
       }
     }
 
-    for (i = 0; i < lblCtr; i++) {
+    for (i = 1; i < lblCtr; i++) {
       this.graphData.push(plot[i]);
     }
 
@@ -147,7 +138,6 @@ export class GraphComponent implements OnInit {
   //=======================================
   private plotGraph() {
     let graphDiv = document.querySelector("#graphDiv #plotDiv");
-    this.graphTitle = this.graphLayout.title;
     this.graphService.plotGraph(graphDiv, this.graphData, this.graphLayout);
   }
   //=======================================
@@ -155,10 +145,17 @@ export class GraphComponent implements OnInit {
   private setTableData(plotData) {
     this.tableData = plotData;
     this.tableCol = Object.keys(plotData[0]);
+    this.tableCol.push('Edit');
+    this.tableCol.push('Delete');
     this.tableLabel = [];
     let ctr = this.tableCol.length;
     for (let i = 0; i < ctr; i++) {
       this.tableLabel[i] = this.dataService.titleCase(this.tableCol[i]);
+    }
+
+    ctr = this.tableData.length;
+    for (let i = 0; i < ctr; i++) {
+      this.tableData[i]['recDate'] = this.convertDate(this.tableData[i]['recDate']);
     }
   }
   //=======================================
@@ -217,4 +214,18 @@ export class GraphComponent implements OnInit {
   }
   //=======================================
   //=======================================
+  private convertDate(dt) {
+    let nDt = String(new Date(dt)).split(' ');
+    nDt.shift();
+    return nDt[0] + ' ' + nDt[1] + ' ' + nDt[2] + ' ' + nDt[3];
+  }
+  //=======================================
+  //=======================================
+  public updateRecord(idx, mode) {
+    alert(this.tableData[idx]['_id']);
+  }
+  //=======================================
+  //=======================================
+
 }
+
